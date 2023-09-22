@@ -1,15 +1,14 @@
 version: '3'
 services:
   db:
-    container_name: mysql_db
-    image: mysql:8.0
+    container_name: muelitas_db
+    image: postgres:15.3
     restart: always
     ports:
-      - 3307:3306
+      - 5432:5432
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
     volumes:
-      - ./database:/var/lib/mysql
+      - ./database:/var/lib/postgresql/data
