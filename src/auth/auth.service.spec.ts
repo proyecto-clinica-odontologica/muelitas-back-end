@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
-import { CreateAuthDto } from './dto/create-user.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -20,7 +20,7 @@ describe('AuthService', () => {
 
   describe('create', () => {
     it('debe crear una nueva autenticación', () => {
-      const createAuthDto: CreateAuthDto = {
+      const createAuthDto: CreateUserDto = {
         email: 'test@test.com',
         fullName: 'testuser',
         password: 'testpassword',
@@ -47,7 +47,7 @@ describe('AuthService', () => {
   describe('update', () => {
     it('debe actualizar una autenticación específica', () => {
       const id = 1;
-      const updateAuthDto: UpdateAuthDto = {
+      const updateAuthDto: UpdateUserDto = {
         fullName: 'testuser',
         password: 'testpassword',
       };

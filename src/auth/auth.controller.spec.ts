@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { CreateAuthDto } from './dto/create-user.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 describe('AuthController', () => {
   let authController: AuthController;
@@ -35,7 +35,7 @@ describe('AuthController', () => {
 
   describe('create', () => {
     it('debería llamar a authService.create con los parámetros correctos', async () => {
-      const createAuthDto: CreateAuthDto = {
+      const createAuthDto: CreateUserDto = {
         email: 'test@example.com',
         password: 'Password1',
         fullName: 'Test User',
@@ -68,7 +68,7 @@ describe('AuthController', () => {
   describe('update', () => {
     it('debería llamar a authService.update con los parámetros correctos', async () => {
       const id = '12345';
-      const updateAuthDto: UpdateAuthDto = {
+      const updateAuthDto: UpdateUserDto = {
         email: 'updated@example.com',
         password: 'UpdatedPassword1',
         fullName: 'Updated User',
