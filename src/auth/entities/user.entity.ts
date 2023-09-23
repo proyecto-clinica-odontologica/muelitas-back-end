@@ -5,18 +5,27 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Column({ type: 'text' })
+  nombre: string;
+
+  @Column({ type: 'text' })
+  apellido: string;
+
+  @Column({ type: 'text' })
+  numDocumento: string;
+
+  @Column({ type: 'text' })
+  contra: string;
+
   @Column({ type: 'text', unique: true })
-  email: string;
+  correo: string;
 
-  @Column({ type: 'text' })
-  password: string;
+  @Column({ type: 'text', nullable: true })
+  celular: string;
 
-  @Column({ type: 'text' })
-  fullName: string;
+  @Column({ type: 'text', nullable: true })
+  foto: string;
 
-  @Column({ type: 'bool' })
-  isActive: boolean; // bloquear el acceso, seria como eliminar un usuario
-
-  @Column({ type: 'text', array: true, default: ['user'] })
-  roles: string[]; // ['admin', 'user']
+  @Column({ type: 'text', nullable: true })
+  codigo: string;
 }

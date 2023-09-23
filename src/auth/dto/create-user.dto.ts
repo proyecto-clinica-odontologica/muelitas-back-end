@@ -8,21 +8,42 @@ import {
 
 export class CreateUserDto {
   @IsEmail({}, { message: 'El correo debe ser un correo electrónico valido' })
-  email: string;
+  correo: string;
 
-  @IsString({ message: 'La contraseña debe ser un texto' })
   @MinLength(6, {
-    message: 'La contraseña debe tener como minimo 6 caracteres',
+    message: 'La contra (contraseña) debe tener al menos 6 caracteres',
   })
-  @MaxLength(50, { message: 'la contraseña debe tener menos de 50 caracteres' })
+  @MaxLength(20, {
+    message: 'La contra (contraseña) debe tener como maximo 20 caracteres',
+  })
   @Matches(/(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
-    message: 'La contraseña debe tener mayúsculas, minúsculas y un número',
+    message:
+      'La contra (contraseña) debe tener mayúsculas , minúsculas y un número',
   })
-  password: string;
+  contra: string;
 
-  @IsString({ message: 'El nombre completo debe ser un texto' })
-  @MinLength(3, {
-    message: 'El nombre completo debe tener como minimo 3 caracteres',
+  @IsString({
+    message: 'El numDocumento (número de documento) debe ser un texto',
   })
-  fullName: string;
+  @MinLength(8, {
+    message:
+      'El numDocumento (número de documento) debe tener como minimo 8 caracteres',
+  })
+  @MaxLength(8, {
+    message:
+      'El numDocumento (número de documento) debe tener como maximo 8 caracteres',
+  })
+  numDocumento: string;
+
+  @IsString({ message: 'El nombre debe ser un texto' })
+  @MinLength(3, { message: 'El nombre debe tener al menos 3 caracteres' })
+  @MaxLength(30, { message: 'El nombre debe tener como maximo 30 caracteres' })
+  nombre: string;
+
+  @IsString({ message: 'El apellido debe ser un texto' })
+  @MinLength(3, { message: 'El apellido debe tener al menos 3 caracteres' })
+  @MaxLength(30, {
+    message: 'El apellido debe tener como maximo 30 caracteres',
+  })
+  apellido: string;
 }
