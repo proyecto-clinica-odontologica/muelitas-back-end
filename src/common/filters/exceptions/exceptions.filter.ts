@@ -5,6 +5,7 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
+import { obtenerTiempo } from 'src/helpers/obtenerTiempo';
 
 @Catch()
 export class ExceptionsFilter<T> implements ExceptionFilter {
@@ -23,9 +24,10 @@ export class ExceptionsFilter<T> implements ExceptionFilter {
 
     response.status(status).json({
       statusCode: status,
-      timestamp: new Date().toISOString(),
+      timestamp: obtenerTiempo(),
       path: request.url,
-      message: message,
+      message: message['message'],
+      error: message['error'],
     });
   }
 }
