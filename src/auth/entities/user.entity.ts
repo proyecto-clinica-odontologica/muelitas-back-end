@@ -5,27 +5,27 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'varchar' })
   nombre: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'varchar' })
   apellido: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'varchar' })
   numDocumento: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'varchar' })
   contra: string;
 
-  @Column({ type: 'text', unique: true })
+  @Column({ type: 'varchar', unique: true })
   correo: string;
 
-  @Column({ type: 'text', nullable: true })
-  celular: string;
+  @Column({ type: 'varchar', nullable: true })
+  celular?: string;
 
-  @Column({ type: 'text', nullable: true })
-  foto: string;
+  @Column({ type: 'varchar', nullable: true })
+  foto?: string;
 
-  @Column({ type: 'text', nullable: true })
-  codigo: string;
+  @Column({ type: 'varchar', nullable: true })
+  codigo?: string;
 }
