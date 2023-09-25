@@ -1,5 +1,6 @@
 import {
   IsEmail,
+  IsOptional,
   IsString,
   Matches,
   MaxLength,
@@ -33,11 +34,15 @@ export class CreateUserDto {
     message:
       'El numDocumento (número de documento) debe tener como maximo 8 caracteres',
   })
+  @Matches(/^[0-9]*$/, {
+    message: 'El numDocumento (número de documento) debe ser un número en formato texto',
+  })
   numDocumento: string;
 
   @IsString({ message: 'El nombre debe ser un texto' })
   @MinLength(3, { message: 'El nombre debe tener al menos 3 caracteres' })
   @MaxLength(30, { message: 'El nombre debe tener como maximo 30 caracteres' })
+  @Matches(/^[a-zA-Z\s]*$/, { message: 'El nombre debe ser solo letras' })
   nombre: string;
 
   @IsString({ message: 'El apellido debe ser un texto' })
@@ -45,5 +50,22 @@ export class CreateUserDto {
   @MaxLength(30, {
     message: 'El apellido debe tener como maximo 30 caracteres',
   })
+  @Matches(/^[a-zA-Z\s]*$/, { message: 'El apellido debe ser solo letras' })
   apellido: string;
+
+  @IsString({ message: 'El celular debe ser un texto' })
+  @MinLength(9, { message: 'El celular debe tener al menos 9 caracteres' })
+  @MaxLength(9, { message: 'El celular debe tener como maximo 9 caracteres' })
+  @Matches(/^[0-9]*$/, { message: 'El celular debe ser un número en formato texto' })
+  @IsOptional()
+  celular?: string;
+
+  @IsString({ message: 'La foto debe ser un texto' })
+  @IsOptional()
+  foto?: string;
+
+  @IsString({ message: 'El codigo debe ser un texto' })
+  @IsOptional()
+  @Matches(/^[a-zA-Z0-9]*$/, { message: 'El codigo debe ser alfanumerico' })
+  codigo?: string;
 }

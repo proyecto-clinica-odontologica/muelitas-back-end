@@ -1,4 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BeforeInsert,
+  BeforeUpdate,
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class User {
@@ -28,4 +34,14 @@ export class User {
 
   @Column({ type: 'varchar', nullable: true })
   codigo?: string;
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  validacionCampos() {
+    this.nombre = this.nombre?.toLowerCase();
+    this.apellido = this.apellido?.toLowerCase();
+    this.correo = this.correo?.toLowerCase();
+    this.foto = this.foto?.toLowerCase();
+    this.codigo = this.codigo?.toLowerCase();
+  }
 }
