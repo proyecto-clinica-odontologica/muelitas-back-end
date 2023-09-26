@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { JoiValidationSchema } from './config/joi.config';
+import { SeedModule } from './seed/seed.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { JoiValidationSchema } from './config/joi.config';
       autoLoadEntities: true,
     }),
     AuthModule,
+    SeedModule,
   ],
   controllers: [],
   providers: [],
