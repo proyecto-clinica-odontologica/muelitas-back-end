@@ -57,7 +57,7 @@ export class AuthService {
         token: this.getJwtToken({ id: user.id }),
       };
     } catch (error) {
-      this.handleExceptions(error);
+      throw error;
     }
   }
 
@@ -103,8 +103,6 @@ export class AuthService {
     if (error.errno === 1062) {
       throw new BadRequestException(error);
     }
-
-    console.log(error);
 
     throw new InternalServerErrorException('revisa los logs del servidor');
   }
