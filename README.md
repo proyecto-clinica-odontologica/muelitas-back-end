@@ -36,6 +36,13 @@ yarn install
 yarn start:dev
 ```
 
+## Rellenar registro de roles a la base de datos
+### necesitas estar autenticado para mandar JWT
+```bash
+solicitud GET
+localhost:3000/api/seed
+```
+
 ## License
 
 Nest is [MIT licensed](LICENSE).
