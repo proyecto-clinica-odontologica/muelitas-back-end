@@ -54,7 +54,7 @@ export class AuthService {
 
       return {
         ...user,
-        token: this.getJwtToken({ id: user.id }),
+        token: this.getJwtToken({ id: `${user.id}` }),
       };
     } catch (error) {
       throw error;
@@ -79,14 +79,14 @@ export class AuthService {
 
     return {
       ...user,
-      token: this.getJwtToken({ id: user.id }),
+      token: this.getJwtToken({ id: `${user.id}` }),
     };
   }
 
   checkStatus(user: User) {
     return {
       ...user,
-      token: this.getJwtToken({ id: user?.id }),
+      token: this.getJwtToken({ id: `${user.id}` }),
     };
   }
 
