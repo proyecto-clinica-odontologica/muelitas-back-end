@@ -3,8 +3,10 @@ import {
   BeforeUpdate,
   Column,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Rol } from './role.entity';
 
 @Entity()
 export class User {
@@ -34,6 +36,9 @@ export class User {
 
   @Column({ type: 'varchar', nullable: true })
   codigo?: string;
+
+  @ManyToOne(() => Rol, (rol) => rol.usuario, { onDelete: 'CASCADE' })
+  rol: Rol;
 
   @BeforeInsert()
   @BeforeUpdate()

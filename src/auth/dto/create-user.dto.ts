@@ -1,5 +1,6 @@
 import {
   IsEmail,
+  IsIn,
   IsOptional,
   IsString,
   Matches,
@@ -35,7 +36,8 @@ export class CreateUserDto {
       'El numDocumento (número de documento) debe tener como maximo 8 caracteres',
   })
   @Matches(/^[0-9]*$/, {
-    message: 'El numDocumento (número de documento) debe ser un número en formato texto',
+    message:
+      'El numDocumento (número de documento) debe ser un número en formato texto',
   })
   numDocumento: string;
 
@@ -56,7 +58,9 @@ export class CreateUserDto {
   @IsString({ message: 'El celular debe ser un texto' })
   @MinLength(9, { message: 'El celular debe tener al menos 9 caracteres' })
   @MaxLength(9, { message: 'El celular debe tener como maximo 9 caracteres' })
-  @Matches(/^[0-9]*$/, { message: 'El celular debe ser un número en formato texto' })
+  @Matches(/^[0-9]*$/, {
+    message: 'El celular debe ser un número en formato texto',
+  })
   @IsOptional()
   celular?: string;
 
@@ -68,4 +72,12 @@ export class CreateUserDto {
   @IsOptional()
   @Matches(/^[a-zA-Z0-9]*$/, { message: 'El codigo debe ser alfanumerico' })
   codigo?: string;
+
+  @IsIn(['god', 'admin', 'docente', 'estudiante'], {
+    message:
+      'solo debes proporcionar uno de los siguientes roles [god, admin, docente o estudiante]',
+  })
+  @IsOptional()
+  @IsString({ message: 'El rol debe ser un texto' })
+  rol?: string;
 }
