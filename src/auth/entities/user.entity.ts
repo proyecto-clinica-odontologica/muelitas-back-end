@@ -37,7 +37,10 @@ export class User {
   @Column({ type: 'varchar', nullable: true })
   codigo?: string;
 
-  @ManyToOne(() => Rol, (rol) => rol.usuario, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Rol, (rol) => rol.usuario, {
+    onDelete: 'CASCADE',
+    eager: true,
+  })
   rol: Rol;
 
   @BeforeInsert()
