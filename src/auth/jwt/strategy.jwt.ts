@@ -20,10 +20,13 @@ export class StrategyJwt extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: JwtoPayload): Promise<User> {
-    const { correo } = payload;
+  async validate(payload: JwtoPayload, req: Request): Promise<User> {
+    const { id } = payload;
 
-    const user = await this.dbUser.findOneBy({ correo });
+    const user = await this.dbUser.findOne({
+      where: { id },
+      relations: ['rol'],
+    });
 
     if (!user) {
       throw new UnauthorizedException('Token no valido');

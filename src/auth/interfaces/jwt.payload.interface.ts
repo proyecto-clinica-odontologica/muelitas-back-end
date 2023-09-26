@@ -1,3 +1,3 @@
 export interface JwtoPayload {
-  correo: string;
+  id: string;
 }
