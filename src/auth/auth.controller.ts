@@ -2,9 +2,9 @@ import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Auth } from './decorators/auth.decorator';
 import { GetUser } from './decorators/get-user.decorator';
+import { ChangePasswordDto } from './dto/change-password.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 
 @Controller('auth')
@@ -24,9 +24,9 @@ export class AuthController {
   @Patch('cambiar-password/:id')
   cambiarPassword(
     @Param('id') id: number,
-    @Body() updateUserDto: UpdateUserDto,
+    @Body() changePasswordDto: ChangePasswordDto,
   ) {
-    console.log(id)
+    return this.authService.cambiarPassword(id, changePasswordDto);
   }
 
   @Get('check-status')

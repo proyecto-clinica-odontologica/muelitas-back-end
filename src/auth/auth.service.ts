@@ -10,6 +10,7 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
+import { ChangePasswordDto } from './dto/change-password.dto';
 import { CreateRolDto } from './dto/create-rol-dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
@@ -81,6 +82,32 @@ export class AuthService {
       ...user,
       token: this.getJwtToken({ id: `${user.id}` }),
     };
+  }
+
+  async cambiarPassword(id: number, changePasswordDto: ChangePasswordDto) {
+    const { repiteContraNueva } = changePasswordDto;
+    try {
+      const usuario = await this.dbUser.findOneBy({ id });
+
+      if (!usuario) {
+        throw new NotFoundException(
+          `El usuario con el id ${id} no existe en la base de datos`,
+        );
+      }
+
+      if (!bcrypt.compareSync(changePasswordDto.contraActual, usuario.contra)) {
+        throw new UnauthorizedException('Las credenciales no son validas');
+      }
+
+      const contraNueva = await this.dbUser.preload({
+        id: id,
+        contra: bcrypt.hashSync(repiteContraNueva, 10),
+      });
+
+      return this.dbUser.save(contraNueva);
+    } catch (error) {
+      throw error;
+    }
   }
 
   checkStatus(user: User) {
