@@ -6,7 +6,6 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
@@ -14,7 +13,6 @@ import { ChangePasswordDto } from './dto/change-password.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { User } from './entities/user.entity';
-import { JwtoPayload } from './interfaces/jwt.payload.interface';
 
 @Injectable()
 export class AuthService {
@@ -23,8 +21,6 @@ export class AuthService {
   constructor(
     @InjectRepository(User)
     private readonly dbUser: Repository<User>,
-
-    private readonly jwtService: JwtService,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
@@ -64,8 +60,7 @@ export class AuthService {
     }
 
     return {
-      ...user,
-      token: this.getJwtToken({ id: `${user.id}` }),
+      user,
     };
   }
 
@@ -98,13 +93,7 @@ export class AuthService {
   checkStatus(user: User) {
     return {
       ...user,
-      token: this.getJwtToken({ id: `${user.id}` }),
     };
-  }
-
-  private getJwtToken(payload: JwtoPayload) {
-    const token = this.jwtService.sign(payload);
-    return token;
   }
 
   private handleExceptions(error: any): never {
