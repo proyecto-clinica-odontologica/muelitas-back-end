@@ -3,10 +3,8 @@ import {
   BeforeUpdate,
   Column,
   Entity,
-  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Rol } from './role.entity';
 
 @Entity()
 export class User {
@@ -28,20 +26,17 @@ export class User {
   @Column({ type: 'varchar', unique: true })
   correo: string;
 
-  @Column({ type: 'varchar', nullable: true })
+  @Column({ type: 'varchar', nullable: true, default: '' })
   celular?: string;
 
-  @Column({ type: 'varchar', nullable: true })
+  @Column({ type: 'varchar', nullable: true, default: '' })
   foto?: string;
 
-  @Column({ type: 'varchar', nullable: true })
+  @Column({ type: 'varchar', nullable: true, default: '' })
   codigo?: string;
 
-  @ManyToOne(() => Rol, (rol) => rol.usuario, {
-    onDelete: 'CASCADE',
-    eager: true,
-  })
-  rol: Rol;
+  @Column({ type: 'varchar', nullable: true, default: 'estudiante' })
+  rol?: string;
 
   @BeforeInsert()
   @BeforeUpdate()
@@ -51,5 +46,6 @@ export class User {
     this.correo = this.correo?.toLowerCase();
     this.foto = this.foto?.toLowerCase();
     this.codigo = this.codigo?.toLowerCase();
+    this.rol = this.rol?.toLowerCase();
   }
 }

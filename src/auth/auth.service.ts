@@ -11,10 +11,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 import { ChangePasswordDto } from './dto/change-password.dto';
-import { CreateRolDto } from './dto/create-rol-dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
-import { Rol } from './entities/role.entity';
 import { User } from './entities/user.entity';
 import { JwtoPayload } from './interfaces/jwt.payload.interface';
 
@@ -26,36 +24,23 @@ export class AuthService {
     @InjectRepository(User)
     private readonly dbUser: Repository<User>,
 
-    @InjectRepository(Rol)
-    private readonly dbRol: Repository<Rol>,
-
     private readonly jwtService: JwtService,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-    const { rol = 'estudiante', contra, ...restoPropiedades } = createUserDto;
+    const { contra, ...restoPropiedades } = createUserDto;
 
     try {
-      const role = await this.dbRol.findOneBy({ nombre: rol });
-
-      if (!role) {
-        throw new NotFoundException(
-          `El rol ${rol} no existe en la base de datos`,
-        );
-      }
-
-      const user = this.dbUser.create({
+      const usuario = this.dbUser.create({
         contra: bcrypt.hashSync(contra, 10),
         ...restoPropiedades,
-        rol: role,
       });
 
-      await this.dbUser.save(user);
-      delete user.contra;
+      await this.dbUser.save(usuario);
+      delete usuario.contra;
 
       return {
-        ...user,
-        token: this.getJwtToken({ id: `${user.id}` }),
+        usuario,
       };
     } catch (error) {
       throw error;
@@ -120,15 +105,6 @@ export class AuthService {
   private getJwtToken(payload: JwtoPayload) {
     const token = this.jwtService.sign(payload);
     return token;
-  }
-
-  async createRoles(createRolDto: CreateRolDto) {
-    try {
-      const roles = this.dbRol.create(createRolDto);
-      return await this.dbRol.save(roles);
-    } catch (error) {
-      throw error;
-    }
   }
 
   private handleExceptions(error: any): never {
