@@ -18,13 +18,13 @@ export class User {
   apellido: string;
 
   @Column({ type: 'varchar' })
-  numDocumento: string;
-
-  @Column({ type: 'varchar' })
   contra: string;
 
   @Column({ type: 'varchar', unique: true })
   correo: string;
+
+  @Column({ type: 'varchar', unique: true })
+  numDocumento: string;
 
   @Column({ type: 'varchar', nullable: true, default: '' })
   celular?: string;

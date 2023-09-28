@@ -90,6 +90,45 @@ export class AuthService {
     }
   }
 
+  async buscarUsuario(id: string) {
+    let usuario: User;
+    try {
+      if (isNaN(+id)) {
+        const query = this.dbUser.createQueryBuilder('user');
+        usuario = await query
+          .where(
+            'user.correo = :correo or user.nombre = :nombre or user.apellido = :apellido',
+            {
+              correo: id,
+              nombre: id,
+              apellido: id,
+            },
+          )
+          .getOne();
+      } else {
+        const query = this.dbUser.createQueryBuilder('user');
+        usuario = await query
+          .where(
+            'user.numDocumento = :numDocumento or user.celular = :celular or user.id = :id',
+            {
+              numDocumento: id,
+              celular: id,
+              id: id,
+            },
+          )
+          .getOne();
+      }
+      if (!usuario) {
+        throw new NotFoundException(
+          `El usuario con el id ${id} no existe en la base de datos`,
+        );
+      }
+      return usuario;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   checkStatus(user: User) {
     return {
       ...user,

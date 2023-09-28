@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -24,5 +24,10 @@ export class AuthController {
     @Body() changePasswordDto: ChangePasswordDto,
   ) {
     return this.authService.cambiarPassword(id, changePasswordDto);
+  }
+
+  @Get('buscar-usuario/:id')
+  buscarUsuario(@Param('id') id: string) {
+    return this.authService.buscarUsuario(id);
   }
 }
