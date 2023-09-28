@@ -1,12 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+import { ChangePasswordDto } from './dto/change-password.dto';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { LoginUserDto } from './dto/login-user.dto';
 
 describe('AuthController', () => {
-  let authController: AuthController;
-  let authService: jest.Mocked<AuthService>;
+  let controller: AuthController;
+  let authService: any;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -16,77 +17,66 @@ describe('AuthController', () => {
           provide: AuthService,
           useValue: {
             create: jest.fn(),
-            findAll: jest.fn(),
-            findOne: jest.fn(),
-            update: jest.fn(),
-            remove: jest.fn(),
+            login: jest.fn(),
+            cambiarPassword: jest.fn(),
           },
         },
       ],
     }).compile();
 
-    authController = module.get<AuthController>(AuthController);
-    authService = module.get(AuthService);
+    controller = module.get<AuthController>(AuthController);
+    authService = module.get<AuthService>(AuthService);
   });
 
-  it('debería estar definido', () => {
-    expect(authController).toBeDefined();
+  it('debería ser definido', () => {
+    expect(controller).toBeDefined();
   });
 
-  describe('create', () => {
-    it('debería llamar a authService.create con los parámetros correctos', async () => {
-      const createAuthDto: CreateUserDto = {
-        email: 'test@example.com',
-        password: 'Password1',
-        fullName: 'Test User',
+  describe('registro', () => {
+    it('debería registrar un usuario', async () => {
+      const createUserDto: CreateUserDto = {
+        correo: 'maycool3@goOglE.com',
+        contra: 'Abc123',
+        numDocumento: '74583012',
+        nombre: 'maycol',
+        apellido: 'rodriguez',
+        rol: 'admin',
       };
 
-      authController.create(createAuthDto);
+      await controller.create(createUserDto);
 
-      expect(authService.create).toHaveBeenCalledWith(createAuthDto);
+      expect(authService.create).toHaveBeenCalledWith(createUserDto);
     });
   });
 
-  describe('findAll', () => {
-    it('debería llamar a authService.findAll', async () => {
-      authController.findAll();
-
-      expect(authService.findAll).toHaveBeenCalled();
-    });
-  });
-
-  describe('findOne', () => {
-    it('debería llamar a authService.findOne con los parámetros correctos', async () => {
-      const id = '12345';
-
-      authController.findOne(id);
-
-      expect(authService.findOne).toHaveBeenCalledWith(+id);
-    });
-  });
-
-  describe('update', () => {
-    it('debería llamar a authService.update con los parámetros correctos', async () => {
-      const id = '12345';
-      const updateAuthDto: UpdateUserDto = {
-        email: 'updated@example.com',
-        password: 'UpdatedPassword1',
-        fullName: 'Updated User',
+  describe('login', () => {
+    it('debería hacer login con un usuario', async () => {
+      const loginUserDto: LoginUserDto = {
+        correo: 'maycool3@google.com',
+        contra: 'Abc457',
       };
 
-      authController.update(id, updateAuthDto);
+      await controller.login(loginUserDto);
 
-      expect(authService.update).toHaveBeenCalledWith(+id, updateAuthDto);
+      expect(authService.login).toHaveBeenCalledWith(loginUserDto);
     });
   });
 
-  describe('remove', () => {
-    it('debería llamar a authService.remove con los parámetros correctos', async () => {
-      const id = '12345';
+  describe('cambiarPassword', () => {
+    it('debería cambiar la contraseña', async () => {
+      const id = 1;
+      const changePasswordDto: ChangePasswordDto = {
+        contraActual: 'Abc123',
+        contraNueva: 'Abc1234',
+        repiteContraNueva: 'Abc1234',
+      };
 
-      authController.remove(id);
+      await controller.cambiarPassword(id, changePasswordDto);
 
-      expect(authService.remove).toHaveBeenCalledWith(+id);
+      expect(authService.cambiarPassword).toHaveBeenCalledWith(
+        id,
+        changePasswordDto,
+      );
     });
   });
 });
