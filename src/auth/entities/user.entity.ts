@@ -12,40 +12,40 @@ export class User {
   id: number;
 
   @Column({ type: 'varchar' })
-  nombre: string;
+  Nombre: string;
 
   @Column({ type: 'varchar' })
-  apellido: string;
+  Apellido: string;
 
   @Column({ type: 'varchar' })
-  contra: string;
+  Contra: string;
 
   @Column({ type: 'varchar', unique: true })
-  correo: string;
+  Correo: string;
 
   @Column({ type: 'varchar', unique: true })
-  numDocumento: string;
+  NumDoc: string;
+
+  @Column({ type: 'varchar', unique: true, nullable: true, default: '' })
+  Celular?: string;
 
   @Column({ type: 'varchar', nullable: true, default: '' })
-  celular?: string;
+  Foto?: string;
 
   @Column({ type: 'varchar', nullable: true, default: '' })
-  foto?: string;
-
-  @Column({ type: 'varchar', nullable: true, default: '' })
-  codigo?: string;
+  Codigo?: string;
 
   @Column({ type: 'varchar', nullable: true, default: 'estudiante' })
-  rol?: string;
+  Rol?: string;
 
   @BeforeInsert()
   @BeforeUpdate()
   validacionCampos() {
-    this.nombre = this.nombre?.toLowerCase();
-    this.apellido = this.apellido?.toLowerCase();
-    this.correo = this.correo?.toLowerCase();
-    this.foto = this.foto?.toLowerCase();
-    this.codigo = this.codigo?.toLowerCase();
-    this.rol = this.rol?.toLowerCase();
+    this.Nombre = this.Nombre?.toLowerCase();
+    this.Apellido = this.Apellido?.toLowerCase();
+    this.Correo = this.Correo?.toLowerCase();
+    this.Foto = this.Foto?.toLowerCase();
+    this.Codigo = this.Codigo?.toLowerCase();
+    this.Rol = this.Rol?.toLowerCase();
   }
 }

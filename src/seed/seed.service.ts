@@ -32,27 +32,27 @@ export class SeedService {
   private async agregarUsuarios() {
     const users: CreateUserDto[] = [
       {
-        nombre: 'Maycol',
-        apellido: 'Rodriguez',
-        numDocumento: '11111111',
-        contra: this.configService.get('USER_PASS'),
-        correo: 'maycol@example.com',
-        celular: '123456789',
-        rol: 'god',
+        Nombre: 'Maycol',
+        Apellido: 'Rodriguez',
+        NumDoc: '11111111',
+        Contra: this.configService.get('USER_PASS'),
+        Correo: 'maycol@example.com',
+        Celular: '123456789',
+        Rol: 'god',
       },
       {
-        nombre: 'Jhamil',
-        apellido: 'Huaman Verastein',
-        numDocumento: '22222222',
-        contra: this.configService.get('USER_PASS'),
-        correo: 'jhamil@example.com',
-        rol: 'god',
+        Nombre: 'Jhamil',
+        Apellido: 'Huaman Verastein',
+        NumDoc: '22222222',
+        Contra: this.configService.get('USER_PASS'),
+        Correo: 'jhamil@example.com',
+        Rol: 'god',
       },
     ];
 
     for (let userData of users) {
       try {
-        await this.userService.create(userData);
+        await this.userService.crearCuenta(userData);
       } catch (error) {
         throw error;
       }

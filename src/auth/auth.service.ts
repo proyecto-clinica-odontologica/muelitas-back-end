@@ -23,56 +23,49 @@ export class AuthService {
     private readonly dbUser: Repository<User>,
   ) {}
 
-  async create(createUserDto: CreateUserDto) {
-    const { contra, ...restoPropiedades } = createUserDto;
+  async crearCuenta(createUserDto: CreateUserDto) {
+    const { Contra, ...restoPropiedades } = createUserDto;
 
     try {
       const usuario = this.dbUser.create({
-        contra: bcrypt.hashSync(contra, 10),
+        Contra: bcrypt.hashSync(Contra, 10),
         ...restoPropiedades,
       });
 
       await this.dbUser.save(usuario);
-      delete usuario.contra;
+      delete usuario.Contra;
 
-      return {
-        usuario,
-      };
+      return usuario;
     } catch (error) {
       throw error;
     }
   }
 
   async login(loginUserDto: LoginUserDto) {
-    const { contra, correo, celular } = loginUserDto;
+    const { Contra, Correo, Celular } = loginUserDto;
 
     let usuario: User;
 
     const query = this.dbUser.createQueryBuilder('login');
 
     usuario = await query
-      .where('login.correo = :correo or login.celular = :celular', {
-        correo,
-        celular,
+      .where('login.Correo = :Correo or login.Celular = :Celular', {
+        Correo,
+        Celular,
       })
-      .select(['login.id', 'login.correo', 'login.contra', 'login.nombre'])
+      .select(['login.id', 'login.Correo', 'login.Contra', 'login.Nombre'])
       .getOne();
 
-    if (!usuario) {
+    if (!usuario || !bcrypt.compareSync(Contra, usuario.Contra)) {
       throw new UnauthorizedException('Las credenciales no son validas');
     }
 
-    if (!bcrypt.compareSync(contra, usuario.contra)) {
-      throw new UnauthorizedException('Las credenciales no son validas');
-    }
-
-    return {
-      ...usuario,
-    };
+    return usuario;
   }
 
   async cambiarPassword(id: number, changePasswordDto: ChangePasswordDto) {
-    const { repiteContraNueva } = changePasswordDto;
+    const { RepiteContraNueva, Contra } = changePasswordDto;
+
     try {
       const usuario = await this.dbUser.findOneBy({ id });
 
@@ -82,13 +75,13 @@ export class AuthService {
         );
       }
 
-      if (!bcrypt.compareSync(changePasswordDto.contraActual, usuario.contra)) {
+      if (!bcrypt.compareSync(Contra, usuario.Contra)) {
         throw new UnauthorizedException('Las credenciales no son validas');
       }
 
       const contraNueva = await this.dbUser.preload({
         id: id,
-        contra: bcrypt.hashSync(repiteContraNueva, 10),
+        Contra: bcrypt.hashSync(RepiteContraNueva, 10),
       });
 
       return this.dbUser.save(contraNueva);
@@ -97,49 +90,44 @@ export class AuthService {
     }
   }
 
-  async buscarUsuario(id: string) {
+  async buscarUsuario(terminoBusqueda: string) {
     let usuario: User;
     try {
-      if (isNaN(+id)) {
-        const query = this.dbUser.createQueryBuilder('user');
+      const query = this.dbUser.createQueryBuilder('usuario');
+      if (isNaN(+terminoBusqueda)) {
         usuario = await query
           .where(
-            'user.correo = :correo or user.nombre = :nombre or user.apellido = :apellido',
+            'usuario.Correo = :Correo or usuario.Nombre = :Nombre or usuario.Apellido = :Apellido',
             {
-              correo: id,
-              nombre: id,
-              apellido: id,
+              Correo: terminoBusqueda,
+              Nombre: terminoBusqueda,
+              Apellido: terminoBusqueda,
             },
           )
           .getOne();
       } else {
-        const query = this.dbUser.createQueryBuilder('user');
         usuario = await query
           .where(
-            'user.numDocumento = :numDocumento or user.celular = :celular or user.id = :id',
+            'usuario.NumDoc = :NumDoc or usuario.Celular = :Celular or usuario.id = :id',
             {
-              numDocumento: id,
-              celular: id,
-              id: id,
+              NumDoc: terminoBusqueda,
+              Celular: terminoBusqueda,
+              id: terminoBusqueda,
             },
           )
           .getOne();
       }
+
       if (!usuario) {
         throw new NotFoundException(
-          `El usuario con el id ${id} no existe en la base de datos`,
+          `El usuario con el id ${terminoBusqueda} no existe en la base de datos`,
         );
       }
+
       return usuario;
     } catch (error) {
       throw error;
     }
-  }
-
-  checkStatus(user: User) {
-    return {
-      ...user,
-    };
   }
 
   private handleExceptions(error: any): never {

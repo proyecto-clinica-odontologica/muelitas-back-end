@@ -35,15 +35,15 @@ describe('AuthController', () => {
   describe('registro', () => {
     it('debería registrar un usuario', async () => {
       const createUserDto: CreateUserDto = {
-        correo: 'maycool3@goOglE.com',
-        contra: 'Abc123',
-        numDocumento: '74583012',
-        nombre: 'maycol',
-        apellido: 'rodriguez',
-        rol: 'admin',
+        Correo: 'maycool3@goOglE.com',
+        Contra: 'Abc123',
+        NumDoc: '74583012',
+        Nombre: 'maycol',
+        Apellido: 'rodriguez',
+        Rol: 'admin',
       };
 
-      await controller.create(createUserDto);
+      await controller.crearCuenta(createUserDto);
 
       expect(authService.create).toHaveBeenCalledWith(createUserDto);
     });
@@ -52,8 +52,8 @@ describe('AuthController', () => {
   describe('login', () => {
     it('debería hacer login con un usuario', async () => {
       const loginUserDto: LoginUserDto = {
-        correo: 'maycool3@google.com',
-        contra: 'Abc457',
+        Correo: 'maycool3@google.com',
+        Contra: 'Abc457',
       };
 
       await controller.login(loginUserDto);
@@ -66,9 +66,9 @@ describe('AuthController', () => {
     it('debería cambiar la contraseña', async () => {
       const id = 1;
       const changePasswordDto: ChangePasswordDto = {
-        contraActual: 'Abc123',
-        contraNueva: 'Abc1234',
-        repiteContraNueva: 'Abc1234',
+        Contra: 'Abc123',
+        ContraNueva: 'Abc1234',
+        RepiteContraNueva: 'Abc1234',
       };
 
       await controller.cambiarPassword(id, changePasswordDto);

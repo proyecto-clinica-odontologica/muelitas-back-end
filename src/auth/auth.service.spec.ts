@@ -1,10 +1,9 @@
-import { Repository } from "typeorm";
-import { AuthService } from "./auth.service";
-import { User } from "./entities/user.entity";
-import { Test, TestingModule } from "@nestjs/testing";
-import { getRepositoryToken } from "@nestjs/typeorm";
-import { CreateUserDto } from "./dto/create-user.dto";
-
+import { Test, TestingModule } from '@nestjs/testing';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { AuthService } from './auth.service';
+import { CreateUserDto } from './dto/create-user.dto';
+import { User } from './entities/user.entity';
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -36,14 +35,14 @@ describe('AuthService', () => {
   describe('create', () => {
     it('crea un usuario', async () => {
       const createUserDto: CreateUserDto = {
-        correo: 'ejemplo@ejemplo.com',
-        contra: 'Contra1234!',
-        numDocumento: '12345678',
-        nombre: 'juan',
-        apellido: 'perez',
+        Correo: 'ejemplo@ejemplo.com',
+        Contra: 'Contra1234!',
+        NumDoc: '12345678',
+        Nombre: 'juan',
+        Apellido: 'perez',
       };
 
-      await authService.create(createUserDto);
+      await authService.crearCuenta(createUserDto);
 
       expect(userRepositoryMock.create).toBeCalled(); // Simplemente verifica que fue llamada
       expect(userRepositoryMock.save).toBeCalled();

@@ -3,81 +3,58 @@ import {
   IsIn,
   IsOptional,
   IsString,
+  Length,
   Matches,
-  MaxLength,
-  MinLength,
 } from 'class-validator';
 
 export class CreateUserDto {
-  @IsEmail({}, { message: 'El correo debe ser un correo electrónico valido' })
-  correo: string;
+  @IsEmail({}, { message: 'Debe ser un correo electrónico valido' })
+  Correo: string;
 
-  @MinLength(6, {
-    message: 'La contra (contraseña) debe tener al menos 6 caracteres',
-  })
-  @MaxLength(20, {
-    message: 'La contra (contraseña) debe tener como maximo 20 caracteres',
+  @Length(6, 20, {
+    message: 'La contraseña debe tener entre 6 y 20 caracteres',
   })
   @Matches(/(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
-    message:
-      'La contra (contraseña) debe tener mayúsculas , minúsculas y un número',
+    message: 'La contraseña debe tener mayúsculas , minúsculas y un número',
   })
-  contra: string;
+  Contra: string;
 
-  @IsString({
-    message: 'El numDocumento (número de documento) debe ser un texto',
-  })
-  @MinLength(8, {
-    message:
-      'El numDocumento (número de documento) debe tener como minimo 8 caracteres',
-  })
-  @MaxLength(8, {
-    message:
-      'El numDocumento (número de documento) debe tener como maximo 8 caracteres',
+  @Length(8, 8, {
+    message: 'El número de documento debe tener 8 caracteres',
   })
   @Matches(/^[0-9]*$/, {
-    message:
-      'El numDocumento (número de documento) debe ser un número en formato texto',
+    message: 'El número de documento debe ser solo números',
   })
-  numDocumento: string;
+  NumDoc: string;
 
-  @IsString({ message: 'El nombre debe ser un texto' })
-  @MinLength(3, { message: 'El nombre debe tener al menos 3 caracteres' })
-  @MaxLength(30, { message: 'El nombre debe tener como maximo 30 caracteres' })
-  @Matches(/^[a-zA-Z\s]*$/, { message: 'El nombre debe ser solo letras' })
-  nombre: string;
+  @Length(3, 30, { message: 'El nombre debe tener entre 3 y 30 caracteres' })
+  @Matches(/^[a-zA-Z\s]*$/, { message: 'El nombre debe contener solo letras' })
+  Nombre: string;
 
-  @IsString({ message: 'El apellido debe ser un texto' })
-  @MinLength(3, { message: 'El apellido debe tener al menos 3 caracteres' })
-  @MaxLength(30, {
-    message: 'El apellido debe tener como maximo 30 caracteres',
-  })
+  @Length(3, 30, { message: 'El apellido debe tener entre 3 y 30 caracteres' })
   @Matches(/^[a-zA-Z\s]*$/, { message: 'El apellido debe ser solo letras' })
-  apellido: string;
+  Apellido: string;
 
-  @IsString({ message: 'El celular debe ser un texto' })
-  @MinLength(9, { message: 'El celular debe tener al menos 9 caracteres' })
-  @MaxLength(9, { message: 'El celular debe tener como maximo 9 caracteres' })
+  @Length(9, 9, { message: 'El celular debe tener 9 digitos' })
   @Matches(/^[0-9]*$/, {
-    message: 'El celular debe ser un número en formato texto',
+    message: 'El celular debe ser solo números',
   })
   @IsOptional()
-  celular?: string;
+  Celular?: string;
 
   @IsString({ message: 'La foto debe ser un texto' })
   @IsOptional()
-  foto?: string;
+  Foto?: string;
 
-  @IsString({ message: 'El codigo debe ser un texto' })
   @IsOptional()
-  @Matches(/^[a-zA-Z0-9]*$/, { message: 'El codigo debe ser alfanumerico' })
-  codigo?: string;
+  @Matches(/^[a-zA-Z0-9]*$/, {
+    message: 'El codigo debe ser alfanumerico sin caracteres especiales',
+  })
+  Codigo?: string;
 
   @IsIn(['god', 'admin', 'docente', 'estudiante'], {
-    message:
-      'solo debes proporcionar uno de los siguientes roles [god, admin, docente o estudiante]',
+    message: 'Los roles disponibles son [god, admin, docente o estudiante]',
   })
   @IsOptional()
-  @IsString({ message: 'El rol debe ser un texto' })
-  rol?: string;
+  Rol?: string;
 }
