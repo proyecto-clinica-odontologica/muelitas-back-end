@@ -44,23 +44,30 @@ export class AuthService {
   }
 
   async login(loginUserDto: LoginUserDto) {
-    const { contra, correo } = loginUserDto;
+    const { contra, correo, celular } = loginUserDto;
 
-    const user = await this.dbUser.findOne({
-      where: { correo },
-      select: { correo: true, contra: true, id: true },
-    });
+    let usuario: User;
 
-    if (!user) {
+    const query = this.dbUser.createQueryBuilder('login');
+
+    usuario = await query
+      .where('login.correo = :correo or login.celular = :celular', {
+        correo,
+        celular,
+      })
+      .select(['login.id', 'login.correo', 'login.contra', 'login.nombre'])
+      .getOne();
+
+    if (!usuario) {
       throw new UnauthorizedException('Las credenciales no son validas');
     }
 
-    if (!bcrypt.compareSync(contra, user.contra)) {
+    if (!bcrypt.compareSync(contra, usuario.contra)) {
       throw new UnauthorizedException('Las credenciales no son validas');
     }
 
     return {
-      user,
+      ...usuario,
     };
   }
 
