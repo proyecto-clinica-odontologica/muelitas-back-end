@@ -3,6 +3,8 @@ import { AuthService } from './auth.service';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
+import { RequestResetPasswordDto } from './dto/request-reset-password.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -29,5 +31,19 @@ export class AuthController {
   @Get('buscar-usuario/:id')
   buscarUsuario(@Param('id') id: string) {
     return this.authService.buscarUsuario(id);
+  }
+
+  @Patch('solicitar-restablecer-password')
+  solicitarRestablecerPassword(
+    @Body() requestResetPasswordDto: RequestResetPasswordDto,
+  ) {
+    return this.authService.solicitarRestablecerPassword(
+      requestResetPasswordDto,
+    );
+  }
+
+  @Patch('restablecer-password')
+  restablecerPassword(@Body() resetPasswordDto: ResetPasswordDto) {
+    return this.authService.restablecerPassword(resetPasswordDto);
   }
 }

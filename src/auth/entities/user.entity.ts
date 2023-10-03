@@ -38,6 +38,9 @@ export class User {
   @Column({ type: 'varchar', nullable: true, default: 'estudiante' })
   Rol?: string;
 
+  @Column({ type: 'uuid', nullable: true, default: null })
+  RestablecerContra?: string;
+
   @BeforeInsert()
   @BeforeUpdate()
   validacionCampos() {

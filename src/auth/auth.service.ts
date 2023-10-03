@@ -12,6 +12,8 @@ import { Repository } from 'typeorm';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
+import { RequestResetPasswordDto } from './dto/request-reset-password.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 import { User } from './entities/user.entity';
 
 @Injectable()
@@ -138,5 +140,51 @@ export class AuthService {
     }
 
     throw new InternalServerErrorException('revisa los logs del servidor');
+  }
+
+  async solicitarRestablecerPassword(
+    requestResetPasswordDto: RequestResetPasswordDto,
+  ) {
+    const { Correo } = requestResetPasswordDto;
+
+    try {
+      const usuario = await this.dbUser.findOneBy({ Correo });
+
+      if (!usuario) {
+        throw new NotFoundException(
+          `El usuario con el correo ${Correo} no existe en la base de datos`,
+        );
+      }
+
+      const codigo = Math.floor(Math.random() * 100000000).toString();
+
+      usuario.RestablecerContra = codigo;
+
+      await this.dbUser.save(usuario);
+      // TODO: enviar correo electronico con el codigo de restablecimiento de contraseña
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async restablecerPassword(resetPasswordDto: ResetPasswordDto) {
+    const { RestablecerPasswordToken, Contra } = resetPasswordDto;
+
+    try {
+      const usuario = await this.dbUser.findOneBy({
+        RestablecerContra: RestablecerPasswordToken,
+      });
+
+      if (!usuario) {
+        throw new NotFoundException();
+      }
+
+      usuario.Contra = bcrypt.hashSync(Contra, 10);
+      usuario.RestablecerContra = null;
+
+      await this.dbUser.save(usuario);
+    } catch (error) {
+      throw error;
+    }
   }
 }
