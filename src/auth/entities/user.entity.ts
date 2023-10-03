@@ -2,6 +2,7 @@ import {
   BeforeInsert,
   BeforeUpdate,
   Column,
+  DeleteDateColumn,
   Entity,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -38,8 +39,11 @@ export class User {
   @Column({ type: 'varchar', nullable: true, default: 'estudiante' })
   Rol?: string;
 
-  @Column({ type: 'uuid', nullable: true, default: null })
+  @Column({ type: 'varchar', nullable: true, default: null })
   RestablecerContra?: string;
+
+  @DeleteDateColumn({ type: 'timestamp', nullable: true, default: null })
+  deletedAt?: Date;
 
   @BeforeInsert()
   @BeforeUpdate()

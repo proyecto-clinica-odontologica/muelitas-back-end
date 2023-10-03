@@ -28,11 +28,6 @@ export class AuthController {
     return this.authService.cambiarPassword(id, changePasswordDto);
   }
 
-  @Get('buscar-usuario/:id')
-  buscarUsuario(@Param('id') id: string) {
-    return this.authService.buscarUsuario(id);
-  }
-
   @Patch('solicitar-restablecer-password')
   solicitarRestablecerPassword(
     @Body() requestResetPasswordDto: RequestResetPasswordDto,

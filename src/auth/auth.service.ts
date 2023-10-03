@@ -92,45 +92,7 @@ export class AuthService {
     }
   }
 
-  async buscarUsuario(terminoBusqueda: string) {
-    let usuario: User;
-    try {
-      const query = this.dbUser.createQueryBuilder('usuario');
-      if (isNaN(+terminoBusqueda)) {
-        usuario = await query
-          .where(
-            'usuario.Correo = :Correo or usuario.Nombre = :Nombre or usuario.Apellido = :Apellido',
-            {
-              Correo: terminoBusqueda,
-              Nombre: terminoBusqueda,
-              Apellido: terminoBusqueda,
-            },
-          )
-          .getOne();
-      } else {
-        usuario = await query
-          .where(
-            'usuario.NumDoc = :NumDoc or usuario.Celular = :Celular or usuario.id = :id',
-            {
-              NumDoc: terminoBusqueda,
-              Celular: terminoBusqueda,
-              id: terminoBusqueda,
-            },
-          )
-          .getOne();
-      }
-
-      if (!usuario) {
-        throw new NotFoundException(
-          `El usuario con el id ${terminoBusqueda} no existe en la base de datos`,
-        );
-      }
-
-      return usuario;
-    } catch (error) {
-      throw error;
-    }
-  }
+  
 
   private handleExceptions(error: any): never {
     this.logger.error(error);
