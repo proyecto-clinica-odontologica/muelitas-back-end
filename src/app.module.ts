@@ -5,6 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { JoiValidationSchema } from './config/joi.config';
 import { SeedModule } from './seed/seed.module';
 import { UsersModule } from './users/users.module';
+import { EstudiantesModule } from './estudiantes/estudiantes.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { UsersModule } from './users/users.module';
     AuthModule,
     SeedModule,
     UsersModule,
+    EstudiantesModule,
   ],
   controllers: [],
   providers: [],
