@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 
 @Injectable()
@@ -15,59 +14,72 @@ export class UsersService {
     return this.dbUser.find();
   }
 
-  async buscarUnUsuario(terminoBusqueda: string) {
-    let usuario: User;
+  async buscarUsuarioPorCorreo(correo: string) {
     try {
-      const query = this.dbUser.createQueryBuilder('usuario');
-      if (isNaN(+terminoBusqueda)) {
-        usuario = await query
-          .where(
-            'usuario.Correo = :Correo or usuario.Nombre = :Nombre or usuario.Apellido = :Apellido',
-            {
-              Correo: terminoBusqueda,
-              Nombre: terminoBusqueda,
-              Apellido: terminoBusqueda,
-            },
-          )
-          .getOne();
-      } else {
-        usuario = await query
-          .where(
-            'usuario.NumDoc = :NumDoc or usuario.Celular = :Celular or usuario.id = :id',
-            {
-              NumDoc: terminoBusqueda,
-              Celular: terminoBusqueda,
-              id: terminoBusqueda,
-            },
-          )
-          .getOne();
-      }
-
+      const usuario = await this.dbUser.findOneBy({ Correo: correo });
       if (!usuario) {
         throw new NotFoundException(
-          `El usuario con el id ${terminoBusqueda} no existe en la base de datos`,
+          `El usuario con el correo ${correo} no existe en la base de datos`,
         );
       }
-
       return usuario;
     } catch (error) {
       throw error;
     }
   }
 
-  actualizarUsuario(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async buscarUsuarioPorCelular(celular: string) {
+    try {
+      const usuario = await this.dbUser.findOneBy({ Celular: celular });
+      if (!usuario) {
+        throw new NotFoundException(
+          `El usuario con el celular ${celular} no existe en la base de datos`,
+        );
+      }
+      return usuario;
+    } catch (error) {
+      throw error;
+    }
   }
 
-  async eliminarUsuario(id: number) {
+  async buscarUsuarioPorRol(rol: string) {
     try {
-      const usuario = await this.dbUser.findOneBy(id);
+      const usuario = await this.dbUser.find({ where: { Rol: rol } });
+      if (!usuario.length) {
+        throw new NotFoundException(
+          `El usuario con el rol ${rol} no existe en la base de datos`,
+        );
+      }
+      return usuario;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async buscarUsuarioPorEstado(condicion: string) {
+    const estado = condicion === 'activo' ? true : false;
+    try {
+      const usuario = await this.dbUser.find({ where: { activo: estado } });
+      if (!usuario.length) {
+        throw new NotFoundException(
+          `El usuario ${condicion} no existe en la base de datos`,
+        );
+      }
+      return usuario;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async buscarUsuarioPorId(id: number) {
+    try {
+      const usuario = await this.dbUser.findOneBy({ id });
       if (!usuario) {
         throw new NotFoundException(
           `El usuario con el id ${id} no existe en la base de datos`,
         );
       }
-      await this.dbUser.softDelete(id);
+      return usuario;
     } catch (error) {
       throw error;
     }

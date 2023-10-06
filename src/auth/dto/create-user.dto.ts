@@ -39,8 +39,7 @@ export class CreateUserDto {
   @Matches(/^[0-9]*$/, {
     message: 'El celular debe ser solo números',
   })
-  @IsOptional()
-  Celular?: string;
+  Celular: string;
 
   @IsString({ message: 'La foto debe ser un texto' })
   @IsOptional()

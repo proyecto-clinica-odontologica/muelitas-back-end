@@ -1,16 +1,7 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  ParseIntPipe,
-  Patch,
-} from '@nestjs/common';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
 import { UsersService } from './users.service';
 
-@Controller('users')
+@Controller('')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
@@ -19,21 +10,28 @@ export class UsersController {
     return this.usersService.obtenerUsuarios();
   }
 
-  @Get(':id')
-  buscarUnUsuario(@Param('id') id: string) {
-    return this.usersService.buscarUnUsuario(id);
+  @Get('search/correo/:correo')
+  buscarUsuarioPorCorreo(@Param('correo') correo: string) {
+    return this.usersService.buscarUsuarioPorCorreo(correo);
   }
 
-  @Patch(':id')
-  update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() updateUserDto: UpdateUserDto,
-  ) {
-    return this.usersService.actualizarUsuario(id, updateUserDto);
+  @Get('search/celu/:celular')
+  buscarUsuarioPorCelular(@Param('celular') celular: string) {
+    return this.usersService.buscarUsuarioPorCelular(celular);
   }
 
-  @Delete(':id')
-  eliminarUsuario(@Param('id', ParseIntPipe) id: number) {
-    return this.usersService.eliminarUsuario(id);
+  @Get('search/rol/:rol')
+  buscarUsuarioPorRol(@Param('rol') rol: string) {
+    return this.usersService.buscarUsuarioPorRol(rol);
+  }
+
+  @Get('search/condicion/:estado')
+  buscarUsuarioPorEstado(@Param('estado') condicion: string) {
+    return this.usersService.buscarUsuarioPorEstado(condicion);
+  }
+
+  @Get('search/:id')
+  buscarUsuarioPorId(@Param('id', ParseIntPipe) id: number) {
+    return this.usersService.buscarUsuarioPorId(id);
   }
 }

@@ -1,23 +1,54 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { CreateUserDto } from './dto/create-user.dto';
-import { LoginUserDto } from './dto/login-user.dto';
 import { RequestResetPasswordDto } from './dto/request-reset-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
-@Controller('auth')
+@Controller('')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('registro')
+  @Post('create')
   crearCuenta(@Body() createUserDto: CreateUserDto) {
     return this.authService.crearCuenta(createUserDto);
   }
 
-  @Post('login')
-  login(@Body() loginUserDto: LoginUserDto) {
-    return this.authService.login(loginUserDto);
+  @Put('update/:id')
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    return this.authService.actualizarUsuario(id, updateUserDto);
+  }
+
+  @Delete(':id')
+  eliminarUsuario(@Param('id', ParseIntPipe) id: number) {
+    return this.authService.eliminarUsuario(id);
+  }
+
+  @Get('loginemail/:correo/:contra')
+  loginEmail(@Param('correo') correo: string, @Param('contra') contra: string) {
+    return this.authService.loginEmail(correo, contra);
+  }
+
+  @Get('logincelu/:celular/:contra')
+  loginCelular(
+    @Param('celular') celular: string,
+    @Param('contra') contra: string,
+  ) {
+    return this.authService.loginCelular(celular, contra);
   }
 
   @Patch('cambiar-password/:id')
@@ -40,5 +71,10 @@ export class AuthController {
   @Patch('restablecer-password')
   restablecerPassword(@Body() resetPasswordDto: ResetPasswordDto) {
     return this.authService.restablecerPassword(resetPasswordDto);
+  }
+
+  @Put('restaurar-usuario/:id')
+  activarCuenta(@Param('id') id: number) {
+    return this.authService.activarCuenta(id);
   }
 }

@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-@Entity()
+@Entity('usuarios')
 export class User {
   @PrimaryGeneratedColumn('increment')
   id: number;
@@ -27,8 +27,8 @@ export class User {
   @Column({ type: 'varchar', unique: true })
   NumDoc: string;
 
-  @Column({ type: 'varchar', unique: true, nullable: true, default: '' })
-  Celular?: string;
+  @Column({ type: 'varchar', unique: true, nullable: true })
+  Celular: string;
 
   @Column({ type: 'varchar', nullable: true, default: '' })
   Foto?: string;
@@ -41,6 +41,9 @@ export class User {
 
   @Column({ type: 'varchar', nullable: true, default: null })
   RestablecerContra?: string;
+
+  @Column({ type: 'boolean', nullable: true, default: true })
+  activo?: boolean;
 
   @DeleteDateColumn({ type: 'timestamp', nullable: true, default: null })
   deletedAt?: Date;
