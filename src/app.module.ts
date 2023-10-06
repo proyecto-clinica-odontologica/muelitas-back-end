@@ -8,6 +8,7 @@ import { DocentesModule } from './docentes/docentes.module';
 import { EstudiantesModule } from './estudiantes/estudiantes.module';
 import { SeedModule } from './seed/seed.module';
 import { UsersModule } from './users/users.module';
+import { SedesModule } from './sedes/sedes.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { UsersModule } from './users/users.module';
     EstudiantesModule,
     DocentesModule,
     AdministradorModule,
+    SedesModule,
   ],
   controllers: [],
   providers: [],
