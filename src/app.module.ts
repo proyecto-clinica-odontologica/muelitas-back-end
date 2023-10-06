@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AdministradorModule } from './administrador/administrador.module';
 import { AuthModule } from './auth/auth.module';
 import { JoiValidationSchema } from './config/joi.config';
+import { DocentesModule } from './docentes/docentes.module';
+import { EstudiantesModule } from './estudiantes/estudiantes.module';
 import { SeedModule } from './seed/seed.module';
 import { UsersModule } from './users/users.module';
-import { EstudiantesModule } from './estudiantes/estudiantes.module';
-import { DocentesModule } from './docentes/docentes.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { DocentesModule } from './docentes/docentes.module';
     UsersModule,
     EstudiantesModule,
     DocentesModule,
+    AdministradorModule,
   ],
   controllers: [],
   providers: [],
