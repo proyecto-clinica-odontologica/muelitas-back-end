@@ -10,6 +10,7 @@ import { SeedModule } from './seed/seed.module';
 import { UsersModule } from './users/users.module';
 import { SedesModule } from './sedes/sedes.module';
 import { PeriodosModule } from './periodos/periodos.module';
+import { EmpresasModule } from './empresas/empresas.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { PeriodosModule } from './periodos/periodos.module';
     AdministradorModule,
     SedesModule,
     PeriodosModule,
+    EmpresasModule,
   ],
   controllers: [],
   providers: [],
