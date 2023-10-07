@@ -12,6 +12,7 @@ import { SedesModule } from './sedes/sedes.module';
 import { PeriodosModule } from './periodos/periodos.module';
 import { EmpresasModule } from './empresas/empresas.module';
 import { ClasesModule } from './clases/clases.module';
+import { CursosModule } from './cursos/cursos.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { ClasesModule } from './clases/clases.module';
     PeriodosModule,
     EmpresasModule,
     ClasesModule,
+    CursosModule,
   ],
   controllers: [],
   providers: [],
