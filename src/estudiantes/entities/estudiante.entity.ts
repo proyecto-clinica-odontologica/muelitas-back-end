@@ -1,10 +1,12 @@
+import { User } from 'src/auth/entities/user.entity';
 import {
   BeforeInsert,
   BeforeUpdate,
   Column,
   DeleteDateColumn,
   Entity,
-  PrimaryGeneratedColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn
 } from 'typeorm';
 
 @Entity()
@@ -12,14 +14,11 @@ export class Estudiante {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column({ type: 'varchar', length: 60 })
+  @Column({ type: 'varchar', length: 250 })
   NombreCompleto: string;
 
   @Column({ type: 'varchar' })
-  Rubrica: string;
-
-  @Column({ type: 'varchar', length: 8, unique: true })
-  dni: string;
+  Firma: string;
 
   @DeleteDateColumn({ type: 'timestamp', nullable: true, default: null })
   deletedAt?: Date;
@@ -27,10 +26,16 @@ export class Estudiante {
   @Column({ type: 'boolean', default: true, nullable: true })
   activo?: boolean;
 
+  @ManyToOne(() => User, (user) => user.estudiante, {
+    eager: true,
+    onDelete: 'CASCADE',
+  })
+  usuario: User;
+
   @BeforeInsert()
   @BeforeUpdate()
   limpiarCampos() {
-    this.NombreCompleto = this.NombreCompleto?.toLowerCase();
-    this.Rubrica = this.Rubrica?.toLowerCase();
+    this.NombreCompleto = this.NombreCompleto?.trim().toLowerCase();
+    this.Firma = this.Firma?.trim().toLowerCase();
   }
 }

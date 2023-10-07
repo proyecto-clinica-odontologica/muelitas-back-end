@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+import { CreateUserDto } from 'src/auth/dto/create-user.dto';
 import { CreateEstudianteDto } from './dto/create-estudiante.dto';
 import { UpdateEstudianteDto } from './dto/update-estudiante.dto';
 import { EstudiantesService } from './estudiantes.service';
@@ -16,14 +17,24 @@ import { EstudiantesService } from './estudiantes.service';
 export class EstudiantesController {
   constructor(private readonly estudiantesService: EstudiantesService) {}
 
-  @Post()
-  registrarEstudiante(@Body() createEstudianteDto: CreateEstudianteDto) {
-    return this.estudiantesService.registrarEstudiante(createEstudianteDto);
+  @Post('create')
+  registrarEstudiante(
+    @Body() data: { estudiante: CreateEstudianteDto; usuario: CreateUserDto },
+  ) {
+    return this.estudiantesService.registrarEstudiante(
+      data.estudiante,
+      data.usuario,
+    );
   }
 
   @Get()
   obtenerEstudiantes() {
     return this.estudiantesService.obtenerEstudiantes();
+  }
+
+  @Get('eliminados')
+  obtenerEstudiantesEliminados() {
+    return this.estudiantesService.obtenerEstudiantesEliminados();
   }
 
   @Get(':id')

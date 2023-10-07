@@ -31,6 +31,14 @@ export class AdministradorService {
     }
   }
 
+  async obtenerAdministradoresEliminados() {
+    try {
+      return this.dbAdministrador.find({ withDeleted: true });
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async buscarUnAdministrador(id: number) {
     try {
     } catch (error) {
@@ -66,7 +74,7 @@ export class AdministradorService {
       await this.dbAdministrador.save(administrador);
       await this.dbAdministrador.softRemove(administrador);
       return {
-        message: `Administrador con el id ${id} fue eliminado`,
+        message: `Administrador con el id ${id} fue dado de baja`,
       };
     } catch (error) {
       throw error;

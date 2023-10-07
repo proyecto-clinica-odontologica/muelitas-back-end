@@ -16,7 +16,7 @@ import { SedesService } from './sedes.service';
 export class SedesController {
   constructor(private readonly sedesService: SedesService) {}
 
-  @Post()
+  @Post('create')
   registrarSede(@Body() createSedeDto: CreateSedeDto) {
     return this.sedesService.registrarSede(createSedeDto);
   }

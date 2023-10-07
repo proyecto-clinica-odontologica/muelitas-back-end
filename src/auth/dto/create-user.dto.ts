@@ -1,6 +1,7 @@
 import {
   IsEmail,
   IsIn,
+  IsNotEmpty,
   IsOptional,
   IsString,
   Length,
@@ -19,8 +20,8 @@ export class CreateUserDto {
   })
   Contra: string;
 
-  @Length(8, 8, {
-    message: 'El número de documento debe tener 8 caracteres',
+  @Length(6, 20, {
+    message: 'El número de documento debe tener entre 6 y 20 caracteres',
   })
   @Matches(/^[0-9]*$/, {
     message: 'El número de documento debe ser solo números',
@@ -56,4 +57,17 @@ export class CreateUserDto {
   })
   @IsOptional()
   Rol?: string;
+
+  @IsIn(['dni', 'pasaporte', 'carnet de extranjeria'], {
+    message:
+      'Los tipos de documento disponibles son [dni, pasaporte o carnet de extranjeria]',
+  })
+  @IsNotEmpty({ message: 'El tipo de documento es obligatorio' })
+  TipoDocumento: string;
+
+  @IsIn(['masculino', 'femenino'], {
+    message: 'Los generos disponibles son [masculino o femenino]',
+  })
+  @IsNotEmpty({ message: 'El genero es obligatorio' })
+  Genero: string;
 }

@@ -16,7 +16,7 @@ import { RequestResetPasswordDto } from './dto/request-reset-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
-@Controller('')
+@Controller('usuario')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 

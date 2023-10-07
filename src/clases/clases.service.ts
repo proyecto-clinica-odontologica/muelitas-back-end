@@ -36,6 +36,14 @@ export class ClasesService {
     }
   }
 
+  async BuscarClasePorPeriodo(idPeriodo: number) {}
+  async BuscarClasePorPeriodoDocente(idDocente: number, idPeriodo: number) {}
+  async BuscarClasePorPeriodoDocenteCurso(
+    idDocente: number,
+    idPeriodo: number,
+    idCurso: number,
+  ) {}
+
   async actualizarClase(id: number, updateClaseDto: UpdateClaseDto) {
     try {
       const clase = await this.dbClase.preload({

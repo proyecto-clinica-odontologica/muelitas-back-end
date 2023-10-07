@@ -1,8 +1,9 @@
-import { IsNotEmpty, Length, Matches } from 'class-validator';
+import { IsNotEmpty, IsOptional, Length, Matches } from 'class-validator';
+import { User } from 'src/auth/entities/user.entity';
 
 export class CreateEstudianteDto {
   @IsNotEmpty()
-  @Length(3, 60, {
+  @Length(3, 250, {
     message:
       'El nombre debe tener entre $constraint1 y $constraint2 caracteres.',
   })
@@ -12,18 +13,12 @@ export class CreateEstudianteDto {
   NombreCompleto: string;
 
   @IsNotEmpty()
-  @Length(8, 8, {
-    message: 'El dni debe tener $constraint1 caracteres.',
-  })
-  @Matches(/^[0-9]*$/, {
-    message: 'El dni solo puede contener numeros.',
-  })
-  dni: string;
-
-  @IsNotEmpty()
   @Length(3, 60, {
     message:
       'La rubrica debe tener entre $constraint1 y $constraint2 caracteres.',
   })
-  Rubrica: string;
+  Firma: string;
+
+  @IsOptional()
+  usuario?: User;
 }

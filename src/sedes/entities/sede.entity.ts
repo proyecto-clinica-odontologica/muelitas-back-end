@@ -28,7 +28,7 @@ export class Sede {
   activo: boolean;
 
   @DeleteDateColumn({ type: 'timestamp', nullable: true, default: null })
-  deletedAt: boolean;
+  deletedAt: Date;
 
   @BeforeInsert()
   @BeforeUpdate()

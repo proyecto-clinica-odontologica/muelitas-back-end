@@ -16,7 +16,7 @@ import { UpdateAdministradorDto } from './dto/update-administrador.dto';
 export class AdministradorController {
   constructor(private readonly administradorService: AdministradorService) {}
 
-  @Post()
+  @Post('create')
   registrarAdministrador(
     @Body() createAdministradorDto: CreateAdministradorDto,
   ) {
@@ -27,6 +27,11 @@ export class AdministradorController {
 
   @Get()
   obtenerAdministradores() {
+    return this.administradorService.obtenerAdministradores();
+  }
+
+  @Get('eliminados')
+  obtenerAdministradoresEliminados() {
     return this.administradorService.obtenerAdministradores();
   }
 

@@ -16,7 +16,7 @@ import { UpdateCursoDto } from './dto/update-curso.dto';
 export class CursosController {
   constructor(private readonly cursosService: CursosService) {}
 
-  @Post()
+  @Post('create')
   registrarCurso(@Body() createCursoDto: CreateCursoDto) {
     return this.cursosService.registrarCurso(createCursoDto);
   }

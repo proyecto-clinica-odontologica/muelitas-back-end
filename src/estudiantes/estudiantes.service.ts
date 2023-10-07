@@ -1,5 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CreateUserDto } from 'src/auth/dto/create-user.dto';
+import { User } from 'src/auth/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateEstudianteDto } from './dto/create-estudiante.dto';
 import { UpdateEstudianteDto } from './dto/update-estudiante.dto';
@@ -10,12 +12,22 @@ export class EstudiantesService {
   constructor(
     @InjectRepository(Estudiante)
     private readonly dbEstudiante: Repository<Estudiante>,
+
+    @InjectRepository(User)
+    private readonly dbUsuario: Repository<User>,
   ) {}
-  async registrarEstudiante(createEstudianteDto: CreateEstudianteDto) {
+
+  async registrarEstudiante(
+    createEstudianteDto: CreateEstudianteDto,
+    createUserDto: CreateUserDto,
+  ) {
     try {
-      const usuario = this.dbEstudiante.create(createEstudianteDto);
-      await this.dbEstudiante.save(usuario);
-      return usuario;
+      const usuario = this.dbUsuario.create(createUserDto);
+      await this.dbUsuario.save(usuario);
+
+      const estudiante = this.dbEstudiante.create(createEstudianteDto);
+      estudiante.usuario = usuario;
+      await this.dbEstudiante.save(estudiante);
     } catch (error) {
       if (error.code === '23505') {
         throw new BadRequestException('El usuario ya existe');
@@ -27,6 +39,15 @@ export class EstudiantesService {
   async obtenerEstudiantes() {
     try {
       const usuarios = await this.dbEstudiante.find();
+      return usuarios;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async obtenerEstudiantesEliminados() {
+    try {
+      const usuarios = await this.dbEstudiante.find({ withDeleted: true });
       return usuarios;
     } catch (error) {
       throw error;

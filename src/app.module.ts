@@ -13,6 +13,7 @@ import { PeriodosModule } from './periodos/periodos.module';
 import { EmpresasModule } from './empresas/empresas.module';
 import { ClasesModule } from './clases/clases.module';
 import { CursosModule } from './cursos/cursos.module';
+import { IntegrantesModule } from './integrantes/integrantes.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { CursosModule } from './cursos/cursos.module';
     EmpresasModule,
     ClasesModule,
     CursosModule,
+    IntegrantesModule,
   ],
   controllers: [],
   providers: [],

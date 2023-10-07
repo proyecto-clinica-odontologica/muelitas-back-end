@@ -2,7 +2,7 @@ import { IsNotEmpty, Length, Matches } from 'class-validator';
 
 export class CreateAdministradorDto {
   @IsNotEmpty()
-  @Length(3, 60, {
+  @Length(3, 250, {
     message:
       'El nombre debe tener entre $constraint1 y $constraint2 caracteres.',
   })

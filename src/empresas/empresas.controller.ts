@@ -15,7 +15,7 @@ import { EmpresasService } from './empresas.service';
 export class EmpresasController {
   constructor(private readonly empresasService: EmpresasService) {}
 
-  @Post()
+  @Post('create')
   registrarEmpresa(@Body() createEmpresaDto: CreateEmpresaDto) {
     return this.empresasService.registrarEmpresa(createEmpresaDto);
   }

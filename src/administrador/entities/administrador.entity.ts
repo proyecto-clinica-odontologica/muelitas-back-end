@@ -12,7 +12,7 @@ export class Administrador {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column({ type: 'varchar', length: 60 })
+  @Column({ type: 'varchar', length: 250 })
   NombreCompleto: string;
 
   @Column({ type: 'varchar', unique: true })

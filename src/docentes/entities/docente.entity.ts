@@ -15,14 +15,11 @@ export class Docente {
   @Column({ type: 'varchar', length: 60 })
   Colegiatura: string;
 
-  @Column({ type: 'varchar', length: 60 })
+  @Column({ type: 'varchar', length: 255 })
   NombreCompleto: string;
 
   @Column({ type: 'varchar', unique: true })
   FirmaDigital: string;
-
-  @Column({ type: 'varchar', length: 8, unique: true })
-  dni: string;
 
   @DeleteDateColumn({ type: 'timestamp', nullable: true, default: null })
   deletedAt?: Date;

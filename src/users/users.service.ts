@@ -14,6 +14,10 @@ export class UsersService {
     return this.dbUser.find();
   }
 
+  async obtenerUsuariosEliminados() {
+    return this.dbUser.find({ withDeleted: true });
+  }
+
   async buscarUsuarioPorCorreo(correo: string) {
     try {
       const usuario = await this.dbUser.findOneBy({ Correo: correo });

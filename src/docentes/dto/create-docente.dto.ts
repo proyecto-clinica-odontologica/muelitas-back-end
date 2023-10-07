@@ -12,7 +12,7 @@ export class CreateDocenteDto {
   Colegiatura: string;
 
   @IsNotEmpty()
-  @Length(3, 60, {
+  @Length(3, 255, {
     message:
       'El nombre debe tener entre $constraint1 y $constraint2 caracteres.',
   })

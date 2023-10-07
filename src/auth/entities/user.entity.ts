@@ -1,9 +1,11 @@
+import { Estudiante } from 'src/estudiantes/entities/estudiante.entity';
 import {
   BeforeInsert,
   BeforeUpdate,
   Column,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -27,7 +29,7 @@ export class User {
   @Column({ type: 'varchar', unique: true })
   NumDoc: string;
 
-  @Column({ type: 'varchar', unique: true, nullable: true })
+  @Column({ type: 'varchar', unique: true })
   Celular: string;
 
   @Column({ type: 'varchar', nullable: true, default: '' })
@@ -39,14 +41,28 @@ export class User {
   @Column({ type: 'varchar', nullable: true, default: 'estudiante' })
   Rol?: string;
 
-  @Column({ type: 'varchar', nullable: true, default: null })
+  @Column({ type: 'varchar', nullable: true, default: 'desactivado' })
   RestablecerContra?: string;
+
+  @Column({ type: 'varchar', nullable: true, default: 'pagado' })
+  Pago?: string;
 
   @Column({ type: 'boolean', nullable: true, default: true })
   activo?: boolean;
 
   @DeleteDateColumn({ type: 'timestamp', nullable: true, default: null })
   deletedAt?: Date;
+
+  @OneToMany(() => Estudiante, (estudiante) => estudiante.usuario, {
+    cascade: true,
+  })
+  estudiante?: Estudiante[];
+
+  @Column({ type: 'varchar', default: 'dni' })
+  TipoDocumento: string;
+
+  @Column({ type: 'varchar', default: 'masculino' })
+  Genero: string;
 
   @BeforeInsert()
   @BeforeUpdate()

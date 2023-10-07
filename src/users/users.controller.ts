@@ -1,13 +1,18 @@
 import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
 import { UsersService } from './users.service';
 
-@Controller('')
+@Controller('usuario')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
   obtenerUsuarios() {
     return this.usersService.obtenerUsuarios();
+  }
+
+  @Get('eliminados')
+  obtenerUsuariosEliminados() {
+    return this.usersService.obtenerUsuariosEliminados();
   }
 
   @Get('search/correo/:correo')
