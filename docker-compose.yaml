@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  muelitasapp:
+  muelitasbackend:
     depends_on:
       - db
     build:

@@ -1,19 +1,21 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { ServeStaticModule } from '@nestjs/serve-static';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { join } from 'path';
 import { AdministradorModule } from './administrador/administrador.module';
 import { AuthModule } from './auth/auth.module';
+import { ClasesModule } from './clases/clases.module';
 import { JoiValidationSchema } from './config/joi.config';
+import { CursosModule } from './cursos/cursos.module';
 import { DocentesModule } from './docentes/docentes.module';
+import { EmpresasModule } from './empresas/empresas.module';
 import { EstudiantesModule } from './estudiantes/estudiantes.module';
+import { IntegrantesModule } from './integrantes/integrantes.module';
+import { PeriodosModule } from './periodos/periodos.module';
+import { SedesModule } from './sedes/sedes.module';
 import { SeedModule } from './seed/seed.module';
 import { UsersModule } from './users/users.module';
-import { SedesModule } from './sedes/sedes.module';
-import { PeriodosModule } from './periodos/periodos.module';
-import { EmpresasModule } from './empresas/empresas.module';
-import { ClasesModule } from './clases/clases.module';
-import { CursosModule } from './cursos/cursos.module';
-import { IntegrantesModule } from './integrantes/integrantes.module';
 
 @Module({
   imports: [
@@ -21,6 +23,9 @@ import { IntegrantesModule } from './integrantes/integrantes.module';
       envFilePath: '.env',
       isGlobal: true,
       validationSchema: JoiValidationSchema,
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public', 'proyecto-front'),
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',

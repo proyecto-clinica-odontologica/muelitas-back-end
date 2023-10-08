@@ -1,0 +1,27 @@
+body{
+    margin: 0px;
+}
+
+.inicio .titulo_ini {
+    position: absolute;
+    top: 57px;
+    left: 240px;
+    background: linear-gradient(180deg, rgb(207, 241, 255) 0%, rgb(149, 158, 241) 100%);
+    -webkit-background-clip: text !important;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-fill-color: transparent;
+    font-family: "Inter-Bold", Helvetica;
+    font-weight: 700;
+    color: transparent;
+    font-size: 100px;
+    letter-spacing: 2.64px;
+    line-height: normal;
+    white-space: nowrap;
+  }
+  
+  .inicio .ini_gif{
+    position: relative;
+    top: 300px;
+    left: 750px;
+  }
