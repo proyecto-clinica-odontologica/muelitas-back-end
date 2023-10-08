@@ -1,11 +1,33 @@
 version: '3'
+
 services:
+  muelitasapp:
+    depends_on:
+      - db
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: muelitas-app
+    container_name: muelitas-backend
+    restart: always
+    ports:
+      - "${PORT}:${PORT}"
+    environment:
+      USER_PASS: ${USER_PASS}
+      PORT: ${PORT}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+
   db:
     container_name: muelitas_db
     image: mysql:8.0
     restart: always
     ports:
-      - 3307:3306
+      - "${DB_PORT}:${DB_PORT}"
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       MYSQL_DATABASE: ${DB_DATABASE}
