@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
+import { Docente } from 'src/docentes/entities/docente.entity';
 import { Repository } from 'typeorm';
 import { User } from '../auth/entities/user.entity';
 
@@ -9,10 +10,15 @@ export class SeedService {
   constructor(
     @InjectRepository(User)
     private readonly dbUser: Repository<User>,
+
+    @InjectRepository(Docente)
+    private readonly dbDocente: Repository<Docente>,
   ) {}
 
   async seed() {
-    await this.dbUser.clear();
+    await this.dbDocente.remove(await this.dbDocente.find());
+    await this.dbUser.remove(await this.dbUser.find());
+
     const users = [
       {
         Correo: 'maycol@gmail.com',
@@ -61,6 +67,7 @@ export class SeedService {
         Apellido: 'cusicuna mucha',
         Celular: '555444555',
         Rol: 'docente',
+        Genero: 'femenino',
       },
       {
         Correo: 'zeus_apolo85@hotmail.com',
@@ -79,6 +86,7 @@ export class SeedService {
         Apellido: 'santa maría astuhuamán',
         Celular: '777555777',
         Rol: 'estudiante',
+        Genero: 'femenino',
       },
       {
         Correo: 'carlitosjhonatan17@gmail.com',
@@ -151,6 +159,7 @@ export class SeedService {
         Apellido: 'cangalaya antezana',
         Celular: '903684433',
         Rol: 'estudiante',
+        Genero: 'femenino',
       },
       {
         Correo: '75513497@continental.edu.pe',
@@ -178,6 +187,7 @@ export class SeedService {
         Apellido: 'gutarra romo',
         Celular: '977619251',
         Rol: 'docente',
+        Genero: 'femenino',
       },
       {
         Correo: '72549048@continental.edu.pe',

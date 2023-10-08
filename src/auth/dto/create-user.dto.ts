@@ -70,4 +70,6 @@ export class CreateUserDto {
   })
   @IsNotEmpty({ message: 'El genero es obligatorio' })
   Genero: string;
+
+  
 }

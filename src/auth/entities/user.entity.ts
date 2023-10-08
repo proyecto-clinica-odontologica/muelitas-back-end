@@ -1,3 +1,4 @@
+import { Docente } from 'src/docentes/entities/docente.entity';
 import { Estudiante } from 'src/estudiantes/entities/estudiante.entity';
 import {
   BeforeInsert,
@@ -58,6 +59,11 @@ export class User {
   })
   estudiante?: Estudiante[];
 
+  @OneToMany(() => Docente, (docente) => docente.usuario, {
+    onDelete: 'CASCADE',
+  })
+  docente: Docente[];
+
   @Column({ type: 'varchar', default: 'dni' })
   TipoDocumento: string;
 
@@ -67,11 +73,11 @@ export class User {
   @BeforeInsert()
   @BeforeUpdate()
   validacionCampos() {
-    this.Nombre = this.Nombre?.toLowerCase();
-    this.Apellido = this.Apellido?.toLowerCase();
-    this.Correo = this.Correo?.toLowerCase();
-    this.Foto = this.Foto?.toLowerCase();
-    this.Codigo = this.Codigo?.toLowerCase();
-    this.Rol = this.Rol?.toLowerCase();
+    this.Nombre = this.Nombre?.trim().toLowerCase();
+    this.Apellido = this.Apellido?.trim().toLowerCase();
+    this.Correo = this.Correo?.trim().toLowerCase();
+    this.Foto = this.Foto?.trim().toLowerCase();
+    this.Codigo = this.Codigo?.trim().toLowerCase();
+    this.Rol = this.Rol?.trim().toLowerCase();
   }
 }

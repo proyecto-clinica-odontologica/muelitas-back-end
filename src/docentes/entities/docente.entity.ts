@@ -1,9 +1,11 @@
+import { User } from 'src/auth/entities/user.entity';
 import {
   BeforeInsert,
   BeforeUpdate,
   Column,
   DeleteDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -26,6 +28,13 @@ export class Docente {
 
   @Column({ type: 'boolean', default: true, nullable: true })
   activo?: boolean;
+
+  @ManyToOne(() => User, (usuario) => usuario.docente, {
+    eager: true,
+    onDelete: 'CASCADE',
+    cascade: true,
+  })
+  usuario: User;
 
   @BeforeInsert()
   @BeforeUpdate()

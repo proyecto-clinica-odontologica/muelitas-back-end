@@ -1,4 +1,4 @@
-import { IsNotEmpty, Length, Matches } from 'class-validator';
+import { IsNotEmpty, IsOptional, Length, Matches } from 'class-validator';
 
 export class CreateDocenteDto {
   @IsNotEmpty()
@@ -11,7 +11,6 @@ export class CreateDocenteDto {
   })
   Colegiatura: string;
 
-  @IsNotEmpty()
   @Length(3, 255, {
     message:
       'El nombre debe tener entre $constraint1 y $constraint2 caracteres.',
@@ -19,16 +18,8 @@ export class CreateDocenteDto {
   @Matches(/^[a-zA-Z\s]*$/, {
     message: 'El nombre solo puede contener letras.',
   })
+  @IsOptional()
   NombreCompleto: string;
-
-  @IsNotEmpty()
-  @Length(8, 8, {
-    message: 'El dni debe tener $constraint1 caracteres.',
-  })
-  @Matches(/^[0-9]*$/, {
-    message: 'El dni solo puede contener numeros.',
-  })
-  dni: string;
 
   @IsNotEmpty()
   @Length(3, 60, {
@@ -36,4 +27,7 @@ export class CreateDocenteDto {
       'La firma digital debe tener entre $constraint1 y $constraint2 caracteres.',
   })
   FirmaDigital: string;
+
+  @IsNotEmpty()
+  idUsuario: number;
 }

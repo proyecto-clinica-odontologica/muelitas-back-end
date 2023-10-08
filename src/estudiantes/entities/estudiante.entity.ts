@@ -6,7 +6,7 @@ import {
   DeleteDateColumn,
   Entity,
   ManyToOne,
-  PrimaryGeneratedColumn
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 @Entity()
@@ -28,7 +28,6 @@ export class Estudiante {
 
   @ManyToOne(() => User, (user) => user.estudiante, {
     eager: true,
-    onDelete: 'CASCADE',
   })
   usuario: User;
 
