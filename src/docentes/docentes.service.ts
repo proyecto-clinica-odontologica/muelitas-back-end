@@ -92,9 +92,7 @@ export class DocentesService {
     try {
       const docente = await this.dbDocente.findOne({ where: { id } });
       if (!docente) {
-        throw new BadRequestException(
-          'No existe el docente que desea eliminar',
-        );
+        throw new NotFoundException('No existe el docente que desea eliminar');
       }
       if (!docente.usuario) {
         throw new NotFoundException('No existe usuario');
@@ -122,7 +120,6 @@ export class DocentesService {
 
   async restaurarDocente(id: number) {
     const queryRunner = this.dataSource.createQueryRunner();
-
     await queryRunner.connect();
     await queryRunner.startTransaction();
 

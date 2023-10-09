@@ -28,6 +28,7 @@ export class Estudiante {
 
   @ManyToOne(() => User, (user) => user.estudiante, {
     eager: true,
+    cascade: true,
   })
   usuario: User;
 

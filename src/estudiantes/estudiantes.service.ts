@@ -1,8 +1,11 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateUserDto } from 'src/auth/dto/create-user.dto';
 import { User } from 'src/auth/entities/user.entity';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { CreateEstudianteDto } from './dto/create-estudiante.dto';
 import { UpdateEstudianteDto } from './dto/update-estudiante.dto';
 import { Estudiante } from './entities/estudiante.entity';
@@ -15,22 +18,36 @@ export class EstudiantesService {
 
     @InjectRepository(User)
     private readonly dbUsuario: Repository<User>,
+
+    private readonly dataSource: DataSource,
   ) {}
 
-  async registrarEstudiante(
-    createEstudianteDto: CreateEstudianteDto,
-    createUserDto: CreateUserDto,
-  ) {
+  async registrarEstudiante(createEstudianteDto: CreateEstudianteDto) {
     try {
-      const usuario = this.dbUsuario.create(createUserDto);
-      await this.dbUsuario.save(usuario);
+      const usuario = await this.dbUsuario.findOne({
+        where: { id: createEstudianteDto.idUsuario, Rol: 'estudiante' },
+      });
 
-      const estudiante = this.dbEstudiante.create(createEstudianteDto);
-      estudiante.usuario = usuario;
-      await this.dbEstudiante.save(estudiante);
+      if (!usuario) {
+        throw new NotFoundException(
+          'El usuario con ese rol no existe en la base de datos',
+        );
+      }
+
+      const { Nombre, Apellido } = usuario;
+
+      const estudiante = this.dbEstudiante.create({
+        ...createEstudianteDto,
+        NombreCompleto: `${Nombre} ${Apellido}`,
+        usuario: usuario,
+      });
+
+      return await this.dbEstudiante.save(estudiante);
     } catch (error) {
-      if (error.code === '23505') {
-        throw new BadRequestException('El usuario ya existe');
+      if (error.errno === 1062) {
+        throw new BadRequestException(
+          'Ya existe un docente con la misma colegiatura o firma digital',
+        );
       }
       throw error;
     }
@@ -80,36 +97,69 @@ export class EstudiantesService {
   }
 
   async eliminarUnEstudiante(id: number) {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
     try {
-      const estudiante = await this.dbEstudiante.findOneBy({ id });
+      const estudiante = await this.dbEstudiante.findOne({ where: { id } });
       if (!estudiante) {
-        throw new BadRequestException('El estudiante no existe');
+        throw new NotFoundException('El estudiante no existe');
       }
+      if (!estudiante.usuario) {
+        throw new NotFoundException('El usuario no existe');
+      }
+
       estudiante.activo = false;
-      await this.dbEstudiante.save(estudiante);
-      await this.dbEstudiante.softDelete(id);
+      estudiante.usuario.activo = false;
+
+      await queryRunner.manager.save([estudiante, estudiante.usuario]);
+      await queryRunner.manager.softDelete(Estudiante, id);
+      await queryRunner.manager.softDelete(User, estudiante.usuario.id);
+
+      await queryRunner.commitTransaction();
       return {
         message: `El estudiante con el id ${id} ha sido eliminado`,
       };
     } catch (error) {
+      await queryRunner.rollbackTransaction();
       throw error;
+    } finally {
+      await queryRunner.release();
     }
   }
 
   async restaurarUnEstudiante(id: number) {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
     try {
-      await this.dbEstudiante.restore(id);
-      const estudiante = await this.dbEstudiante.findOneBy({ id });
+      const estudiante = await this.dbEstudiante.findOne({
+        where: { id },
+        withDeleted: true,
+      });
       if (!estudiante) {
         throw new BadRequestException('El estudiante no existe');
       }
+      if (!estudiante.usuario) {
+        throw new BadRequestException('El usuario no existe');
+      }
       estudiante.activo = true;
-      await this.dbEstudiante.save(estudiante);
+      estudiante.usuario.activo = true;
+
+      estudiante.deletedAt = null;
+      estudiante.usuario.deletedAt = null;
+
+      await queryRunner.manager.save(estudiante);
+      await queryRunner.manager.save(estudiante.usuario);
+      await queryRunner.commitTransaction();
       return {
         message: `El estudiante con el id ${id} ha sido restaurado`,
       };
     } catch (error) {
+      await queryRunner.rollbackTransaction();
       throw error;
+    } finally {
+      await queryRunner.release();
     }
   }
 }

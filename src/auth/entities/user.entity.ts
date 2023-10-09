@@ -56,9 +56,7 @@ export class User {
   @DeleteDateColumn({ type: 'timestamp', nullable: true, default: null })
   deletedAt?: Date;
 
-  @OneToMany(() => Estudiante, (estudiante) => estudiante.usuario, {
-    cascade: true,
-  })
+  @OneToMany(() => Estudiante, (estudiante) => estudiante.usuario)
   estudiante?: Estudiante[];
 
   @OneToMany(() => Docente, (docente) => docente.usuario, {
