@@ -1,17 +1,11 @@
-import { IsNotEmpty, IsNumber, Matches } from 'class-validator';
+import { IsInt, IsNotEmpty } from 'class-validator';
 
 export class CreateIntegranteDto {
   @IsNotEmpty()
-  @IsNumber()
+  @IsInt()
   IdEstudiante: number;
 
   @IsNotEmpty()
-  @IsNumber()
+  @IsInt()
   IdClase: number;
-
-  @IsNotEmpty()
-  @Matches(/^[a-zA-Z]$/, {
-    message: 'Combinado solo puede contener letras',
-  })
-  Combinado: string;
 }

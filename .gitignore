@@ -1,6 +1,6 @@
-todo.md
 # compiled output
 .env
+.env.prod
 /database
 /dist
 /node_modules

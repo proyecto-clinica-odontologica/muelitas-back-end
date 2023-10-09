@@ -1,7 +1,10 @@
+import { Clase } from 'src/clases/entities/clase.entity';
+import { Estudiante } from 'src/estudiantes/entities/estudiante.entity';
 import {
   Column,
   DeleteDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -10,8 +13,17 @@ export class Integrante {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column({ type: 'varchar', nullable: false })
-  Combinado: string;
+  @ManyToOne(() => Estudiante, (estudiante) => estudiante.integrante, {
+    eager: true,
+    cascade: true,
+  })
+  estudiante: Estudiante;
+
+  @ManyToOne(() => Clase, (clase) => clase.integrante, {
+    eager: true,
+    cascade: true,
+  })
+  clase: Clase;
 
   @DeleteDateColumn({ type: 'timestamp', nullable: true, default: null })
   deletedAt?: Date;

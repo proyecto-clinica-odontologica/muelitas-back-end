@@ -1,6 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Clase } from 'src/clases/entities/clase.entity';
+import { Estudiante } from 'src/estudiantes/entities/estudiante.entity';
+import { DataSource, Repository } from 'typeorm';
 import { CreateIntegranteDto } from './dto/create-integrante.dto';
 import { UpdateIntegranteDto } from './dto/update-integrante.dto';
 import { Integrante } from './entities/integrante.entity';
@@ -10,11 +12,36 @@ export class IntegrantesService {
   constructor(
     @InjectRepository(Integrante)
     private readonly dbIntegrante: Repository<Integrante>,
+
+    @InjectRepository(Estudiante)
+    private readonly dbEstudiante: Repository<Estudiante>,
+
+    @InjectRepository(Clase)
+    private readonly dbClase: Repository<Clase>,
+
+    private readonly dataSource: DataSource,
   ) {}
 
   async registrarIntegrantes(createIntegranteDto: CreateIntegranteDto) {
     try {
-      const integrante = this.dbIntegrante.create(createIntegranteDto);
+      const estudiante = await this.dbEstudiante.findOne({
+        where: { id: createIntegranteDto.IdEstudiante },
+      });
+
+      const clase = await this.dbClase.findOne({
+        where: { id: createIntegranteDto.IdClase },
+      });
+
+      if (!clase) throw new NotFoundException('Clase no existe');
+
+      if (!estudiante) throw new NotFoundException('Estudiante no existe');
+
+      const integrante = this.dbIntegrante.create({
+        ...createIntegranteDto,
+        estudiante: estudiante,
+        clase: clase,
+      });
+
       return await this.dbIntegrante.save(integrante);
     } catch (error) {
       throw error;
@@ -55,18 +82,37 @@ export class IntegrantesService {
   }
 
   async eliminarIntegrante(id: number) {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
     try {
-      const integrante = await this.dbIntegrante.preload({
-        id,
-        activo: false,
+      const integrantes = await this.dbIntegrante.findOne({
+        where: { id },
+        relations: ['estudiante', 'clase'],
       });
-      if (!integrante) {
-        throw new NotFoundException(
-          'Integrante nunca llego a inscribirse a la clase',
-        );
+
+      if (!integrantes || !integrantes.estudiante || !integrantes.clase) {
+        throw new NotFoundException('integrante 0 estudinte o clase no existe');
       }
-      await this.dbIntegrante.save(integrante);
-      await this.dbIntegrante.softDelete({ id });
+
+      integrantes.activo = false;
+      integrantes.clase.activo = false;
+      integrantes.estudiante.activo = false;
+
+      await queryRunner.manager.save([
+        integrantes,
+        integrantes.clase,
+        integrantes.estudiante,
+      ]);
+
+      await queryRunner.manager.softDelete(Integrante, id);
+      await queryRunner.manager.softDelete(
+        Estudiante,
+        integrantes.estudiante.id,
+      );
+      await queryRunner.manager.softDelete(Clase, integrantes.clase.id);
+      await queryRunner.commitTransaction();
+
       return {
         message: 'Integrante eliminado',
       };
@@ -76,20 +122,44 @@ export class IntegrantesService {
   }
 
   async restaurarIntegrante(id: number) {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
     try {
-      await this.dbIntegrante.restore(id);
-      const integrante = await this.dbIntegrante.preload({ id, activo: true });
-      if (!integrante) {
-        throw new NotFoundException(
-          'Integrante nunca llego a inscribirse a la clase',
-        );
+      const integrantes = await this.dbIntegrante.findOne({
+        where: { id },
+        relations: ['estudiante', 'clase'],
+        withDeleted: true,
+      });
+
+      if (!integrantes || !integrantes.estudiante || !integrantes.clase) {
+        throw new NotFoundException('integrante o estudinte o clase no existe');
       }
-      await this.dbIntegrante.save(integrante);
+
+      integrantes.activo = true;
+      integrantes.clase.activo = true;
+      integrantes.estudiante.activo = true;
+
+      integrantes.deletedAt = null;
+      integrantes.clase.deletedAt = null;
+      integrantes.estudiante.deletedAt = null;
+
+      await queryRunner.manager.save([
+        integrantes,
+        integrantes.clase,
+        integrantes.estudiante,
+      ]);
+
+      await queryRunner.commitTransaction();
+
       return {
         message: 'Integrante restaurado',
       };
     } catch (error) {
+      await queryRunner.rollbackTransaction();
       throw error;
+    } finally {
+      await queryRunner.release();
     }
   }
 }

@@ -1,4 +1,5 @@
 import { User } from 'src/auth/entities/user.entity';
+import { Integrante } from 'src/integrantes/entities/integrante.entity';
 import {
   BeforeInsert,
   BeforeUpdate,
@@ -6,6 +7,7 @@ import {
   DeleteDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -31,6 +33,9 @@ export class Estudiante {
     cascade: true,
   })
   usuario: User;
+
+  @OneToMany(() => Integrante, (integrante) => integrante.estudiante)
+  integrante: Integrante[];
 
   @BeforeInsert()
   @BeforeUpdate()
