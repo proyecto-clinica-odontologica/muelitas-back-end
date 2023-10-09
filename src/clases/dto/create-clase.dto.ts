@@ -1,9 +1,9 @@
-import { IsNotEmpty, IsString, Length, Matches } from 'class-validator';
+import { IsInt, IsNotEmpty, IsString, Length, Matches } from 'class-validator';
 
 export class CreateClaseDto {
   @IsString()
   @IsNotEmpty()
-  @Length(3, 30, {
+  @Length(3, 60, {
     message:
       'El nombre debe tener entre $constraint1 y $constraint2 caracteres',
   })
@@ -24,5 +24,14 @@ export class CreateClaseDto {
   Horario: string;
 
   @IsNotEmpty()
+  @IsInt()
   idDocente: number;
+
+  @IsNotEmpty()
+  @IsInt()
+  idPeriodo: number;
+
+  @IsNotEmpty()
+  @IsInt()
+  idCurso: number;
 }

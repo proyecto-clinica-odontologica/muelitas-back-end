@@ -1,4 +1,6 @@
+import { Curso } from 'src/cursos/entities/curso.entity';
 import { Docente } from 'src/docentes/entities/docente.entity';
+import { Periodo } from 'src/periodos/entities/periodo.entity';
 import {
   BeforeInsert,
   BeforeUpdate,
@@ -31,6 +33,18 @@ export class Clase {
 
   @ManyToOne(() => Docente, (docente) => docente.usuario)
   docente: Docente;
+
+  @ManyToOne(() => Curso, (curso) => curso.clase, {
+    eager: true,
+    cascade: true,
+  })
+  curso: Curso;
+
+  @ManyToOne(() => Periodo, (periodo) => periodo.clase, {
+    eager: true,
+    cascade: true,
+  })
+  periodo: Periodo;
 
   @BeforeInsert()
   @BeforeUpdate()

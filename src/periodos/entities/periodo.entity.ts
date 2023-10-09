@@ -1,3 +1,4 @@
+import { Clase } from 'src/clases/entities/clase.entity';
 import { Sede } from 'src/sedes/entities/sede.entity';
 import {
   BeforeInsert,
@@ -6,6 +7,7 @@ import {
   DeleteDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -34,6 +36,9 @@ export class Periodo {
     cascade: true,
   })
   sede: Sede;
+
+  @OneToMany(() => Clase, (clase) => clase.periodo)
+  clase: Clase[];
 
   @BeforeInsert()
   @BeforeUpdate()

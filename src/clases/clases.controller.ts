@@ -31,7 +31,7 @@ export class ClasesController {
 
   @Get('periodo/:id')
   BuscarClasePorPeriodo(@Param('id') id: string) {
-    return this.clasesService.BuscarClasePorPeriodo(+id);
+    return this.clasesService.BuscarClasePorPeriodo(id);
   }
 
   @Get('periodo-docente/:idDocente/:idPeriodo')

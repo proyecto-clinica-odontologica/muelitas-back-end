@@ -1,7 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Curso } from 'src/cursos/entities/curso.entity';
 import { Docente } from 'src/docentes/entities/docente.entity';
-import { Repository } from 'typeorm';
+import { Periodo } from 'src/periodos/entities/periodo.entity';
+import { DataSource, Repository } from 'typeorm';
 import { CreateClaseDto } from './dto/create-clase.dto';
 import { UpdateClaseDto } from './dto/update-clase.dto';
 import { Clase } from './entities/clase.entity';
@@ -14,26 +16,38 @@ export class ClasesService {
 
     @InjectRepository(Docente)
     private readonly dbDocente: Repository<Docente>,
+
+    @InjectRepository(Periodo)
+    private readonly dbPeriodo: Repository<Periodo>,
+
+    @InjectRepository(Curso)
+    private readonly dbCurso: Repository<Curso>,
+
+    private readonly dataSource: DataSource,
   ) {}
 
   async registrarClase(createClaseDto: CreateClaseDto) {
     try {
+      const curso = await this.dbCurso.findOne({
+        where: { id: createClaseDto.idCurso },
+      });
       const docente = await this.dbDocente.findOne({
         where: { id: createClaseDto.idDocente },
       });
+      const periodo = await this.dbPeriodo.findOne({
+        where: { id: createClaseDto.idPeriodo },
+      });
 
-      if (!docente) {
-        throw new NotFoundException(
-          'El docente no se encuentra registrado en la base de datos',
-        );
+      if (!curso || !docente || !periodo) {
+        throw new NotFoundException('Curso, Docente o Periodo no encontrado');
       }
-
 
       const clase = this.dbClase.create({
         ...createClaseDto,
         docente: docente,
+        curso: curso,
+        periodo: periodo,
       });
-
 
       return await this.dbClase.save(clase);
     } catch (error) {
@@ -56,7 +70,20 @@ export class ClasesService {
     }
   }
 
-  async BuscarClasePorPeriodo(idPeriodo: number) {}
+  async BuscarClasePorPeriodo(idPeriodo: string) {
+    try {
+      const clase = await this.dbPeriodo.find({
+        where: { Nombre: idPeriodo },
+        relations: ['clase'],
+      });
+      if (!clase.length) {
+        throw new NotFoundException('No existe clases para ese periodo');
+      }
+      return clase;
+    } catch (error) {
+      throw error;
+    }
+  }
   async BuscarClasePorPeriodoDocente(idDocente: number, idPeriodo: number) {}
   async BuscarClasePorPeriodoDocenteCurso(
     idDocente: number,
@@ -80,36 +107,88 @@ export class ClasesService {
   }
 
   async eliminarClase(id: number) {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
     try {
-      const clase = await this.dbClase.preload({
-        id,
-        activo: false,
+      const clase = await this.dbClase.findOne({
+        where: { id },
+        relations: ['docente', 'curso', 'periodo'],
       });
-      if (!clase) {
-        throw new NotFoundException('La clase no existe');
+
+      if (!clase || !clase.docente || !clase.curso || !clase.periodo) {
+        throw new NotFoundException(
+          'no existe clase o docente, o curso o periodo para esa clase',
+        );
       }
-      await this.dbClase.save(clase);
-      await this.dbClase.softDelete(id);
+
+      clase.activo = false;
+      clase.curso.activo = false;
+      clase.docente.activo = false;
+      clase.periodo.activo = false;
+
+      await queryRunner.manager.save([
+        clase,
+        clase.curso,
+        clase.docente,
+        clase.periodo,
+      ]);
+      await queryRunner.manager.softDelete(Clase, id);
+      await queryRunner.manager.softDelete(Curso, clase.curso.id);
+      await queryRunner.manager.softDelete(Docente, clase.docente.id);
+      await queryRunner.manager.softDelete(Periodo, clase.periodo.id);
+      await queryRunner.commitTransaction();
+
       return { mensaje: `La Clase con el id ${id} fue eliminada` };
     } catch (error) {
+      await queryRunner.rollbackTransaction();
       throw error;
+    } finally {
+      await queryRunner.release();
     }
   }
 
   async restaurarClase(id: number) {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
     try {
-      await this.dbClase.restore(id);
-      const clase = await this.dbClase.preload({
-        id,
-        activo: true,
+      const clase = await this.dbClase.findOne({
+        where: { id },
+        withDeleted: true,
+        relations: ['docente', 'curso', 'periodo'],
       });
-      if (!clase) {
-        throw new NotFoundException('La clase no existe');
+
+      if (!clase || !clase.docente || !clase.curso || !clase.periodo) {
+        throw new NotFoundException(
+          'no existe clase o docente, o curso o periodo para esa clase',
+        );
       }
-      await this.dbClase.save(clase);
+
+      clase.activo = true;
+      clase.curso.activo = true;
+      clase.docente.activo = true;
+      clase.periodo.activo = true;
+
+      clase.deletedAt = null;
+      clase.curso.deletedAt = null;
+      clase.docente.deletedAt = null;
+      clase.periodo.deletedAt = null;
+
+      await queryRunner.manager.save([
+        clase,
+        clase.curso,
+        clase.docente,
+        clase.periodo,
+      ]);
+      await queryRunner.commitTransaction();
+
       return { mensaje: `La Clase con el id ${id} fue restaurada` };
     } catch (error) {
+      await queryRunner.rollbackTransaction();
       throw error;
+    } finally {
+      await queryRunner.release();
     }
   }
 }

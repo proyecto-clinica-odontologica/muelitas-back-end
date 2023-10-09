@@ -1,9 +1,11 @@
+import { Clase } from 'src/clases/entities/clase.entity';
 import {
   BeforeInsert,
   BeforeUpdate,
   Column,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -26,6 +28,9 @@ export class Curso {
 
   @Column({ type: 'boolean', default: true, nullable: true })
   activo?: boolean;
+
+  @OneToMany(() => Clase, (clase) => clase.curso)
+  clase: Clase[];
 
   @BeforeInsert()
   @BeforeUpdate()
