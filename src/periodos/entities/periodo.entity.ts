@@ -1,7 +1,11 @@
+import { Sede } from 'src/sedes/entities/sede.entity';
 import {
+  BeforeInsert,
+  BeforeUpdate,
   Column,
   DeleteDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -10,7 +14,7 @@ export class Periodo {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column({ type: 'varchar'})
+  @Column({ type: 'varchar' })
   Nombre: string;
 
   @Column({ type: 'date' })
@@ -24,4 +28,18 @@ export class Periodo {
 
   @Column({ type: 'boolean', default: true })
   activo: boolean;
+
+  @ManyToOne(() => Sede, (sede) => sede.periodo, {
+    eager: true,
+    cascade: true,
+  })
+  sede: Sede;
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  limpiarCampos() {
+    this.Nombre = this.Nombre?.trim().toLowerCase();
+    this.FechaInicio = this.FechaInicio?.trim().toLowerCase();
+    this.FechaFin = this.FechaFin?.trim().toLowerCase();
+  }
 }

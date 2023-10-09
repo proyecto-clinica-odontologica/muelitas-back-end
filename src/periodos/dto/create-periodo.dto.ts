@@ -1,4 +1,10 @@
-import { IsDateString, IsNotEmpty, Length, Matches } from 'class-validator';
+import {
+  IsDateString,
+  IsInt,
+  IsNotEmpty,
+  Length,
+  Matches,
+} from 'class-validator';
 
 export class CreatePeriodoDto {
   @IsNotEmpty()
@@ -15,4 +21,8 @@ export class CreatePeriodoDto {
   @IsNotEmpty()
   @IsDateString({}, { message: 'Debe ser una fecha valida' })
   FechaFin: string;
+
+  @IsNotEmpty()
+  @IsInt()
+  idSede: number;
 }

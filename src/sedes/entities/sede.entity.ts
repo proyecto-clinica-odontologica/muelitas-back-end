@@ -1,5 +1,6 @@
 import { User } from 'src/auth/entities/user.entity';
 import { Empresa } from 'src/empresas/entities/empresa.entity';
+import { Periodo } from 'src/periodos/entities/periodo.entity';
 import {
   BeforeInsert,
   BeforeUpdate,
@@ -42,6 +43,9 @@ export class Sede {
 
   @ManyToOne(() => Empresa, (empresa) => empresa.sede)
   empresa: Empresa;
+
+  @OneToMany(() => Periodo, (periodo) => periodo.sede)
+  periodo: Periodo[];
 
   @BeforeInsert()
   @BeforeUpdate()
