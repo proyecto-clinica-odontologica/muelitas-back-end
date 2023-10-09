@@ -1,11 +1,13 @@
 import { Docente } from 'src/docentes/entities/docente.entity';
 import { Estudiante } from 'src/estudiantes/entities/estudiante.entity';
+import { Sede } from 'src/sedes/entities/sede.entity';
 import {
   BeforeInsert,
   BeforeUpdate,
   Column,
   DeleteDateColumn,
   Entity,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -69,6 +71,9 @@ export class User {
 
   @Column({ type: 'varchar', default: 'masculino' })
   Genero: string;
+
+  @ManyToOne(() => Sede, (sede) => sede.usuario)
+  sede: Sede;
 
   @BeforeInsert()
   @BeforeUpdate()

@@ -1,9 +1,11 @@
+import { Sede } from 'src/sedes/entities/sede.entity';
 import {
   BeforeInsert,
   BeforeUpdate,
   Column,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -26,6 +28,12 @@ export class Empresa {
 
   @Column({ type: 'boolean', default: true })
   activo: boolean;
+
+  @OneToMany(() => Sede, (sede) => sede.empresa, {
+    eager: true,
+    cascade: true,
+  })
+  sede: Sede[];
 
   @BeforeInsert()
   @BeforeUpdate()

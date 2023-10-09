@@ -1,9 +1,11 @@
+import { Docente } from 'src/docentes/entities/docente.entity';
 import {
   BeforeInsert,
   BeforeUpdate,
   Column,
   DeleteDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -26,6 +28,9 @@ export class Clase {
 
   @Column({ type: 'boolean', default: true })
   activo: boolean;
+
+  @ManyToOne(() => Docente, (docente) => docente.usuario)
+  docente: Docente;
 
   @BeforeInsert()
   @BeforeUpdate()

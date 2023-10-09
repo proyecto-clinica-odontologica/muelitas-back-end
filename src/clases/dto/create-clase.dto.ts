@@ -22,4 +22,7 @@ export class CreateClaseDto {
       'El horario debe empezar con 2 palabras con la primera letra mayuscula y un espacio entre ellas',
   })
   Horario: string;
+
+  @IsNotEmpty()
+  idDocente: number;
 }

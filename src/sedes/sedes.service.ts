@@ -1,6 +1,11 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Empresa } from 'src/empresas/entities/empresa.entity';
+import { DataSource, Repository } from 'typeorm';
 import { CreateSedeDto } from './dto/create-sede.dto';
 import { UpdateSedeDto } from './dto/update-sede.dto';
 import { Sede } from './entities/sede.entity';
@@ -10,11 +15,30 @@ export class SedesService {
   constructor(
     @InjectRepository(Sede)
     private readonly dbSede: Repository<Sede>,
+
+    @InjectRepository(Empresa)
+    private readonly dbEmpresa: Repository<Empresa>,
+
+    private readonly dataSource: DataSource,
   ) {}
 
   async registrarSede(createSedeDto: CreateSedeDto) {
     try {
-      const sede = this.dbSede.create(createSedeDto);
+      const empresa = await this.dbEmpresa.findOne({
+        where: { id: createSedeDto.idEmpresa },
+      });
+
+      if (!empresa) {
+        throw new NotFoundException(
+          'no se encuentra la empresa registrada en la base de datos',
+        );
+      }
+
+      const sede = this.dbSede.create({
+        ...createSedeDto,
+        empresa: empresa,
+      });
+
       return await this.dbSede.save(sede);
     } catch (error) {
       if (error.code === '23505') {
@@ -55,33 +79,71 @@ export class SedesService {
   }
 
   async eliminarSede(id: number) {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
     try {
-      const sede = await this.dbSede.findOneBy({ id });
+      const sede = await this.dbSede.findOne({
+        where: { id },
+        relations: ['empresa'],
+      });
       if (!sede) {
-        throw new BadRequestException(`La sede con el id ${id} no existe`);
+        throw new NotFoundException(`La sede con el id ${id} no existe`);
       }
+      if (!sede.empresa) {
+        throw new NotFoundException(`La empresa no existe`);
+      }
+
       sede.activo = false;
-      await this.dbSede.save(sede);
-      await this.dbSede.softDelete(id);
+      sede.empresa.activo = false;
+
+      await queryRunner.manager.save([sede, sede.empresa]);
+      await queryRunner.manager.softDelete(Sede, id);
+      await queryRunner.manager.softDelete(Empresa, sede.empresa.id);
+      await queryRunner.commitTransaction();
+
       return { message: 'Sede eliminada' };
     } catch (error) {
+      await queryRunner.rollbackTransaction();
       throw error;
+    } finally {
+      await queryRunner.release();
     }
   }
 
   async restaurarSede(id: number) {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
     try {
-      await this.dbSede.restore(id);
+      const sede = await this.dbSede.findOne({
+        where: { id },
+        withDeleted: true,
+        relations: ['empresa'],
+      });
 
-      const sede = await this.dbSede.findOneBy({ id });
       if (!sede) {
-        throw new BadRequestException(`La sede con el id ${id} no existe`);
+        throw new NotFoundException(`La sede con el id ${id} no existe`);
       }
+      if (!sede.empresa) {
+        throw new NotFoundException(`La empresa con el id ${id} no existe`);
+      }
+
+      sede.deletedAt = null;
+      sede.empresa.deletedAt = null;
+
       sede.activo = true;
-      await this.dbSede.save(sede);
+      sede.empresa.activo = true;
+
+      await queryRunner.manager.save([sede, sede.empresa]);
+      await queryRunner.commitTransaction();
+
       return { message: 'Sede restaurada' };
     } catch (error) {
+      await queryRunner.rollbackTransaction();
       throw error;
+    } finally {
+      await queryRunner.release();
     }
   }
 }

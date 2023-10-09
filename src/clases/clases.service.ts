@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Docente } from 'src/docentes/entities/docente.entity';
 import { Repository } from 'typeorm';
 import { CreateClaseDto } from './dto/create-clase.dto';
 import { UpdateClaseDto } from './dto/update-clase.dto';
@@ -10,11 +11,30 @@ export class ClasesService {
   constructor(
     @InjectRepository(Clase)
     private readonly dbClase: Repository<Clase>,
+
+    @InjectRepository(Docente)
+    private readonly dbDocente: Repository<Docente>,
   ) {}
 
   async registrarClase(createClaseDto: CreateClaseDto) {
     try {
-      const clase = this.dbClase.create(createClaseDto);
+      const docente = await this.dbDocente.findOne({
+        where: { id: createClaseDto.idDocente },
+      });
+
+      if (!docente) {
+        throw new NotFoundException(
+          'El docente no se encuentra registrado en la base de datos',
+        );
+      }
+
+
+      const clase = this.dbClase.create({
+        ...createClaseDto,
+        docente: docente,
+      });
+
+
       return await this.dbClase.save(clase);
     } catch (error) {
       throw error;
