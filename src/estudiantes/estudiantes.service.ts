@@ -55,8 +55,7 @@ export class EstudiantesService {
 
   async obtenerEstudiantes() {
     try {
-      const usuarios = await this.dbEstudiante.find();
-      return usuarios;
+      return await this.dbEstudiante.find();
     } catch (error) {
       throw error;
     }
@@ -64,7 +63,10 @@ export class EstudiantesService {
 
   async obtenerEstudiantesEliminados() {
     try {
-      const usuarios = await this.dbEstudiante.find({ withDeleted: true });
+      const usuarios = await this.dbEstudiante.find({
+        withDeleted: true,
+        where: { activo: false },
+      });
       return usuarios;
     } catch (error) {
       throw error;
@@ -72,8 +74,6 @@ export class EstudiantesService {
   }
 
   async buscarUnEstudiantePorId(id: number) {
-    console.log(id);
-
     try {
       const estudiante = await this.dbEstudiante
         .createQueryBuilder('estudiante')
