@@ -53,14 +53,64 @@ export class SedesService {
 
   async obtenerSedes() {
     try {
-      return this.dbSede.find();
+      return await this.dbSede.find();
     } catch (error) {
       throw error;
     }
   }
 
-  async buscarUnaSede(id: number) {
+  async obtenerSedesEliminadas() {
     try {
+      return await this.dbSede.find({
+        withDeleted: true,
+        where: { activo: false },
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async buscarSedePorId(id: number) {
+    try {
+      const sede = await this.dbSede.findOne({
+        where: { id },
+        relations: ['empresa'],
+      });
+      if (!sede) {
+        throw new NotFoundException(`La sede con el id ${id} no existe`);
+      }
+
+      delete sede.activo;
+      delete sede.deletedAt;
+      delete sede.empresa.deletedAt;
+      delete sede.empresa.activo;
+      delete sede.empresa.sede;
+      delete sede.empresa.id;
+
+      return sede;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async buscarSedePorNombre(nombreSede: string) {
+    try {
+      const sede = await this.dbSede.findOne({
+        where: { Nombre: nombreSede },
+        relations: ['empresa'],
+      });
+      if (!sede) {
+        throw new NotFoundException(`La sede ${nombreSede} no existe`);
+      }
+
+      delete sede.activo;
+      delete sede.deletedAt;
+      delete sede.empresa.deletedAt;
+      delete sede.empresa.activo;
+      delete sede.empresa.sede;
+      delete sede.empresa.id;
+
+      return sede;
     } catch (error) {
       throw error;
     }

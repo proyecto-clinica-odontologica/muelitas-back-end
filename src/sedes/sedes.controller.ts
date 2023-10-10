@@ -26,9 +26,19 @@ export class SedesController {
     return this.sedesService.obtenerSedes();
   }
 
-  @Get(':id')
-  buscarUnaSede(@Param('id', ParseIntPipe) id: number) {
-    return this.sedesService.buscarUnaSede(id);
+  @Get('eliminados')
+  obtenerSedesEliminadas() {
+    return this.sedesService.obtenerSedesEliminadas();
+  }
+
+  @Get('search/id/:id')
+  buscarSedePorId(@Param('id', ParseIntPipe) id: number) {
+    return this.sedesService.buscarSedePorId(id);
+  }
+
+  @Get('search/nombre/:nombreSede')
+  buscarSedePorNombre(@Param('nombreSede') nombreSede: string) {
+    return this.sedesService.buscarSedePorNombre(nombreSede);
   }
 
   @Get('empresa/:nombreEmpresa')
