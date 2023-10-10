@@ -40,6 +40,11 @@ export class AuthService {
 
       return usuario;
     } catch (error) {
+      if (error.errno === 1062) {
+        throw new BadRequestException(
+          'El administrador con ese codigo de acceso ya existe',
+        );
+      }
       throw error;
     }
   }

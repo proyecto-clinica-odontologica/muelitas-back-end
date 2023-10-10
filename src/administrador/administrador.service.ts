@@ -66,8 +66,41 @@ export class AdministradorService {
     }
   }
 
-  async buscarUnAdministrador(id: number) {
+  async buscarAdministradorPorId(id: number) {
     try {
+      const administrador = await this.dbAdministrador
+        .createQueryBuilder('administrador')
+        .select(['administrador.NombreCompleto', 'administrador.CodigoAcceso'])
+        .where('administrador.id = :id', { id })
+        .getOne();
+
+      if (!administrador) {
+        throw new NotFoundException('El administrador no existe');
+      }
+
+      return administrador;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async buscarAdministradorPorNombre(nombre: string) {
+    try {
+      const administradores = await this.dbAdministrador
+        .createQueryBuilder('administrador')
+        .select(['administrador.NombreCompleto', 'administrador.CodigoAcceso'])
+        .where('administrador.NombreCompleto LIKE :nombre', {
+          nombre: nombre + '%',
+        })
+        .getMany();
+
+      if (!administradores.length) {
+        throw new NotFoundException(
+          'No se encontraron administradores con ese nombre',
+        );
+      }
+
+      return administradores;
     } catch (error) {
       throw error;
     }

@@ -16,8 +16,8 @@ export class EmpresasService {
       const empresa = this.dbEmpresa.create(createEmpresaDto);
       return await this.dbEmpresa.save(empresa);
     } catch (error) {
-      if (error.code === '23505') {
-        throw new Error('El RUC o la Razon social ya existe');
+      if (error.errno === 1062) {
+        throw new NotFoundException('El RUC o la Razon social ya existe');
       }
       throw error;
     }

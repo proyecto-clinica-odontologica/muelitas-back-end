@@ -35,9 +35,16 @@ export class AdministradorController {
     return this.administradorService.obtenerAdministradores();
   }
 
-  @Get(':id')
-  buscarUnAdministrador(@Param('id', ParseIntPipe) id: number) {
-    return this.administradorService.buscarUnAdministrador(id);
+  @Get('search/id/:id')
+  buscarAdministradorPorId(@Param('id', ParseIntPipe) id: number) {
+    return this.administradorService.buscarAdministradorPorId(id);
+  }
+
+  @Get('search/nombre/:nombreUsuario')
+  buscarAdministradorPorNombre(@Param('nombreUsuario') nombreUsuario: string) {
+    return this.administradorService.buscarAdministradorPorNombre(
+      nombreUsuario,
+    );
   }
 
   @Patch(':id')

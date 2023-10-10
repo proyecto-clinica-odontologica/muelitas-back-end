@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Curso } from 'src/cursos/entities/curso.entity';
 import { Docente } from 'src/docentes/entities/docente.entity';
@@ -51,6 +51,11 @@ export class ClasesService {
 
       return await this.dbClase.save(clase);
     } catch (error) {
+      if (error.errno === 1062) {
+        throw new BadRequestException(
+          'El registro ya existe en la base de datos',
+        );
+      }
       throw error;
     }
   }
@@ -165,7 +170,7 @@ export class ClasesService {
           'periodo.Nombre',
           'periodo.FechaInicio',
           'periodo.FechaFin',
-          'docente.NombreCompleto'
+          'docente.NombreCompleto',
         ])
         .getMany();
 
