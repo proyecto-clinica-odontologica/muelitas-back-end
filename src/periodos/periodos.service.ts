@@ -54,6 +54,23 @@ export class PeriodosService {
     }
   }
 
+  async buscarPeriodosPorSede(nombreSede: string) {
+    try {
+      const sedes = await this.dbSede.findOne({
+        where: { Nombre: nombreSede },
+        relations: ['periodo'],
+      });
+
+      if (!sedes) {
+        throw new NotFoundException('No existe la sede');
+      }
+
+      return sedes;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async actualizarPeriodo(id: number, updatePeriodoDto: UpdatePeriodoDto) {
     try {
       const periodo = await this.dbPeriodo.preload({
