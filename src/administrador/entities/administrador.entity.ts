@@ -1,9 +1,11 @@
+import { User } from 'src/auth/entities/user.entity';
 import {
   BeforeInsert,
   BeforeUpdate,
   Column,
   DeleteDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -23,6 +25,11 @@ export class Administrador {
 
   @Column({ type: 'boolean', default: true, nullable: true })
   activo?: boolean;
+
+  @ManyToOne(() => User, (user) => user.administrador, {
+    eager: true,
+  })
+  usuario: User;
 
   @BeforeInsert()
   @BeforeUpdate()

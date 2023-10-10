@@ -1,3 +1,4 @@
+import { Administrador } from 'src/administrador/entities/administrador.entity';
 import { Docente } from 'src/docentes/entities/docente.entity';
 import { Estudiante } from 'src/estudiantes/entities/estudiante.entity';
 import { Sede } from 'src/sedes/entities/sede.entity';
@@ -72,6 +73,9 @@ export class User {
 
   @ManyToOne(() => Sede, (sede) => sede.usuario)
   sede: Sede;
+
+  @OneToMany(() => Administrador, (administrador) => administrador.usuario)
+  administrador: Administrador[];
 
   @BeforeInsert()
   @BeforeUpdate()
