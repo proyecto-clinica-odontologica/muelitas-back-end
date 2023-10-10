@@ -26,9 +26,19 @@ export class PeriodosController {
     return this.periodosService.obtenerPeriodos();
   }
 
-  @Get(':id')
-  buscarUnPeriodo(@Param('id', ParseIntPipe) id: number) {
-    return this.periodosService.buscarUnPeriodo(id);
+  @Get('eliminados')
+  obtenerPeriodosEliminados() {
+    return this.periodosService.obtenerPeriodosEliminados();
+  }
+
+  @Get('search/id/:id')
+  buscarPeriodoPorId(@Param('id', ParseIntPipe) id: number) {
+    return this.periodosService.buscarPeriodoPorId(id);
+  }
+
+  @Get('search/nombre/:nombrePeriodo')
+  buscarPeriodoPorNombre(@Param('nombrePeriodo') nombrePeriodo: string) {
+    return this.periodosService.buscarPeriodoPorNombre(nombrePeriodo);
   }
 
   @Get('search/sede/:sede')

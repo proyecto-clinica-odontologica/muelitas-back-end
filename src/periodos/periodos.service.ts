@@ -47,8 +47,49 @@ export class PeriodosService {
     }
   }
 
-  async buscarUnPeriodo(id: number) {
+  async obtenerPeriodosEliminados() {
     try {
+      return await this.dbPeriodo.find({
+        withDeleted: true,
+        where: { activo: false },
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async buscarPeriodoPorId(id: number) {
+    try {
+      const periodo = await this.dbPeriodo.findOne({
+        where: { id },
+      });
+
+      if (!periodo) {
+        throw new NotFoundException('No existe el periodo');
+      }
+
+      return periodo;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async buscarPeriodoPorNombre(nombrePeriodo: string) {
+    try {
+      const periodo = await this.dbPeriodo.findOne({
+        where: { Nombre: nombrePeriodo },
+        select: ['id', 'Nombre', 'FechaInicio', 'FechaFin'],
+      });
+
+      if (!periodo) {
+        throw new NotFoundException('No existe el periodo');
+      }
+
+      delete periodo.sede.deletedAt;
+      delete periodo.sede.activo;
+      delete periodo.sede.id;
+
+      return periodo;
     } catch (error) {
       throw error;
     }
