@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
 } from '@nestjs/common';
@@ -25,9 +26,24 @@ export class EmpresasController {
     return this.empresasService.obtenerEmpresas();
   }
 
-  @Get(':id')
-  buscarUnaEmpresa(@Param('id') id: string) {
-    return this.empresasService.buscarUnaEmpresa(+id);
+  @Get('eliminados')
+  obtenerEmpresasEliminadas() {
+    return this.empresasService.obtenerEmpresasEliminadas();
+  }
+
+  @Get('search/id/:id')
+  buscarEmpresaPorId(@Param('id', ParseIntPipe) id: number) {
+    return this.empresasService.buscarEmpresaPorId(id);
+  }
+
+  @Get('search/nombre/:nombreEmpresa')
+  buscarEmpresaPorNombre(@Param('nombreEmpresa') nombreEmpresa: string) {
+    return this.empresasService.buscarEmpresaPorNombre(nombreEmpresa);
+  }
+
+  @Get('search/ruc/:rucEmpresa')
+  buscarEmpresaPorRuc(@Param('rucEmpresa') rucEmpresa: string) {
+    return this.empresasService.buscarEmpresaPorRuc(rucEmpresa);
   }
 
   @Patch(':id')
