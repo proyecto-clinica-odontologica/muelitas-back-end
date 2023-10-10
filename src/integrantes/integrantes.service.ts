@@ -50,14 +50,33 @@ export class IntegrantesService {
 
   async obtenerIntegrantes() {
     try {
-      return this.dbIntegrante.find();
+      return await this.dbIntegrante.find();
     } catch (error) {
       throw error;
     }
   }
 
-  async buscarUnIntegrante(id: number) {
+  async obtenerIntegrantesEliminados() {
     try {
+      return await this.dbIntegrante.find({
+        withDeleted: true,
+        where: { activo: false },
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async buscarIntegrantePorId(id: number) {
+    try {
+      const integrante = await this.dbIntegrante.findOne({
+        where: { id },
+        relations: ['estudiante', 'clase'],
+      }); 
+      if (!integrante) {
+        throw new NotFoundException('Integrante no encontrado');
+      }
+      return integrante;
     } catch (error) {
       throw error;
     }

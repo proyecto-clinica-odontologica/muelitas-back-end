@@ -26,9 +26,14 @@ export class IntegrantesController {
     return this.integrantesService.obtenerIntegrantes();
   }
 
-  @Get(':id')
-  buscarUnIntegrante(@Param('id', ParseIntPipe) id: number) {
-    return this.integrantesService.buscarUnIntegrante(+id);
+  @Get('eliminados')
+  obtenerIntegrantesEliminados() {
+    return this.integrantesService.obtenerIntegrantesEliminados();
+  }
+
+  @Get('search/id/:id')
+  buscarIntegrantePorId(@Param('id', ParseIntPipe) id: number) {
+    return this.integrantesService.buscarIntegrantePorId(+id);
   }
 
   @Patch(':id')
