@@ -39,7 +39,8 @@ export class SedesService {
         empresa: empresa,
       });
 
-      return await this.dbSede.save(sede);
+      const sedeCreada = await this.dbSede.save(sede);
+      return sedeCreada.empresa;
     } catch (error) {
       if (error.code === '23505') {
         throw new BadRequestException('El correo o el celular ya existe');
