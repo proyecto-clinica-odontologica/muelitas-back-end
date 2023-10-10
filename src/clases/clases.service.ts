@@ -70,26 +70,116 @@ export class ClasesService {
     }
   }
 
-  async BuscarClasePorPeriodo(idPeriodo: string) {
+  async BuscarClasePorPeriodo(nombrePeriodo: string) {
     try {
-      const clase = await this.dbPeriodo.find({
-        where: { Nombre: idPeriodo },
-        relations: ['clase'],
-      });
-      if (!clase.length) {
+      const clases = await this.dbPeriodo
+        .createQueryBuilder('periodo')
+        .innerJoinAndSelect(
+          'periodo.clase',
+          'clase',
+          'clase.periodoId = periodo.id',
+        )
+        .leftJoinAndSelect('clase.curso', 'curso')
+        .where('periodo.Nombre = :nombrePeriodo', { nombrePeriodo })
+        .select([
+          'clase.id',
+          'clase.Nombre',
+          'clase.Salon',
+          'clase.Horario',
+          'curso.id',
+          'curso.Nombre',
+          'periodo.Nombre',
+          'periodo.FechaInicio',
+          'periodo.FechaFin',
+        ])
+        .getMany();
+
+      if (!clases.length) {
         throw new NotFoundException('No existe clases para ese periodo');
       }
-      return clase;
+
+      return clases;
     } catch (error) {
       throw error;
     }
   }
-  async BuscarClasePorPeriodoDocente(idDocente: number, idPeriodo: number) {}
+
+  async BuscarClasePorPeriodoDocente(
+    nombreDocente: string,
+    nombrePeriodo: string,
+  ) {
+    try {
+      const clases = await this.dbClase
+        .createQueryBuilder('clase')
+        .innerJoinAndSelect('clase.docente', 'docente')
+        .innerJoinAndSelect('clase.periodo', 'periodo')
+        .innerJoinAndSelect('clase.curso', 'curso')
+        .where('docente.NombreCompleto = :nombreDocente', { nombreDocente })
+        .andWhere('periodo.Nombre = :nombrePeriodo', { nombrePeriodo })
+        .select([
+          'clase.id',
+          'clase.Nombre',
+          'clase.Salon',
+          'clase.Horario',
+          'curso.id',
+          'curso.Nombre',
+          'periodo.Nombre',
+          'periodo.FechaInicio',
+          'periodo.FechaFin',
+        ])
+        .getMany();
+
+      if (!clases.length) {
+        throw new NotFoundException(
+          'No existe clases para ese periodo con este docente',
+        );
+      }
+
+      return clases;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async BuscarClasePorPeriodoDocenteCurso(
-    idDocente: number,
-    idPeriodo: number,
-    idCurso: number,
-  ) {}
+    nombreDocente: string,
+    nombrePeriodo: string,
+    nombreCurso: string,
+  ) {
+    try {
+      const clases = await this.dbClase
+        .createQueryBuilder('clase')
+        .innerJoinAndSelect('clase.docente', 'docente')
+        .innerJoinAndSelect('clase.periodo', 'periodo')
+        .innerJoinAndSelect('clase.curso', 'curso')
+        .where('docente.NombreCompleto = :nombreDocente', { nombreDocente })
+        .andWhere('periodo.Nombre = :nombrePeriodo', { nombrePeriodo })
+        .andWhere('curso.Nombre = :nombreCurso', { nombreCurso })
+        .select([
+          'clase.id',
+          'clase.Nombre',
+          'clase.Salon',
+          'clase.Horario',
+          'curso.id',
+          'curso.Nombre',
+          'periodo.Nombre',
+          'periodo.FechaInicio',
+          'periodo.FechaFin',
+          'docente.NombreCompleto'
+        ])
+        .getMany();
+
+      if (!clases.length) {
+        throw new NotFoundException(
+          'No existe clases para ese periodo con este docente y curso',
+        );
+      }
+
+      return clases;
+    } catch (error) {
+      throw error;
+    }
+  }
 
   async actualizarClase(id: number, updateClaseDto: UpdateClaseDto) {
     try {

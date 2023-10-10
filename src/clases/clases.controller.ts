@@ -29,32 +29,32 @@ export class ClasesController {
     return this.clasesService.BuscarUnaClase(+id);
   }
 
-  @Get('periodo/:id')
-  BuscarClasePorPeriodo(@Param('id') id: string) {
-    return this.clasesService.BuscarClasePorPeriodo(id);
+  @Get('periodo/:nombrePeriodo')
+  BuscarClasePorPeriodo(@Param('nombrePeriodo') nombrePeriodo: string) {
+    return this.clasesService.BuscarClasePorPeriodo(nombrePeriodo);
   }
 
-  @Get('periodo-docente/:idDocente/:idPeriodo')
+  @Get('periodo-docente/:nombreDocente/:nombrePeriodo')
   BuscarClasePorPeriodoDocente(
-    @Param('idDocente') idDocente: number,
-    @Param('idPeriodo') idPeriodo: number,
+    @Param('nombreDocente') nombreDocente: string,
+    @Param('nombrePeriodo') nombrePeriodo: string,
   ) {
     return this.clasesService.BuscarClasePorPeriodoDocente(
-      idDocente,
-      idPeriodo,
+      nombreDocente,
+      nombrePeriodo,
     );
   }
 
-  @Get('periodo-docente-curso/:idDocente/:idPeriodo/:idCurso')
+  @Get('periodo-docente-curso/:nombreDocente/:nombrePeriodo/:nombreCurso')
   BuscarClasePorPeriodoDocenteCurso(
-    @Param('idDocente') idDocente: number,
-    @Param('idPeriodo') idPeriodo: number,
-    @Param('idCurso') idCurso: number,
+    @Param('nombreDocente') nombreDocente: string,
+    @Param('nombrePeriodo') nombrePeriodo: string,
+    @Param('nombreCurso') nombreCurso: string,
   ) {
     return this.clasesService.BuscarClasePorPeriodoDocenteCurso(
-      idDocente,
-      idPeriodo,
-      idCurso,
+      nombreDocente,
+      nombrePeriodo,
+      nombreCurso,
     );
   }
 
