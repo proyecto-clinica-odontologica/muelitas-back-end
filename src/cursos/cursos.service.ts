@@ -30,8 +30,39 @@ export class CursosService {
     }
   }
 
-  async buscarUnCurso(id: number) {
+  async obtenerCursosEliminados() {
     try {
+      return await this.dbCurso.find({ withDeleted: true });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async buscarCursoPorId(id: number) {
+    try {
+      const curso = await this.dbCurso.findOne({
+        where: { id },
+        select: ['Nombre', 'Semestre', 'Malla'],
+      });
+      if (!curso) {
+        throw new NotFoundException('Curso no existe');
+      }
+      return curso;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async buscarCursoPorNombre(nombre: string) {
+    try {
+      const curso = await this.dbCurso.findOne({
+        where: { Nombre: nombre },
+        select: ['Nombre', 'Semestre', 'Malla'],
+      });
+      if (!curso) {
+        throw new NotFoundException('Curso no existe');
+      }
+      return curso;
     } catch (error) {
       throw error;
     }

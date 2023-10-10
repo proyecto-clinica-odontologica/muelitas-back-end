@@ -26,9 +26,19 @@ export class CursosController {
     return this.cursosService.obtenerCursos();
   }
 
-  @Get(':id')
-  buscarUnCurso(@Param('id', ParseIntPipe) id: number) {
-    return this.cursosService.buscarUnCurso(id);
+  @Get('eliminados')
+  obtenerCursosEliminados() {
+    return this.cursosService.obtenerCursosEliminados();
+  }
+
+  @Get('search/id/:id')
+  buscarCursoPorId(@Param('id', ParseIntPipe) id: number) {
+    return this.cursosService.buscarCursoPorId(id);
+  }
+
+  @Get('search/nombre/:nombre')
+  buscarCursoPorNombre(@Param('nombre') nombre: string) {
+    return this.cursosService.buscarCursoPorNombre(nombre);
   }
 
   @Patch(':id')
