@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Curso } from 'src/cursos/entities/curso.entity';
 import { Docente } from 'src/docentes/entities/docente.entity';
@@ -68,8 +72,52 @@ export class ClasesService {
     }
   }
 
-  async BuscarUnaClase(id: number) {
+  async buscarClasePorId(id: number) {
     try {
+      const clase = await this.dbClase.findOne({
+        where: { id },
+        relations: ['docente', 'curso', 'periodo'],
+        select: ['id', 'Nombre', 'Salon', 'Horario'],
+        join: {
+          alias: 'clase',
+          leftJoinAndSelect: {
+            docente: 'clase.docente',
+            curso: 'clase.curso',
+            periodo: 'clase.periodo',
+          },
+        },
+      });
+
+      if (!clase) {
+        throw new NotFoundException('Clase no existe');
+      }
+
+      if (clase.docente) {
+        delete clase.docente.id;
+        delete clase.docente.activo;
+        delete clase.docente.deletedAt;
+        delete clase.docente.usuario;
+      }
+
+      if (clase.curso) {
+        delete clase.curso.id;
+        delete clase.curso.activo;
+        delete clase.curso.deletedAt;
+      }
+
+      if (clase.periodo) {
+        delete clase.periodo.id;
+        delete clase.periodo.activo;
+        delete clase.periodo.deletedAt;
+      }
+
+      if (clase.periodo.sede) {
+        delete clase.periodo.sede.id;
+        delete clase.periodo.sede.activo;
+        delete clase.periodo.sede.deletedAt;
+      }
+
+      return clase;
     } catch (error) {
       throw error;
     }
@@ -104,6 +152,57 @@ export class ClasesService {
       }
 
       return clases;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async buscarClasePorNombre(nombreClase: string) {
+    try {
+      const clase = await this.dbClase.findOne({
+        where: { Nombre: nombreClase },
+        relations: ['docente', 'curso', 'periodo'],
+        select: ['id', 'Nombre', 'Salon', 'Horario'],
+        join: {
+          alias: 'clase',
+          leftJoinAndSelect: {
+            docente: 'clase.docente',
+            curso: 'clase.curso',
+            periodo: 'clase.periodo',
+          },
+        },
+      });
+
+      if (!clase) {
+        throw new NotFoundException('Clase no existe');
+      }
+
+      if (clase.docente) {
+        delete clase.docente.id;
+        delete clase.docente.activo;
+        delete clase.docente.deletedAt;
+        delete clase.docente.usuario;
+      }
+
+      if (clase.curso) {
+        delete clase.curso.id;
+        delete clase.curso.activo;
+        delete clase.curso.deletedAt;
+      }
+
+      if (clase.periodo) {
+        delete clase.periodo.id;
+        delete clase.periodo.activo;
+        delete clase.periodo.deletedAt;
+      }
+
+      if (clase.periodo.sede) {
+        delete clase.periodo.sede.id;
+        delete clase.periodo.sede.activo;
+        delete clase.periodo.sede.deletedAt;
+      }
+
+      return clase;
     } catch (error) {
       throw error;
     }

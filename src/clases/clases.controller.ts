@@ -24,9 +24,14 @@ export class ClasesController {
     return this.clasesService.obtenerClases();
   }
 
-  @Get(':id')
-  BuscarUnaClase(@Param('id') id: string) {
-    return this.clasesService.BuscarUnaClase(+id);
+  @Get('search/id/:id')
+  buscarClasePorId(@Param('id') id: number) {
+    return this.clasesService.buscarClasePorId(id);
+  }
+
+  @Get('search/clase/:nombreClase')
+  buscarClasePorNombre(@Param('nombreClase') nombreClase: string) {
+    return this.clasesService.buscarClasePorNombre(nombreClase);
   }
 
   @Get('periodo/:nombrePeriodo')

@@ -42,7 +42,7 @@ export class AuthService {
     } catch (error) {
       if (error.errno === 1062) {
         throw new BadRequestException(
-          'El administrador con ese codigo de acceso ya existe',
+          'El correo o el numero de documento o el celular ya se encuentra registrado',
         );
       }
       throw error;
