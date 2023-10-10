@@ -39,4 +39,9 @@ export class UsersController {
   buscarUsuarioPorId(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.buscarUsuarioPorId(id);
   }
+
+  @Get('search/sede/:sede')
+  buscarUsuarioPorSede(@Param('sede') sede: string) {
+    return this.usersService.buscarUsuarioPorSede(sede);
+  }
 }

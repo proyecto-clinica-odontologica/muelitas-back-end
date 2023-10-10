@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Sede } from 'src/sedes/entities/sede.entity';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 
@@ -8,6 +9,9 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly dbUser: Repository<User>,
+
+    @InjectRepository(Sede)
+    private readonly dbSede: Repository<Sede>,
   ) {}
 
   async obtenerUsuarios() {
@@ -84,6 +88,26 @@ export class UsersService {
         );
       }
       return usuario;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async buscarUsuarioPorSede(nombreSede: string) {
+    try {
+      const sede = await this.dbSede.findOne({
+        where: { Nombre: nombreSede },
+        relations: ['usuario'],
+      });
+
+      if (!sede) {
+        throw new NotFoundException(
+          `La sede ${nombreSede} no existe en la base de datos`,
+        );
+      }
+
+      console.log(sede.usuario);
+      return sede.usuario;
     } catch (error) {
       throw error;
     }
