@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { Sede } from 'src/sedes/entities/sede.entity';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
@@ -14,12 +15,23 @@ export class UsersService {
     private readonly dbSede: Repository<Sede>,
   ) {}
 
-  async obtenerUsuarios() {
-    return this.dbUser.find();
+  async obtenerUsuarios(paginationDto: PaginationDto) {
+    paginationDto.order = paginationDto.order === 'desc' ? 'DESC' : 'ASC';
+
+    const { page = 0, limit = 10, order = 'ASC' } = paginationDto;
+    return await this.dbUser.find({
+      take: limit,
+      skip: page,
+      order: { Nombre: order },
+      select: ['id', 'Nombre', 'Apellido', 'Correo', 'Celular', 'Rol'],
+    });
   }
 
   async obtenerUsuariosEliminados() {
-    return this.dbUser.find({ withDeleted: true });
+    return await this.dbUser.find({
+      withDeleted: true,
+      where: { activo: false },
+    });
   }
 
   async buscarUsuarioPorCorreo(correo: string) {

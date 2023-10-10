@@ -1,4 +1,5 @@
-import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { UsersService } from './users.service';
 
 @Controller('usuario')
@@ -6,8 +7,8 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  obtenerUsuarios() {
-    return this.usersService.obtenerUsuarios();
+  obtenerUsuarios(@Query() paginationDto: PaginationDto) {
+    return this.usersService.obtenerUsuarios(paginationDto);
   }
 
   @Get('eliminados')
