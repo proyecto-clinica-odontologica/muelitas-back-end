@@ -31,6 +31,11 @@ export class SedesController {
     return this.sedesService.buscarUnaSede(id);
   }
 
+  @Get('empresa/:nombreEmpresa')
+  buscarSedesPorEmpresa(@Param('nombreEmpresa') nombreEmpresa: string) {
+    return this.sedesService.buscarSedesPorEmpresa(nombreEmpresa);
+  }
+
   @Patch(':id')
   actualizarSede(
     @Param('id', ParseIntPipe) id: number,

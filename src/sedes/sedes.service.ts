@@ -63,6 +63,23 @@ export class SedesService {
     }
   }
 
+  async buscarSedesPorEmpresa(nombreEmpresa: string) {
+    try {
+      const empresa = await this.dbEmpresa.findOne({
+        where: { RazonSocial: nombreEmpresa },
+        relations: ['sede'],
+      });
+
+      if (!empresa) {
+        throw new NotFoundException(`La empresa ${nombreEmpresa} no existe`);
+      }
+
+      return empresa.sede;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async actualizarSede(id: number, updateSedeDto: UpdateSedeDto) {
     try {
       const sedes = await this.dbSede.preload({
