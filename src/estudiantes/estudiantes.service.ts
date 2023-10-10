@@ -71,8 +71,47 @@ export class EstudiantesService {
     }
   }
 
-  async buscarUnEstudiante(id: number) {
+  async buscarUnEstudiantePorId(id: number) {
+    console.log(id);
+
     try {
+      const estudiante = await this.dbEstudiante
+        .createQueryBuilder('estudiante')
+        .select([
+          'estudiante.id',
+          'estudiante.NombreCompleto',
+          'estudiante.Firma',
+        ])
+        .where('estudiante.id = :id', { id })
+        .getOne();
+
+      if (!estudiante) {
+        throw new NotFoundException('El estudiante no existe');
+      }
+
+      return estudiante;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async buscarUnEstudiantePorNombre(nombre: string) {
+    try {
+      const estudiante = await this.dbEstudiante
+        .createQueryBuilder('estudiante')
+        .select([
+          'estudiante.id',
+          'estudiante.NombreCompleto',
+          'estudiante.Firma',
+        ])
+        .where('estudiante.NombreCompleto = :nombre', { nombre })
+        .getOne();
+
+      if (!estudiante) {
+        throw new NotFoundException('El estudiante no existe');
+      }
+
+      return estudiante;
     } catch (error) {
       throw error;
     }

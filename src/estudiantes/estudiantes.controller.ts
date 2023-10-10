@@ -31,9 +31,14 @@ export class EstudiantesController {
     return this.estudiantesService.obtenerEstudiantesEliminados();
   }
 
-  @Get(':id')
-  buscarUnEstudiante(@Param('id') id: string) {
-    return this.estudiantesService.buscarUnEstudiante(+id);
+  @Get('search/id/:id')
+  buscarUnEstudiantePorId(@Param('id', ParseIntPipe) id: number) {
+    return this.estudiantesService.buscarUnEstudiantePorId(id);
+  }
+
+  @Get('search/nombre/:nombre')
+  buscarUnEstudiantePorNombre(@Param('nombre') nombre: string) {
+    return this.estudiantesService.buscarUnEstudiantePorNombre(nombre);
   }
 
   @Patch(':id')
