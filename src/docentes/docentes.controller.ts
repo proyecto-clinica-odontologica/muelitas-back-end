@@ -26,9 +26,19 @@ export class DocentesController {
     return this.docentesService.ObtenerDocentes();
   }
 
-  @Get(':id')
-  obtenerUnDocente(@Param('id', ParseIntPipe) id: number) {
-    return this.docentesService.obtenerUnDocente(id);
+  @Get('eliminados')
+  obtenerDocentesEliminados() {
+    return this.docentesService.obtenerDocentesEliminados();
+  }
+
+  @Get('search/id/:id')
+  buscarDocentePorId(@Param('id', ParseIntPipe) id: number) {
+    return this.docentesService.buscarDocentePorId(id);
+  }
+
+  @Get('search/nombre/:nombre')
+  buscarDocentePorNombre(@Param('nombre') nombre: string) {
+    return this.docentesService.buscarDocentePorNombre(nombre);
   }
 
   @Patch(':id')

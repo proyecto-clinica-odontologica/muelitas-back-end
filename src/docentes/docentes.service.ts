@@ -61,8 +61,49 @@ export class DocentesService {
     }
   }
 
-  async obtenerUnDocente(id: number) {
+  async obtenerDocentesEliminados() {
     try {
+      return await this.dbDocente.find({ withDeleted: true });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async buscarDocentePorId(id: number) {
+    try {
+      const docente = await this.dbDocente.findOne({
+        where: { id },
+        select: ['id', 'NombreCompleto', 'Colegiatura', 'FirmaDigital'],
+        relations: ['clases'],
+      });
+
+      if (!docente) {
+        throw new NotFoundException('Docente no existe');
+      }
+
+      delete docente.usuario;
+
+      return docente;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async buscarDocentePorNombre(nombre: string) {
+    try {
+      const docente = await this.dbDocente.findOne({
+        where: { NombreCompleto: nombre },
+        select: ['id', 'NombreCompleto', 'Colegiatura', 'FirmaDigital'],
+        relations: ['clases'],
+      });
+
+      if (!docente) {
+        throw new NotFoundException('Docente no existe');
+      }
+
+      delete docente.usuario;
+
+      return docente;
     } catch (error) {
       throw error;
     }
