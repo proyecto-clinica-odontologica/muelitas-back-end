@@ -63,7 +63,10 @@ export class DocentesService {
 
   async obtenerDocentesEliminados() {
     try {
-      return await this.dbDocente.find({ withDeleted: true });
+      return await this.dbDocente.find({
+        withDeleted: true,
+        where: { activo: false },
+      });
     } catch (error) {
       throw error;
     }

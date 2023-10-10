@@ -1,5 +1,5 @@
 version: '3'
-
+name: muelitas-app
 services:
   muelitasbackend:
     depends_on:
@@ -8,7 +8,7 @@ services:
       context: .
       dockerfile: Dockerfile
     image: muelitas-app
-    container_name: muelitas-backend
+    container_name: muelitas_backend
     restart: always
     ports:
       - "${PORT}:${PORT}"
