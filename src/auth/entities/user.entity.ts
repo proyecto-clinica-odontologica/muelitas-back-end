@@ -60,9 +60,7 @@ export class User {
   @OneToMany(() => Estudiante, (estudiante) => estudiante.usuario)
   estudiante?: Estudiante[];
 
-  @OneToMany(() => Docente, (docente) => docente.usuario, {
-    onDelete: 'CASCADE',
-  })
+  @OneToMany(() => Docente, (docente) => docente.usuario)
   docente: Docente[];
 
   @Column({ type: 'varchar', default: 'dni' })

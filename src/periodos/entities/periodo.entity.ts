@@ -31,10 +31,7 @@ export class Periodo {
   @Column({ type: 'boolean', default: true })
   activo: boolean;
 
-  @ManyToOne(() => Sede, (sede) => sede.periodo, {
-    eager: true,
-    cascade: true,
-  })
+  @ManyToOne(() => Sede, (sede) => sede.periodo)
   sede: Sede;
 
   @OneToMany(() => Clase, (clase) => clase.periodo)

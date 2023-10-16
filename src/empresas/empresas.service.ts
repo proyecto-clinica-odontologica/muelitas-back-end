@@ -25,7 +25,10 @@ export class EmpresasService {
 
   async obtenerEmpresas() {
     try {
-      return this.dbEmpresa.find();
+      const empresa = await this.dbEmpresa.find({
+        select: ['id', 'Representante', 'RazonSocial', 'Ruc'],
+      });
+      return empresa;
     } catch (error) {
       throw error;
     }

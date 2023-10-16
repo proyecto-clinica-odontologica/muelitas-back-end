@@ -55,7 +55,9 @@ export class DocentesService {
 
   async ObtenerDocentes() {
     try {
-      return await this.dbDocente.find();
+      const docentes = await this.dbDocente.find();
+      console.log(docentes);
+      return docentes;
     } catch (error) {
       throw error;
     }
@@ -74,19 +76,27 @@ export class DocentesService {
 
   async buscarDocentePorId(id: number) {
     try {
-      const docente = await this.dbDocente.findOne({
-        where: { id },
-        select: ['id', 'NombreCompleto', 'Colegiatura', 'FirmaDigital'],
-        relations: ['clases'],
+      const usuario = await this.dbUser.findOne({
+        where: {
+          Rol: 'docente',
+          docente: {
+            id: id,
+          },
+        },
+        relations: ['sede', 'docente'],
       });
 
-      if (!docente) {
-        throw new NotFoundException('Docente no existe');
+      if (!usuario) {
+        throw new NotFoundException('El usuario no existe');
       }
 
-      delete docente.usuario;
+      const nDocente = usuario.docente[0];
+      const { docente, ...resto } = usuario;
 
-      return docente;
+      return {
+        ...resto,
+        docente: nDocente,
+      };
     } catch (error) {
       throw error;
     }

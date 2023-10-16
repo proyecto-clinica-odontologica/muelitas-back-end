@@ -26,9 +26,7 @@ export class Administrador {
   @Column({ type: 'boolean', default: true, nullable: true })
   activo?: boolean;
 
-  @ManyToOne(() => User, (user) => user.administrador, {
-    eager: true,
-  })
+  @ManyToOne(() => User, (user) => user.administrador)
   usuario: User;
 
   @BeforeInsert()

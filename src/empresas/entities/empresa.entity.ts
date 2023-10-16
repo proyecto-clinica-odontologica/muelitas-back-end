@@ -29,10 +29,7 @@ export class Empresa {
   @Column({ type: 'boolean', default: true })
   activo: boolean;
 
-  @OneToMany(() => Sede, (sede) => sede.empresa, {
-    eager: true,
-    cascade: true,
-  })
+  @OneToMany(() => Sede, (sede) => sede.empresa)
   sede: Sede[];
 
   @BeforeInsert()

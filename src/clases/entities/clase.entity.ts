@@ -36,16 +36,10 @@ export class Clase {
   @ManyToOne(() => Docente, (docente) => docente.usuario)
   docente: Docente;
 
-  @ManyToOne(() => Curso, (curso) => curso.clase, {
-    eager: true,
-    cascade: true,
-  })
+  @ManyToOne(() => Curso, (curso) => curso.clase)
   curso: Curso;
 
-  @ManyToOne(() => Periodo, (periodo) => periodo.clase, {
-    eager: true,
-    cascade: true,
-  })
+  @ManyToOne(() => Periodo, (periodo) => periodo.clase)
   periodo: Periodo;
 
   @OneToMany(() => Integrante, (integrante) => integrante.clase)

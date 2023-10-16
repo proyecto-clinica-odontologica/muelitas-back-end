@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/auth/entities/user.entity';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { Sede } from 'src/sedes/entities/sede.entity';
 import { Repository } from 'typeorm';
-import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
@@ -19,12 +19,13 @@ export class UsersService {
     paginationDto.order = paginationDto.order === 'desc' ? 'DESC' : 'ASC';
 
     const { page = 0, limit = 10, order = 'ASC' } = paginationDto;
-    return await this.dbUser.find({
+    const usuarios = await this.dbUser.find({
       take: limit,
       skip: page,
-      order: { Nombre: order },
+      relations: ['sede'],
       select: ['id', 'Nombre', 'Apellido', 'Correo', 'Celular', 'Rol'],
     });
+    return usuarios;
   }
 
   async obtenerUsuariosEliminados() {
@@ -100,6 +101,30 @@ export class UsersService {
         );
       }
       return usuario;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async buscarDocentePorSede(idSede: number) {
+    console.log(idSede);
+    try {
+      const sede = await this.dbUser.find({
+        where: {
+          Rol: 'docente',
+          sede: {
+            id: idSede,
+          },
+        },
+      });
+
+      if (!sede) {
+        throw new NotFoundException(
+          `La sede con el id ${idSede} no existe en la base de datos`,
+        );
+      }
+
+      return sede;
     } catch (error) {
       throw error;
     }

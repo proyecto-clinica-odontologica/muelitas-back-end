@@ -31,11 +31,7 @@ export class Docente {
   @Column({ type: 'boolean', default: true, nullable: true })
   activo?: boolean;
 
-  @ManyToOne(() => User, (usuario) => usuario.docente, {
-    eager: true,
-    onDelete: 'CASCADE',
-    cascade: true,
-  })
+  @ManyToOne(() => User, (usuario) => usuario.docente)
   usuario: User;
 
   @OneToMany(() => Clase, (clase) => clase.docente)

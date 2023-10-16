@@ -13,16 +13,10 @@ export class Integrante {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @ManyToOne(() => Estudiante, (estudiante) => estudiante.integrante, {
-    eager: true,
-    cascade: true,
-  })
+  @ManyToOne(() => Estudiante, (estudiante) => estudiante.integrante)
   estudiante: Estudiante;
 
-  @ManyToOne(() => Clase, (clase) => clase.integrante, {
-    eager: true,
-    cascade: true,
-  })
+  @ManyToOne(() => Clase, (clase) => clase.integrante)
   clase: Clase;
 
   @DeleteDateColumn({ type: 'timestamp', nullable: true, default: null })

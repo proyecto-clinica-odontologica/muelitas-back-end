@@ -28,10 +28,7 @@ export class Estudiante {
   @Column({ type: 'boolean', default: true, nullable: true })
   activo?: boolean;
 
-  @ManyToOne(() => User, (user) => user.estudiante, {
-    eager: true,
-    cascade: true,
-  })
+  @ManyToOne(() => User, (user) => user.estudiante)
   usuario: User;
 
   @OneToMany(() => Integrante, (integrante) => integrante.estudiante)
