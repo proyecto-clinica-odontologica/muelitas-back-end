@@ -5,8 +5,9 @@ import {
     DeleteDateColumn,
     Entity,
     PrimaryGeneratedColumn,
+    OneToMany
   } from 'typeorm';
-  
+  import { CasoClinico } from 'src/casosclinicos/entities/casoclinico.entity'; 
   @Entity()
   export class SubCasoClinico {
     @PrimaryGeneratedColumn('increment')
@@ -20,6 +21,9 @@ import {
 
     @DeleteDateColumn({ type: 'timestamp', default: null, nullable: true })
     deletedAt?: Date;
+
+    @OneToMany(() => CasoClinico, (casoclinico) => casoclinico.id)
+    casoClinico: CasoClinico[];
   
     @BeforeInsert()
     @BeforeUpdate()

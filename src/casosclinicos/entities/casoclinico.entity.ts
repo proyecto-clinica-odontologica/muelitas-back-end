@@ -5,8 +5,10 @@ import {
     DeleteDateColumn,
     Entity,
     PrimaryGeneratedColumn,
+    ManyToOne,
+    JoinColumn
   } from 'typeorm';
-  
+  import { SubCasoClinico } from 'src/subcasoclinico/entities/subcasoclinico.entity'; 
   @Entity()
   export class CasoClinico {
     @PrimaryGeneratedColumn('increment')
@@ -20,6 +22,11 @@ import {
 
     @Column({ type: 'boolean', default: true, nullable: true })
     activo?: boolean;
+
+    @ManyToOne(() => SubCasoClinico, (subCasoClinico) => subCasoClinico.casoClinico)   
+    @JoinColumn({name: 'idCasoclinico'})
+    subCasoClinico: SubCasoClinico;
+
   
     @BeforeInsert()
     @BeforeUpdate()
