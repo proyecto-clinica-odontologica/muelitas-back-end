@@ -18,7 +18,7 @@ export class CasosclinicosService {
       return nombre;
     } catch (error) {
       if (error.code === '23505') {
-        throw new BadRequestException('El usuario ya existe');
+        throw new BadRequestException('El caso clinico ya existe');
       }
       throw error;
     }

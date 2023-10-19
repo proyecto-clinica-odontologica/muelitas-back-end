@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JoiValidationSchema } from './config/joi.config';
 import { AuthModule } from './auth/auth.module';
+import { SubcasoclinicoModule } from './subcasoclinico/subcasoclinico.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { AuthModule } from './auth/auth.module';
       autoLoadEntities: true,
     }),
     AuthModule,
+    SubcasoclinicoModule,
   ],
   controllers: [],
   providers: [],
