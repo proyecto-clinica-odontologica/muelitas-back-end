@@ -17,6 +17,7 @@ import { SedesModule } from './sedes/sedes.module';
 import { SeedModule } from './seed/seed.module';
 import { UsersModule } from './users/users.module';
 import { PacienteModule } from './paciente/paciente.module';
+import { OdontogramaModule } from './odontograma/odontograma.module';
 
 @Module({
   imports: [
@@ -51,6 +52,7 @@ import { PacienteModule } from './paciente/paciente.module';
     ClasesModule,
     CursosModule,
     IntegrantesModule,
+    OdontogramaModule,
   ],
   controllers: [],
   providers: [],
