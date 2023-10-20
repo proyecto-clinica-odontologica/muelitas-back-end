@@ -31,4 +31,5 @@ export class CitaController {
   remove(@Param('id') id: number) {
     return this.citaService.remove(id);
   }
+  
 }

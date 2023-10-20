@@ -5,8 +5,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Cita } from './entities/cita.entity';
 import { Repository } from 'typeorm';
 import { Tratamiento } from 'src/tratamiento/entities/tratamiento.entity';
-import { number } from 'joi';
-import { promises } from 'dns';
 
 @Injectable()
 export class CitaService {
@@ -14,7 +12,6 @@ export class CitaService {
   constructor(
     @InjectRepository(Cita) private readonly citaRepository: Repository<Cita>,
     @InjectRepository(Tratamiento) private readonly tratamientoRepository: Repository<Tratamiento>
-
     ){}
 
   async create(createCitaDto: CreateCitaDto) {
