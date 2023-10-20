@@ -16,6 +16,7 @@ import { PeriodosModule } from './periodos/periodos.module';
 import { SedesModule } from './sedes/sedes.module';
 import { SeedModule } from './seed/seed.module';
 import { UsersModule } from './users/users.module';
+import { PacienteModule } from './paciente/paciente.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { UsersModule } from './users/users.module';
     SedesModule,
     PeriodosModule,
     EmpresasModule,
+    PacienteModule,
     ClasesModule,
     CursosModule,
     IntegrantesModule,
