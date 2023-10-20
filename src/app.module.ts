@@ -3,6 +3,9 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JoiValidationSchema } from './config/joi.config';
 import { AuthModule } from './auth/auth.module';
+import { CitaModule } from './cita/cita.module';
+import { SeguimientoModule } from './seguimiento/seguimiento.module';
+import { TratamientoModule } from './tratamiento/tratamiento.module';
 
 @Module({
   imports: [
@@ -22,6 +25,9 @@ import { AuthModule } from './auth/auth.module';
       autoLoadEntities: true,
     }),
     AuthModule,
+    CitaModule,
+    SeguimientoModule,
+    TratamientoModule,
   ],
   controllers: [],
   providers: [],
