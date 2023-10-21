@@ -186,6 +186,7 @@ export class DocentesService {
       if (!docente) {
         throw new NotFoundException('No existe el docente que desea restaurar');
       }
+
       if (!docente.usuario) {
         throw new NotFoundException('No existe usuario');
       }

@@ -4,13 +4,14 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
 } from '@nestjs/common';
 import { ClasesService } from './clases.service';
 import { CreateClaseDto } from './dto/create-clase.dto';
 
-@Controller('clases')
+@Controller('clase')
 export class ClasesController {
   constructor(private readonly clasesService: ClasesService) {}
 
@@ -34,35 +35,6 @@ export class ClasesController {
     return this.clasesService.buscarClasePorNombre(nombreClase);
   }
 
-  @Get('periodo/:nombrePeriodo')
-  BuscarClasePorPeriodo(@Param('nombrePeriodo') nombrePeriodo: string) {
-    return this.clasesService.BuscarClasePorPeriodo(nombrePeriodo);
-  }
-
-  @Get('periodo-docente/:nombreDocente/:nombrePeriodo')
-  BuscarClasePorPeriodoDocente(
-    @Param('nombreDocente') nombreDocente: string,
-    @Param('nombrePeriodo') nombrePeriodo: string,
-  ) {
-    return this.clasesService.BuscarClasePorPeriodoDocente(
-      nombreDocente,
-      nombrePeriodo,
-    );
-  }
-
-  @Get('periodo-docente-curso/:nombreDocente/:nombrePeriodo/:nombreCurso')
-  BuscarClasePorPeriodoDocenteCurso(
-    @Param('nombreDocente') nombreDocente: string,
-    @Param('nombrePeriodo') nombrePeriodo: string,
-    @Param('nombreCurso') nombreCurso: string,
-  ) {
-    return this.clasesService.BuscarClasePorPeriodoDocenteCurso(
-      nombreDocente,
-      nombrePeriodo,
-      nombreCurso,
-    );
-  }
-
   @Delete(':id')
   eliminarClase(@Param('id') id: string) {
     return this.clasesService.eliminarClase(+id);
@@ -71,5 +43,34 @@ export class ClasesController {
   @Patch('restaurar/:id')
   restaurarClase(@Param('id') id: string) {
     return this.clasesService.restaurarClase(+id);
+  }
+//! DESDE ACA
+  @Get('/periodo/:idPeriodo')
+  obtenerClasesPorPeriodo(@Param('idPeriodo', ParseIntPipe) idPeriodo: number) {
+    return this.clasesService.obtenerClasesPorPeriodo(idPeriodo);
+  }
+
+  @Get('/periodo-docente/:idDocente/:idPeriodo')
+  obtenerClasesPorPeriodoDocente(
+    @Param('idDocente', ParseIntPipe) idDocente: number,
+    @Param('idPeriodo', ParseIntPipe) idPeriodo: number,
+  ) {
+    return this.clasesService.obtenerClasesPorPeriodoDocente(
+      idDocente,
+      idPeriodo,
+    );
+  }
+
+  @Get('/periodo-docente-curso/:idDocente/:idPeriodo/:idCurso')
+  obtenerClasesPorPeriodoDocenteCurso(
+    @Param('idDocente', ParseIntPipe) idDocente: number,
+    @Param('idPeriodo', ParseIntPipe) idPeriodo: number,
+    @Param('idCurso', ParseIntPipe) idCurso: number,
+  ) {
+    return this.clasesService.obtenerClasesPorPeriodoDocenteCurso(
+      idDocente,
+      idPeriodo,
+      idCurso,
+    );
   }
 }
