@@ -29,5 +29,5 @@ export class CreateDocenteDto {
   FirmaDigital: string;
 
   @IsNotEmpty()
-  idUsuario: number;
+  UsuarioId: number;
 }

@@ -25,7 +25,7 @@ export class DocentesService {
   async registrarDocente(createDocenteDto: CreateDocenteDto) {
     try {
       const usuario = await this.dbUser.findOne({
-        where: { id: createDocenteDto.idUsuario, Rol: 'docente' },
+        where: { id: createDocenteDto.UsuarioId, Rol: 'docente' },
       });
 
       if (!usuario) {
@@ -55,8 +55,10 @@ export class DocentesService {
 
   async ObtenerDocentes() {
     try {
-      const docentes = await this.dbDocente.find();
-      console.log(docentes);
+      const docentes = await this.dbDocente.find({
+        select: ['id', 'NombreCompleto', 'Colegiatura', 'FirmaDigital'],
+      });
+
       return docentes;
     } catch (error) {
       throw error;
