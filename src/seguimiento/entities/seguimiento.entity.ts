@@ -3,14 +3,12 @@ import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "t
 
 @Entity()
 export class Seguimiento {
-    @PrimaryGeneratedColumn()
-    seguimiento_id: number;
-    @Column()
-    seguimiento_nombre: string;
+    @PrimaryGeneratedColumn('increment')
+    id: number;
 
-    @ManyToOne(()=> Cita, (cita)=> cita.seguimientos, {
-        eager: true
-    })
-    @JoinColumn({name: 'cita_id'})
+    @Column({type: 'varchar', length: 255})
+    Nombre: string;
+
+    @ManyToOne(()=> Cita, (cita)=> cita.seguimientos)
     cita: Cita;
 }

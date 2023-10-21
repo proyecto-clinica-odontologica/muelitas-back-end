@@ -1,11 +1,15 @@
-import { IsNumber, IsOptional, IsString } from "class-validator";
+import { IsInt, IsNotEmpty } from 'class-validator';
 
 export class CreateCitaDto {
-    @IsNumber()
-    paciente_id: number;
-    @IsNumber()
-    estudiante_id: number;
-    @IsString()
-    @IsOptional()
-    tratamiento?: string;
+  @IsNotEmpty()
+  @IsInt()
+  IdTratamiento: number;
+
+  @IsNotEmpty()
+  @IsInt()
+  IdPaciente: number;
+
+  @IsNotEmpty()
+  @IsInt()
+  IdEstudiante: number;
 }

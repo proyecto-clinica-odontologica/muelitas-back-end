@@ -3,11 +3,12 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Tratamiento {
-    @PrimaryGeneratedColumn()
-    tratamiento_id: number;
-    @Column()
-    tratamiento_nombre: string;
+    @PrimaryGeneratedColumn('increment')
+    id: number;
 
-    @OneToMany(()=> Cita, (cita) => cita.tratamiento)
+    @Column({type: 'varchar', length: 255})
+    Nombre: string;
+
+    @OneToMany(()=> Cita, (citas) => citas.tratamiento)
     citas: Cita[];
 }

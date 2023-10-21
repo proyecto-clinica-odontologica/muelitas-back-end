@@ -1,22 +1,19 @@
 import { Seguimiento } from "src/seguimiento/entities/seguimiento.entity";
 import { Tratamiento } from "src/tratamiento/entities/tratamiento.entity";
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Cita {
-    @PrimaryGeneratedColumn()
-    cita_id: number;
-    @Column()
-    paciente_id: number;
-    @Column()
-    estudiante_id: number;
+    @PrimaryGeneratedColumn('increment')
+    id: number;
 
-    @ManyToOne(()=> Tratamiento, (tratamiento) => tratamiento.citas,{
-        eager: true
-    })
-    @JoinColumn({name: 'tratamiento_id'})
+    @ManyToOne(()=> Tratamiento, (tratamiento) => tratamiento.citas)
     tratamiento: Tratamiento;
 
-    @OneToMany(()=> Seguimiento, (seguimiento) => seguimiento.cita)
+    @OneToMany(()=> Seguimiento, (seguimientos) => seguimientos.cita)
     seguimientos: Seguimiento[];
+
+    // TODO: relacione la entidad Cita con la entidad Paciente
+    // @ManyToOne(()=> Paciente, (paciente)=>paciente.citas)
+    // paciente: Paciente;
 }
