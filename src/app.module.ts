@@ -16,6 +16,9 @@ import { PeriodosModule } from './periodos/periodos.module';
 import { SedesModule } from './sedes/sedes.module';
 import { SeedModule } from './seed/seed.module';
 import { UsersModule } from './users/users.module';
+import { CitaModule } from './cita/cita.module';
+import { SeguimientoModule } from './seguimiento/seguimiento.module';
+import { TratamientoModule } from './tratamiento/tratamiento.module';
 
 @Module({
   imports: [
@@ -49,6 +52,9 @@ import { UsersModule } from './users/users.module';
     ClasesModule,
     CursosModule,
     IntegrantesModule,
+    CitaModule,
+    SeguimientoModule,
+    TratamientoModule,
   ],
   controllers: [],
   providers: [],
