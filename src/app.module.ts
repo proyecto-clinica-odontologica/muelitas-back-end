@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
+import { HistoriaClinicaModule } from './HistoriaClinica/historia-clinica.module';
 import { AdministradorModule } from './administrador/administrador.module';
 import { AuthModule } from './auth/auth.module';
 import { CitaModule } from './cita/cita.module';
@@ -13,13 +14,13 @@ import { DocentesModule } from './docentes/docentes.module';
 import { EmpresasModule } from './empresas/empresas.module';
 import { EstudiantesModule } from './estudiantes/estudiantes.module';
 import { IntegrantesModule } from './integrantes/integrantes.module';
+import { PacienteModule } from './paciente/paciente.module';
 import { PeriodosModule } from './periodos/periodos.module';
 import { SedesModule } from './sedes/sedes.module';
 import { SeedModule } from './seed/seed.module';
 import { SeguimientoModule } from './seguimiento/seguimiento.module';
 import { TratamientoModule } from './tratamiento/tratamiento.module';
 import { UsersModule } from './users/users.module';
-import { PacienteModule } from './paciente/paciente.module';
 
 @Module({
   imports: [
@@ -58,6 +59,7 @@ import { PacienteModule } from './paciente/paciente.module';
     CitaModule,
     SeguimientoModule,
     TratamientoModule,
+    HistoriaClinicaModule,
   ],
   controllers: [],
   providers: [],
