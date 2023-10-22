@@ -36,7 +36,6 @@ export class CreatePacienteDto {
 
     @IsString()
     @MinLength(3)
-    @MaxLength(10)
     Correo: string;
     
     @IsString()

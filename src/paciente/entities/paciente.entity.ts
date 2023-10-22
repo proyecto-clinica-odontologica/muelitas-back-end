@@ -1,5 +1,6 @@
-import { Cita } from 'src/cita/entities/cita.entity';
 import { BeforeInsert, BeforeUpdate, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { HistoriaClinica } from '../../HistoriaClinica/dto/historia-clinica.entity';
+import { Cita } from '../../cita/entities/cita.entity';
 
 @Entity()
 export class Paciente {
@@ -88,8 +89,8 @@ export class Paciente {
   citas: Cita[];
   // @OneToMany(() => Odontograma, (odontrograma) => odontrograma.Paciente)
   // odontrograma: Odontograma[];
-  // @OneToMany(() => HistoriaClinica, (historiaClinica) => historiaClinica.Paciente)
-  // historiaClinica: HistoriaClinica[];
+  @OneToMany(() => HistoriaClinica, (historiaClinicas) => historiaClinicas.paciente)
+  historiasClinicas: HistoriaClinica[];
 
   @BeforeInsert()
   @BeforeUpdate()

@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Paciente } from '../../paciente/entities/paciente.entity';
 
 @Entity()
 export class HistoriaClinica {
@@ -22,4 +23,7 @@ export class HistoriaClinica {
 
   @Column({ type: 'decimal' })
   Temperatura: number;
+
+  @ManyToOne(() => Paciente, (paciente) => paciente.historiasClinicas)
+  paciente: Paciente;
 }

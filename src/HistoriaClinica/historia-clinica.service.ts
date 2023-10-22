@@ -1,7 +1,6 @@
-/* eslint-disable prettier/prettier */
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { validate } from 'class-validator';
+import { Paciente } from 'src/paciente/entities/paciente.entity';
 import { Repository } from 'typeorm';
 import { CreateHistoriaClinicaDto } from './dto/create-historia-clinica.dto';
 import { HistoriaClinica } from './dto/historia-clinica.entity';
@@ -11,25 +10,31 @@ import { UpdateHistoriaClinicaDto } from './dto/update-historia-clinica.dto';
 export class HistoriaClinicaService {
   constructor(
     @InjectRepository(HistoriaClinica)
-    private historiaClinicaRepository: Repository<HistoriaClinica>,
+    private readonly historiaClinicaRepository: Repository<HistoriaClinica>,
+
+    @InjectRepository(Paciente)
+    private readonly pacienteRepository: Repository<Paciente>,
   ) {}
 
-  async createHistoriaClinica(historiaClinica: CreateHistoriaClinicaDto) {
-    const errors = await validate(historiaClinica);
+  async createHistoriaClinica(historiaClinicaDto: CreateHistoriaClinicaDto) {
+    try {
+      const paciente = await this.pacienteRepository.findOne({
+        where: { id: historiaClinicaDto.IdPaciente },
+      });
 
-    if (errors.length > 0) {
-      throw new HttpException('Validation failed', HttpStatus.BAD_REQUEST);
+      if (!paciente) {
+        throw new NotFoundException('Paciente no encontrado en la base de datos');
+      }
+
+      const historiaClinica = this.historiaClinicaRepository.create({
+        ...historiaClinicaDto,
+        paciente,
+      });
+
+      return await this.historiaClinicaRepository.save(historiaClinica);
+    } catch (error) {
+      throw error;
     }
-
-    const newHistoriaClinica = new HistoriaClinica();
-    newHistoriaClinica.MotivoConsulta = historiaClinica.MotivoConsulta;
-    newHistoriaClinica.EnfermedadActual = historiaClinica.EnfermedadActual;
-    newHistoriaClinica.PresionArterial = parseFloat(historiaClinica.PresionArterial);
-    newHistoriaClinica.FrecuenciaRespiratoria = parseFloat(historiaClinica.FrecuenciaRespiratoria);
-    newHistoriaClinica.Pulso = parseFloat(historiaClinica.Pulso);
-    newHistoriaClinica.Temperatura = historiaClinica.Temperatura;
-
-    return this.historiaClinicaRepository.save(newHistoriaClinica);
   }
 
   getHistoriasClinicas() {
@@ -44,7 +49,7 @@ export class HistoriaClinicaService {
     });
 
     if (!historiaClinicaFound) {
-      return new HttpException('Historia clínica not found', HttpStatus.NOT_FOUND);
+      throw new NotFoundException('Historia clínica no encontrada en la base de datos');
     }
 
     return historiaClinicaFound;
@@ -60,18 +65,50 @@ export class HistoriaClinicaService {
     return result;
   }
 
-  async updateHistoriaClinica(id: number, historiaClinica: UpdateHistoriaClinicaDto) {
-    const historiaClinicaFound = await this.historiaClinicaRepository.findOne({
-      where: {
-        id,
-      },
-    });
+  async updateHistoriaClinica(id: number, updateHistoriaClinicaDto: UpdateHistoriaClinicaDto) {
+    try {
+      const historiaClinica = await this.historiaClinicaRepository.findOne({
+        where: { paciente: { id } },
+        relations: ['paciente'],
+      });
 
-    if (!historiaClinicaFound) {
-      return new HttpException('Historia clínica not found', HttpStatus.NOT_FOUND);
+      if (!historiaClinica) {
+        throw new NotFoundException('Historia clínica no encontrada en la base de datos');
+      }
+
+      Object.assign(historiaClinica, updateHistoriaClinicaDto);
+
+      return await this.historiaClinicaRepository.save(historiaClinica);
+    } catch (error) {
+      throw error;
     }
+  }
 
-    const updatedHistoriaClinica = Object.assign(historiaClinicaFound, historiaClinica);
-    return this.historiaClinicaRepository.save(updatedHistoriaClinica);
+  async getHistoriaClinicaByPaciente(id: number) {
+    try {
+      const paciente = await this.pacienteRepository.findOne({
+        where: { id },
+      });
+
+      if (!paciente) {
+        throw new NotFoundException('Paciente no encontrado en la base de datos');
+      }
+
+      const historiaClinica = await this.historiaClinicaRepository.findOne({
+        where: {
+          paciente: {
+            id,
+          },
+        },
+      });
+
+      if (!historiaClinica) {
+        throw new NotFoundException('Historia clínica no encontrada en la base de datos');
+      }
+
+      return historiaClinica;
+    } catch (error) {
+      throw error;
+    }
   }
 }

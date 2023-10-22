@@ -9,15 +9,19 @@ export class CreateHistoriaClinicaDto {
   @IsString()
   EnfermedadActual: string;
 
-  @IsNumberString({}, { message: 'La presión arterial debe ser un número.' })
-  PresionArterial: string;
+  @IsNumber({}, { message: 'La presión arterial debe ser un número.' })
+  PresionArterial: number;
 
-  @IsNumberString({ no_symbols: true }, { message: 'La frecuencia respiratoria debe ser un número.' })
-  FrecuenciaRespiratoria: string;
+  @IsNumber({}, { message: 'La presión arterial debe ser un número.' })
+  FrecuenciaRespiratoria: number;
 
-  @IsNumberString({ no_symbols: true }, { message: 'El pulso debe ser un número.' })
-  Pulso: string;
+  @IsNumber({}, { message: 'El pulso debe ser un número.' })
+  Pulso: number;
 
   @IsNumber({}, { message: 'La temperatura debe ser un número.' })
   Temperatura: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  IdPaciente: number;
 }
