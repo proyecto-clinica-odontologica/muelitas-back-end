@@ -1,46 +1,70 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Estudiante } from 'src/estudiantes/entities/estudiante.entity';
+import { Tratamiento } from 'src/tratamiento/entities/tratamiento.entity';
+import { Repository } from 'typeorm';
 import { CreateCitaDto } from './dto/create-cita.dto';
 import { UpdateCitaDto } from './dto/update-cita.dto';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Cita } from './entities/cita.entity';
-import { Repository } from 'typeorm';
-import { Tratamiento } from 'src/tratamiento/entities/tratamiento.entity';
 
 @Injectable()
 export class CitaService {
-
   constructor(
     @InjectRepository(Cita) private readonly citaRepository: Repository<Cita>,
-    @InjectRepository(Tratamiento) private readonly tratamientoRepository: Repository<Tratamiento>
-    ){}
+    @InjectRepository(Tratamiento)
+    private readonly tratamientoRepository: Repository<Tratamiento>,
+    @InjectRepository(Estudiante)
+    private readonly estudianteRepository: Repository<Estudiante>,
+  ) {}
 
   async create(createCitaDto: CreateCitaDto) {
-    const tratamiento = await this.tratamientoRepository.findOneBy({tratamiento_nombre: createCitaDto.tratamiento});
-
-    if(!tratamiento ){
+    const tratamiento = await this.tratamientoRepository.findOneBy({
+      id: createCitaDto.IdTratamiento,
+    });
+    const estudiante = await this.estudianteRepository.findOneBy({
+      id: createCitaDto.IdEstudiante,
+    });
+    if (!tratamiento) {
       throw new BadRequestException('Tratamiento no encontrado');
     }
-    return await this.citaRepository.save({
-    ...createCitaDto,
-    tratamiento, 
-    });
+    if (!estudiante) {
+      throw new BadRequestException('Estudiante no encontrado');
+    }
 
+    return await this.citaRepository.save({
+      ...createCitaDto,
+      tratamiento: tratamiento,
+      estudiante: estudiante,
+    });
   }
 
   async findAll() {
     return await this.citaRepository.find();
   }
 
-  async findOne(cita_id: number) {
-    return await this.citaRepository.findOneBy({cita_id});
+  async findOne(id: number) {
+    return await this.citaRepository.findOneBy({ id });
   }
 
-  async update(cita_id: number, updateCitaDto: UpdateCitaDto){
-    return await this.citaRepository.update({cita_id}, 
-      {paciente_id: updateCitaDto.paciente_id, estudiante_id: updateCitaDto.estudiante_id});
+  async update(id: number, updateCitaDto: UpdateCitaDto) {
+    const cita = await this.citaRepository.preload({
+      id,
+      ...updateCitaDto,
+    });
+
+    if (!cita) {
+      throw new NotFoundException('Cita no encontrada');
+    }
+
+    return await this.citaRepository.save(cita);
   }
 
-  async remove(cita_id: number) {
-    return await this.citaRepository.delete({cita_id});
+  async remove(id: number) {
+    await this.citaRepository.delete({ id });
+    return { message: 'Cita eliminada correctamente' };
   }
 }

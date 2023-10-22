@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { AdministradorModule } from './administrador/administrador.module';
 import { AuthModule } from './auth/auth.module';
+import { CitaModule } from './cita/cita.module';
 import { ClasesModule } from './clases/clases.module';
 import { JoiValidationSchema } from './config/joi.config';
 import { CursosModule } from './cursos/cursos.module';
@@ -15,10 +16,9 @@ import { IntegrantesModule } from './integrantes/integrantes.module';
 import { PeriodosModule } from './periodos/periodos.module';
 import { SedesModule } from './sedes/sedes.module';
 import { SeedModule } from './seed/seed.module';
-import { UsersModule } from './users/users.module';
-import { CitaModule } from './cita/cita.module';
 import { SeguimientoModule } from './seguimiento/seguimiento.module';
 import { TratamientoModule } from './tratamiento/tratamiento.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -39,6 +39,7 @@ import { TratamientoModule } from './tratamiento/tratamiento.module';
       database: process.env.DB_DATABASE,
       synchronize: true,
       autoLoadEntities: true,
+      logging: true,
     }),
     AuthModule,
     SeedModule,

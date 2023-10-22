@@ -8,8 +8,8 @@ export class TratamientoController {
   constructor(private readonly tratamientoService: TratamientoService) {}
 
   @Post()
-  async create(@Body() createTratamientoDto: CreateTratamientoDto) {
-    return await this.tratamientoService.create(createTratamientoDto);
+  create(@Body() createTratamientoDto: CreateTratamientoDto) {
+    return this.tratamientoService.create(createTratamientoDto);
   }
 
   @Get()
@@ -27,7 +27,7 @@ export class TratamientoController {
     return this.tratamientoService.update(id, updateTratamientoDto);
   }
 
-  @Delete(':id')
+  @Delete(':id') 
   remove(@Param('id') id: number) {
     return this.tratamientoService.remove(id);
   }

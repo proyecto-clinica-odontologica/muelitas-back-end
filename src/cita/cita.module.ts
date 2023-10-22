@@ -1,14 +1,19 @@
 import { Module } from '@nestjs/common';
-import { CitaService } from './cita.service';
-import { CitaController } from './cita.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { EstudiantesModule } from 'src/estudiantes/estudiantes.module';
+import { TratamientoModule } from 'src/tratamiento/tratamiento.module';
+import { CitaController } from './cita.controller';
+import { CitaService } from './cita.service';
 import { Cita } from './entities/cita.entity';
-import { TratamientoService } from 'src/tratamiento/tratamiento.service';
-import { Tratamiento } from 'src/tratamiento/entities/tratamiento.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Cita, Tratamiento])],
+  imports: [
+    TypeOrmModule.forFeature([Cita]),
+    TratamientoModule,
+    EstudiantesModule,
+  ],
   controllers: [CitaController],
-  providers: [CitaService, TratamientoService],
+  providers: [CitaService],
+  exports: [TypeOrmModule, CitaService],
 })
 export class CitaModule {}

@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
-import { SeguimientoService } from './seguimiento.service';
-import { SeguimientoController } from './seguimiento.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Seguimiento } from './entities/seguimiento.entity';
-import { Cita } from 'src/cita/entities/cita.entity';
 import { CitaModule } from 'src/cita/cita.module';
+import { Seguimiento } from './entities/seguimiento.entity';
+import { SeguimientoController } from './seguimiento.controller';
+import { SeguimientoService } from './seguimiento.service';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([Seguimiento, Cita])],
+  imports: [TypeOrmModule.forFeature([Seguimiento]), CitaModule],
   controllers: [SeguimientoController],
   providers: [SeguimientoService],
+  exports: [TypeOrmModule, SeguimientoService],
 })
 export class SeguimientoModule {}

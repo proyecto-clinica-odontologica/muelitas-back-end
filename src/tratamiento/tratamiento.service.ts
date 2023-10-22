@@ -1,33 +1,60 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateTratamientoDto } from './dto/create-tratamiento.dto';
 import { UpdateTratamientoDto } from './dto/update-tratamiento.dto';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Tratamiento } from './entities/tratamiento.entity';
-import { Repository } from 'typeorm';
 
 @Injectable()
 export class TratamientoService {
-
-  constructor(@InjectRepository(Tratamiento) private readonly tratamientoRepository: Repository<Tratamiento>){}
+  constructor(
+    @InjectRepository(Tratamiento)
+    private readonly tratamientoRepository: Repository<Tratamiento>,
+  ) {}
 
   async create(createTratamientoDto: CreateTratamientoDto) {
-    const tratamiento = this.tratamientoRepository.create(createTratamientoDto);
-    return await this.tratamientoRepository.save(tratamiento);
+    try {
+      const tratamiento =
+        this.tratamientoRepository.create(createTratamientoDto);
+      return await this.tratamientoRepository.save(tratamiento);
+    } catch (error) {
+      throw error;
+    }
   }
 
   async findAll() {
-    return await this.tratamientoRepository.find();
+    try {
+      return await this.tratamientoRepository.find();
+    } catch (error) {
+      throw error;
+    }
   }
 
-  async findOne(tratamiento_id: number) {
-    return await this.tratamientoRepository.findOneBy({tratamiento_id});
+  async findOne(id: number) {
+    try {
+      return await this.tratamientoRepository.findOneBy({ id });
+    } catch (error) {
+      throw error;
+    }
   }
 
-  async update(tratamiento_id: number, updateTratamientoDto: UpdateTratamientoDto) {
-    return await this.tratamientoRepository.update({tratamiento_id}, updateTratamientoDto );
+  async update(id: number, updateTratamientoDto: UpdateTratamientoDto) {
+    try {
+      return await this.tratamientoRepository.update(
+        { id },
+        updateTratamientoDto,
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 
-  async remove(tratamiento_id: number) {
-    return await this.tratamientoRepository.delete({tratamiento_id});
+  async remove(id: number) {
+    try {
+      await this.tratamientoRepository.delete({ id });
+      return { message: 'Tratamiento eliminado correctamente' };
+    } catch (error) {
+      throw error;
+    }
   }
 }
