@@ -1,3 +1,4 @@
+import { Odontograma } from 'src/odontograma/entities/odontograma.entity';
 import { BeforeInsert, BeforeUpdate, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { HistoriaClinica } from '../../HistoriaClinica/dto/historia-clinica.entity';
 import { Cita } from '../../cita/entities/cita.entity';
@@ -87,8 +88,8 @@ export class Paciente {
 
   @OneToMany(() => Cita, (citas) => citas.paciente)
   citas: Cita[];
-  // @OneToMany(() => Odontograma, (odontrograma) => odontrograma.Paciente)
-  // odontrograma: Odontograma[];
+  @OneToMany(() => Odontograma, (odontrograma) => odontrograma.paciente)
+  odontrogramas: Odontograma[];
   @OneToMany(() => HistoriaClinica, (historiaClinicas) => historiaClinicas.paciente)
   historiasClinicas: HistoriaClinica[];
 

@@ -21,6 +21,7 @@ import { SeedModule } from './seed/seed.module';
 import { SeguimientoModule } from './seguimiento/seguimiento.module';
 import { TratamientoModule } from './tratamiento/tratamiento.module';
 import { UsersModule } from './users/users.module';
+import { OdontogramaModule } from './odontograma/odontograma.module';
 
 @Module({
   imports: [
@@ -60,6 +61,7 @@ import { UsersModule } from './users/users.module';
     SeguimientoModule,
     TratamientoModule,
     HistoriaClinicaModule,
+    OdontogramaModule,
   ],
   controllers: [],
   providers: [],
