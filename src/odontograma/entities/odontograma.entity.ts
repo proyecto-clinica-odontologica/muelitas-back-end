@@ -1,5 +1,6 @@
+import { Mapeo } from 'src/mapeo/entities/mapeo.entity';
 import { Paciente } from 'src/paciente/entities/paciente.entity';
-import { BeforeInsert, BeforeUpdate, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { BeforeInsert, BeforeUpdate, Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Odontograma {
@@ -18,8 +19,8 @@ export class Odontograma {
   @ManyToOne(() => Paciente, (Paciente) => Paciente.odontrogramas)
   paciente: Paciente;
 
-  // @OneToMany(() => Mapeo, (mapeo) => mapeo.IdOdontograma)
-  // mapeo: Mapeo[];
+  @OneToMany(() => Mapeo, (mapeos) => mapeos.odontograma)
+  mapeos: Mapeo[];
 
   @BeforeInsert()
   @BeforeUpdate()

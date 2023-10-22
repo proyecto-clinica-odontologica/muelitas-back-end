@@ -6,6 +6,7 @@ import { join } from 'path';
 import { HistoriaClinicaModule } from './HistoriaClinica/historia-clinica.module';
 import { AdministradorModule } from './administrador/administrador.module';
 import { AuthModule } from './auth/auth.module';
+import { CarasdientesModule } from './carasdientes/carasdientes.module';
 import { CitaModule } from './cita/cita.module';
 import { ClasesModule } from './clases/clases.module';
 import { JoiValidationSchema } from './config/joi.config';
@@ -14,6 +15,8 @@ import { DocentesModule } from './docentes/docentes.module';
 import { EmpresasModule } from './empresas/empresas.module';
 import { EstudiantesModule } from './estudiantes/estudiantes.module';
 import { IntegrantesModule } from './integrantes/integrantes.module';
+import { MapeoModule } from './mapeo/mapeo.module';
+import { OdontogramaModule } from './odontograma/odontograma.module';
 import { PacienteModule } from './paciente/paciente.module';
 import { PeriodosModule } from './periodos/periodos.module';
 import { SedesModule } from './sedes/sedes.module';
@@ -21,7 +24,6 @@ import { SeedModule } from './seed/seed.module';
 import { SeguimientoModule } from './seguimiento/seguimiento.module';
 import { TratamientoModule } from './tratamiento/tratamiento.module';
 import { UsersModule } from './users/users.module';
-import { OdontogramaModule } from './odontograma/odontograma.module';
 
 @Module({
   imports: [
@@ -62,6 +64,8 @@ import { OdontogramaModule } from './odontograma/odontograma.module';
     TratamientoModule,
     HistoriaClinicaModule,
     OdontogramaModule,
+    MapeoModule,
+    CarasdientesModule,
   ],
   controllers: [],
   providers: [],
