@@ -24,6 +24,8 @@ import { SeedModule } from './seed/seed.module';
 import { SeguimientoModule } from './seguimiento/seguimiento.module';
 import { TratamientoModule } from './tratamiento/tratamiento.module';
 import { UsersModule } from './users/users.module';
+import { SubcasoclinicoModule } from './subcasoclinico/subcasoclinico.module';
+import { CasosclinicosModule } from './casosclinicos/casosclinicos.module';
 
 @Module({
   imports: [
@@ -66,6 +68,8 @@ import { UsersModule } from './users/users.module';
     OdontogramaModule,
     MapeoModule,
     CarasdientesModule,
+    SubcasoclinicoModule,
+    CasosclinicosModule,
   ],
   controllers: [],
   providers: [],
