@@ -8,7 +8,7 @@ import { Diente } from './diente.entity';
   imports: [TypeOrmModule.forFeature([Diente])],    // nos comunicamos con entidad Diente, para usar las bases de datos
   providers: [DientesService],
   controllers: [DientesController],
-  exports:[DientesService]
+  exports:[TypeOrmModule, DientesService]
 })
 
 export class DientesModule {}

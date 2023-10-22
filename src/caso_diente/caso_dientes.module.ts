@@ -8,6 +8,7 @@ import { DientesModule } from 'src/dientes/dientes.module';
 @Module({
   imports: [TypeOrmModule.forFeature([Caso_Diente]), DientesModule],
   controllers: [CasoDienteController],
-  providers: [CasoDienteService]
+  providers: [CasoDienteService],
+  exports:[TypeOrmModule, CasoDienteService]
 })
 export class CasoDienteModule {}
