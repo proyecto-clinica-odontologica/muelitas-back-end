@@ -40,7 +40,7 @@ import { PacienteModule } from './paciente/paciente.module';
       database: process.env.DB_DATABASE,
       synchronize: true,
       autoLoadEntities: true,
-      logging: true,
+      // logging: true,
     }),
     AuthModule,
     SeedModule,
