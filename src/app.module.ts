@@ -19,6 +19,7 @@ import { SeedModule } from './seed/seed.module';
 import { SeguimientoModule } from './seguimiento/seguimiento.module';
 import { TratamientoModule } from './tratamiento/tratamiento.module';
 import { UsersModule } from './users/users.module';
+import { PacienteModule } from './paciente/paciente.module';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { UsersModule } from './users/users.module';
     SedesModule,
     PeriodosModule,
     EmpresasModule,
+    PacienteModule,
     ClasesModule,
     CursosModule,
     IntegrantesModule,
