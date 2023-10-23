@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Put,
 } from '@nestjs/common';
 import { DocentesService } from './docentes.service';
 import { CreateDocenteDto } from './dto/create-docente.dto';
@@ -41,11 +42,8 @@ export class DocentesController {
     return this.docentesService.buscarDocentePorNombre(nombre);
   }
 
-  @Patch(':id')
-  actualizarDocente(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() updateDocenteDto: UpdateDocenteDto,
-  ) {
+  @Put('update/:id')
+  actualizarDocente(@Param('id', ParseIntPipe) id: number, @Body() updateDocenteDto: UpdateDocenteDto) {
     return this.docentesService.actualizarDocente(id, updateDocenteDto);
   }
 

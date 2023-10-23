@@ -14,16 +14,35 @@ export class UsersService {
     @InjectRepository(Sede)
     private readonly dbSede: Repository<Sede>,
   ) {}
-
-  async obtenerUsuarios(paginationDto: PaginationDto) {
-    paginationDto.order = paginationDto.order === 'desc' ? 'DESC' : 'ASC';
-
-    const { page = 0, limit = 10, order = 'ASC' } = paginationDto;
-    const usuarios = await this.dbUser.find({
-      take: limit,
-      skip: page,
+  // TODO revisar
+  async obtenerUsuarioId(id: number) {
+    const usuario = await this.dbUser.findOne({
+      where: { id },
       relations: ['sede'],
-      select: ['id', 'Nombre', 'Apellido', 'Correo', 'Celular', 'Rol'],
+    });
+
+    if (!usuario) {
+      throw new NotFoundException(`El usuario con el id ${id} no existe en la base de datos`);
+    }
+    const sedeId = usuario.sede.id;
+    delete usuario.sede;
+    delete usuario.deletedAt;
+    delete usuario.activo;
+
+    return {
+      ...usuario,
+      SedeId: sedeId,
+    };
+  }
+  async obtenerUsuarios(paginationDto: PaginationDto) {
+    // paginationDto.order = paginationDto.order === 'desc' ? 'DESC' : 'ASC';
+
+    // const { page = 0, limit = 10, order = 'ASC' } = paginationDto;
+    const usuarios = await this.dbUser.find({
+      // take: limit,
+      // skip: page,
+      relations: ['sede'],
+      select: ['id', 'Nombre', 'Apellido', 'Correo', 'Celular', 'Rol', 'NumDoc'],
     });
     return usuarios;
   }
@@ -39,9 +58,7 @@ export class UsersService {
     try {
       const usuario = await this.dbUser.findOneBy({ Correo: correo });
       if (!usuario) {
-        throw new NotFoundException(
-          `El usuario con el correo ${correo} no existe en la base de datos`,
-        );
+        throw new NotFoundException(`El usuario con el correo ${correo} no existe en la base de datos`);
       }
       return usuario;
     } catch (error) {
@@ -53,9 +70,7 @@ export class UsersService {
     try {
       const usuario = await this.dbUser.findOneBy({ Celular: celular });
       if (!usuario) {
-        throw new NotFoundException(
-          `El usuario con el celular ${celular} no existe en la base de datos`,
-        );
+        throw new NotFoundException(`El usuario con el celular ${celular} no existe en la base de datos`);
       }
       return usuario;
     } catch (error) {
@@ -67,9 +82,7 @@ export class UsersService {
     try {
       const usuario = await this.dbUser.find({ where: { Rol: rol } });
       if (!usuario.length) {
-        throw new NotFoundException(
-          `El usuario con el rol ${rol} no existe en la base de datos`,
-        );
+        throw new NotFoundException(`El usuario con el rol ${rol} no existe en la base de datos`);
       }
       return usuario;
     } catch (error) {
@@ -82,9 +95,7 @@ export class UsersService {
     try {
       const usuario = await this.dbUser.find({ where: { activo: estado } });
       if (!usuario.length) {
-        throw new NotFoundException(
-          `El usuario ${condicion} no existe en la base de datos`,
-        );
+        throw new NotFoundException(`El usuario ${condicion} no existe en la base de datos`);
       }
       return usuario;
     } catch (error) {
@@ -96,9 +107,7 @@ export class UsersService {
     try {
       const usuario = await this.dbUser.findOneBy({ id });
       if (!usuario) {
-        throw new NotFoundException(
-          `El usuario con el id ${id} no existe en la base de datos`,
-        );
+        throw new NotFoundException(`El usuario con el id ${id} no existe en la base de datos`);
       }
       return usuario;
     } catch (error) {
@@ -119,9 +128,7 @@ export class UsersService {
       });
 
       if (!sede) {
-        throw new NotFoundException(
-          `La sede con el id ${idSede} no existe en la base de datos`,
-        );
+        throw new NotFoundException(`La sede con el id ${idSede} no existe en la base de datos`);
       }
 
       return sede;
@@ -138,9 +145,7 @@ export class UsersService {
       });
 
       if (!sede) {
-        throw new NotFoundException(
-          `La sede ${nombreSede} no existe en la base de datos`,
-        );
+        throw new NotFoundException(`La sede ${nombreSede} no existe en la base de datos`);
       }
 
       console.log(sede.usuario);

@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/auth/entities/user.entity';
 import { DataSource, Repository } from 'typeorm';
@@ -29,9 +25,7 @@ export class DocentesService {
       });
 
       if (!usuario) {
-        throw new NotFoundException(
-          'El usuario con ese rol no existe en la base de datos',
-        );
+        throw new NotFoundException('El usuario con ese rol no existe en la base de datos');
       }
 
       const { Nombre, Apellido } = usuario;
@@ -45,9 +39,7 @@ export class DocentesService {
       return await this.dbDocente.save(docente);
     } catch (error) {
       if (error.errno === 1062) {
-        throw new BadRequestException(
-          'Ya existe un docente con la misma colegiatura o firma digital',
-        );
+        throw new BadRequestException('Ya existe un docente con la misma colegiatura o firma digital');
       }
       throw error;
     }
@@ -56,10 +48,19 @@ export class DocentesService {
   async ObtenerDocentes() {
     try {
       const docentes = await this.dbDocente.find({
-        select: ['id', 'NombreCompleto', 'Colegiatura', 'FirmaDigital'],
+        select: ['id', 'NombreCompleto', 'Colegiatura', 'FirmaDigital', 'usuario'],
+        relations: ['usuario'],
       });
 
-      return docentes;
+      const docentesFormateados = docentes.map((docente) => ({
+        id: docente.id,
+        Colegiatura: docente.Colegiatura,
+        NombreCompleto: docente.NombreCompleto,
+        FirmaDigital: docente.FirmaDigital,
+        UsuarioId: docente.usuario.id,
+      }));
+
+      return docentesFormateados;
     } catch (error) {
       throw error;
     }
@@ -131,9 +132,7 @@ export class DocentesService {
         ...updateDocenteDto,
       });
       if (!docente) {
-        throw new BadRequestException(
-          'No existe el docente que desea actualizar',
-        );
+        throw new BadRequestException('No existe el docente que desea actualizar');
       }
       return await this.dbDocente.save(docente);
     } catch (error) {

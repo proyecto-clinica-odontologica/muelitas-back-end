@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
+import { Sede } from 'src/sedes/entities/sede.entity';
 import { Repository } from 'typeorm';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -24,6 +25,9 @@ export class AuthService {
   constructor(
     @InjectRepository(User)
     private readonly dbUser: Repository<User>,
+
+    @InjectRepository(Sede)
+    private readonly dbSede: Repository<Sede>,
   ) {}
 
   async crearCuenta(createUserDto: CreateUserDto) {
@@ -35,30 +39,35 @@ export class AuthService {
         ...restoPropiedades,
       });
 
+      const sede = await this.dbSede.findOneBy({ id: createUserDto.SedeId });
+
+      if (!sede) {
+        throw new NotFoundException('La sede no existe');
+      }
+
+      usuario.sede = sede;
+
       await this.dbUser.save(usuario);
       delete usuario.Contra;
 
       return usuario;
     } catch (error) {
       if (error.errno === 1062) {
-        throw new BadRequestException(
-          'El correo o el numero de documento o el celular ya se encuentra registrado',
-        );
+        throw new BadRequestException('El correo o el numero de documento o el celular ya se encuentra registrado');
       }
       throw error;
     }
   }
 
   async actualizarUsuario(id: number, updateUserDto: UpdateUserDto) {
+    console.log(updateUserDto);
     try {
       const usuario = await this.dbUser.preload({
         id,
         ...updateUserDto,
       });
       if (!usuario) {
-        throw new NotFoundException(
-          `El usuario con el id ${id} no existe en la base de datos`,
-        );
+        throw new NotFoundException(`El usuario con el id ${id} no existe en la base de datos`);
       }
       return await this.dbUser.save(usuario);
     } catch (error) {
@@ -70,9 +79,7 @@ export class AuthService {
     try {
       const usuario = await this.dbUser.findOneBy({ id });
       if (!usuario) {
-        throw new NotFoundException(
-          `El usuario con el id ${id} no existe en la base de datos`,
-        );
+        throw new NotFoundException(`El usuario con el id ${id} no existe en la base de datos`);
       }
       usuario.activo = false;
       await this.dbUser.save(usuario);
@@ -87,9 +94,7 @@ export class AuthService {
       await this.dbUser.restore(id);
       const usuario = await this.dbUser.findOneBy({ id });
       if (!usuario) {
-        throw new NotFoundException(
-          `El usuario con el id ${id} no existe en la base de datos`,
-        );
+        throw new NotFoundException(`El usuario con el id ${id} no existe en la base de datos`);
       }
       usuario.activo = true;
       await this.dbUser.save(usuario);
@@ -158,9 +163,7 @@ export class AuthService {
       const usuario = await this.dbUser.findOneBy({ id });
 
       if (!usuario) {
-        throw new NotFoundException(
-          `El usuario con el id ${id} no existe en la base de datos`,
-        );
+        throw new NotFoundException(`El usuario con el id ${id} no existe en la base de datos`);
       }
 
       if (!bcrypt.compareSync(Contra, usuario.Contra)) {
@@ -188,18 +191,14 @@ export class AuthService {
     throw new InternalServerErrorException('revisa los logs del servidor');
   }
 
-  async solicitarRestablecerPassword(
-    requestResetPasswordDto: RequestResetPasswordDto,
-  ) {
+  async solicitarRestablecerPassword(requestResetPasswordDto: RequestResetPasswordDto) {
     const { Correo } = requestResetPasswordDto;
 
     try {
       const usuario = await this.dbUser.findOneBy({ Correo });
 
       if (!usuario) {
-        throw new NotFoundException(
-          `El usuario con el correo ${Correo} no existe en la base de datos`,
-        );
+        throw new NotFoundException(`El usuario con el correo ${Correo} no existe en la base de datos`);
       }
 
       const codigo = Math.floor(Math.random() * 100000000).toString();

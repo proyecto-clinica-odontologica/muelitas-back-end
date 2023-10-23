@@ -11,6 +11,11 @@ export class UsersController {
     return this.usersService.obtenerUsuarios(paginationDto);
   }
 
+  @Get(':id')
+  obtenerUsuarioId(@Param('id', ParseIntPipe) id: number) {
+    return this.usersService.obtenerUsuarioId(id);
+  }
+
   @Get('eliminados')
   obtenerUsuariosEliminados() {
     return this.usersService.obtenerUsuariosEliminados();

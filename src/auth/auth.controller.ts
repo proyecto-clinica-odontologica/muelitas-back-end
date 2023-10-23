@@ -30,6 +30,7 @@ export class AuthController {
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserDto: UpdateUserDto,
   ) {
+    console.log(id)
     return this.authService.actualizarUsuario(id, updateUserDto);
   }
 

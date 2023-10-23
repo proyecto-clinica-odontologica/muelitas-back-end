@@ -1,11 +1,4 @@
-import {
-  IsEmail,
-  IsIn,
-  IsInt,
-  IsNotEmpty,
-  Length,
-  Matches,
-} from 'class-validator';
+import { IsEmail, IsIn, IsInt, IsNotEmpty, Length, Matches } from 'class-validator';
 
 export class CreateSedeDto {
   @Length(3, 30, { message: 'El nombre debe tener entre 3 y 30 caracteres' })

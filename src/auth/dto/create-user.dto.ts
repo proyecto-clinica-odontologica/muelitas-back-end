@@ -1,23 +1,10 @@
-import {
-  IsEmail,
-  IsIn,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  Length,
-  Matches,
-} from 'class-validator';
+import { IsBoolean, IsEmail, IsIn, IsNotEmpty, IsNumber, IsOptional, IsString, Length, Matches } from 'class-validator';
 
 export class CreateUserDto {
   @IsEmail({}, { message: 'Debe ser un correo electrónico valido' })
   Correo: string;
 
-  @Length(6, 20, {
-    message: 'La contraseña debe tener entre 6 y 20 caracteres',
-  })
-  @Matches(/(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
-    message: 'La contraseña debe tener mayúsculas , minúsculas y un número',
-  })
+  @IsString({ message: 'La contraseña debe ser un texto' })
   Contra: string;
 
   @Length(6, 20, {
@@ -59,8 +46,7 @@ export class CreateUserDto {
   Rol?: string;
 
   @IsIn(['dni', 'pasaporte', 'carnet de extranjeria'], {
-    message:
-      'Los tipos de documento disponibles son [dni, pasaporte o carnet de extranjeria]',
+    message: 'Los tipos de documento disponibles son [dni, pasaporte o carnet de extranjeria]',
   })
   @IsNotEmpty({ message: 'El tipo de documento es obligatorio' })
   TipoDocumento: string;
@@ -71,5 +57,20 @@ export class CreateUserDto {
   @IsNotEmpty({ message: 'El genero es obligatorio' })
   Genero: string;
 
-  
+  @IsIn(['desactivado', 'activado'], {
+    message: 'Los estados disponibles son [desactivado o activado]',
+  })
+  RestablecerContra?: string;
+
+  @IsIn(['pagado', 'no pagado'], {
+    message: 'Los estados disponibles son [pagado o no pagado]',
+  })
+  Pago?: string;
+
+  @IsBoolean({ message: 'El estado debe ser true o false' })
+  activo?: boolean;
+
+  @IsOptional()
+  @IsNumber()
+  SedeId: number;
 }
