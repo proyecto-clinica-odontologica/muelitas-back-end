@@ -18,13 +18,14 @@ export class UsersService {
   async obtenerUsuarioId(id: number) {
     const usuario = await this.dbUser.findOne({
       where: { id },
-      relations: ['sede'],
+      relations: ['sede', 'sede.empresa'],
     });
 
     if (!usuario) {
       throw new NotFoundException(`El usuario con el id ${id} no existe en la base de datos`);
     }
     const sedeId = usuario.sede.id;
+    const empresaId = usuario.sede.empresa.id;
     delete usuario.sede;
     delete usuario.deletedAt;
     delete usuario.activo;
@@ -32,8 +33,10 @@ export class UsersService {
     return {
       ...usuario,
       SedeId: sedeId,
+      EmpresaId: empresaId,
     };
   }
+
   async obtenerUsuarios(paginationDto: PaginationDto) {
     // paginationDto.order = paginationDto.order === 'desc' ? 'DESC' : 'ASC';
 

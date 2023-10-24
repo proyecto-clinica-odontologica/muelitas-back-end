@@ -41,16 +41,13 @@ export class SedesController {
     return this.sedesService.buscarSedePorNombre(nombreSede);
   }
 
-  @Get('empresa/:nombreEmpresa')
-  buscarSedesPorEmpresa(@Param('nombreEmpresa') nombreEmpresa: string) {
-    return this.sedesService.buscarSedesPorEmpresa(nombreEmpresa);
+  @Get('empresa/:idEmpresa')
+  buscarSedesPorEmpresa(@Param('idEmpresa') idEmpresa: number) {
+    return this.sedesService.buscarSedesPorEmpresa(idEmpresa);
   }
 
   @Patch(':id')
-  actualizarSede(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() updateSedeDto: UpdateSedeDto,
-  ) {
+  actualizarSede(@Param('id', ParseIntPipe) id: number, @Body() updateSedeDto: UpdateSedeDto) {
     return this.sedesService.actualizarSede(id, updateSedeDto);
   }
 
