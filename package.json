@@ -2,7 +2,7 @@
   "name": "muelitas",
   "version": "1.0.0",
   "description": "Este repositorio aloja el backend del sistema clinico odontologico . Utiliza Nest.js como framework de desarrollo y TypeORM como ORM para la base de datos. La base de datos utilizada es MySQL.",
-  "author": "Maycol Rodriguez, Anibal Jhamil ",
+  "author": "Maycol Rodriguez, Anibal Jhamil",
   "private": true,
   "license": "MIT",
   "scripts": {
