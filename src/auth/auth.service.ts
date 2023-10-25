@@ -8,8 +8,8 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
-import { Sede } from 'src/sedes/entities/sede.entity';
 import { Repository } from 'typeorm';
+import { Sede } from '../sedes/entities/sede.entity';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
@@ -60,7 +60,7 @@ export class AuthService {
   }
 
   async actualizarUsuario(id: number, updateUserDto: UpdateUserDto) {
-    console.log(updateUserDto);
+    delete updateUserDto.id;
     try {
       const usuario = await this.dbUser.preload({
         id,
@@ -120,7 +120,6 @@ export class AuthService {
       })
       .select(['login.id', 'login.Correo', 'login.Contra', 'login.Nombre'])
       .getOne();
-
     if (!usuario || !bcrypt.compareSync(Contra, usuario.Contra)) {
       throw new UnauthorizedException('Las credenciales no son validas');
     }
@@ -130,13 +129,21 @@ export class AuthService {
 
   async loginCelular(celular: string, contra: string) {
     try {
-      const usuario = await this.dbUser.findOneBy({ Celular: celular });
+      const usuario = await this.dbUser.findOne({
+        where: { Celular: celular },
+        relations: ['sede'],
+      });
 
       if (!usuario || !bcrypt.compareSync(contra, usuario.Contra)) {
         throw new UnauthorizedException('Las credenciales no son validas');
       }
 
-      return usuario;
+      const SedeId = usuario.sede.id;
+      delete usuario.sede;
+      return {
+        ...usuario,
+        SedeId,
+      };
     } catch (error) {
       throw error;
     }
@@ -144,13 +151,20 @@ export class AuthService {
 
   async loginEmail(correo: string, contra: string) {
     try {
-      const usuario = await this.dbUser.findOneBy({ Correo: correo });
+      const usuario = await this.dbUser.findOne({
+        where: { Correo: correo },
+        relations: ['sede'],
+      });
 
       if (!usuario || !bcrypt.compareSync(contra, usuario.Contra)) {
         throw new UnauthorizedException('Las credenciales no son validas');
       }
-
-      return usuario;
+      const SedeId = usuario.sede.id;
+      delete usuario.sede;
+      return {
+        ...usuario,
+        SedeId,
+      };
     } catch (error) {
       throw error;
     }

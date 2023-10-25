@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Sede } from 'src/sedes/entities/sede.entity';
 import { DataSource, Repository } from 'typeorm';
+import { Sede } from '../sedes/entities/sede.entity';
 import { CreatePeriodoDto } from './dto/create-periodo.dto';
 import { UpdatePeriodoDto } from './dto/update-periodo.dto';
 import { Periodo } from './entities/periodo.entity';
@@ -21,7 +21,7 @@ export class PeriodosService {
   async registrarPeriodo(createPeriodoDto: CreatePeriodoDto) {
     try {
       const sede = await this.dbSede.findOne({
-        where: { id: createPeriodoDto.idSede },
+        where: { id: createPeriodoDto.SedeId },
       });
 
       if (!sede) {

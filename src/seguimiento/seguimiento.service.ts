@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Cita } from 'src/cita/entities/cita.entity';
 import { Repository } from 'typeorm';
+import { Cita } from '../cita/entities/cita.entity';
 import { CreateSeguimientoDto } from './dto/create-seguimiento.dto';
 import { UpdateSeguimientoDto } from './dto/update-seguimiento.dto';
 import { Seguimiento } from './entities/seguimiento.entity';
@@ -39,10 +39,7 @@ export class SeguimientoService {
   }
 
   async update(id: number, updateSeguimientoDto: UpdateSeguimientoDto) {
-    return await this.seguimientoRepository.update(
-      { id },
-      updateSeguimientoDto,
-    );
+    return await this.seguimientoRepository.update({ id }, updateSeguimientoDto);
   }
 
   async remove(id: number) {

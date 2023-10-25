@@ -1,11 +1,7 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/auth/entities/user.entity';
 import { DataSource, Repository } from 'typeorm';
+import { User } from '../auth/entities/user.entity';
 import { CreateAdministradorDto } from './dto/create-administrador.dto';
 import { UpdateAdministradorDto } from './dto/update-administrador.dto';
 import { Administrador } from './entities/administrador.entity';
@@ -42,9 +38,7 @@ export class AdministradorService {
       return await this.dbAdministrador.save(administrador);
     } catch (error) {
       if (error.errno === 1062) {
-        throw new BadRequestException(
-          'El administrador con ese codigo de acceso ya existe',
-        );
+        throw new BadRequestException('El administrador con ese codigo de acceso ya existe');
       }
       throw error;
     }
@@ -52,7 +46,7 @@ export class AdministradorService {
 
   async obtenerAdministradores() {
     try {
-      return this.dbAdministrador.find();
+      return this.dbAdministrador.find({ select: ['id', 'NombreCompleto', 'CodigoAcceso'] });
     } catch (error) {
       throw error;
     }
@@ -95,9 +89,7 @@ export class AdministradorService {
         .getMany();
 
       if (!administradores.length) {
-        throw new NotFoundException(
-          'No se encontraron administradores con ese nombre',
-        );
+        throw new NotFoundException('No se encontraron administradores con ese nombre');
       }
 
       return administradores;
@@ -106,10 +98,7 @@ export class AdministradorService {
     }
   }
 
-  async actualizarAdministrador(
-    id: number,
-    updateAdministradorDto: UpdateAdministradorDto,
-  ) {
+  async actualizarAdministrador(id: number, updateAdministradorDto: UpdateAdministradorDto) {
     try {
       const administrador = await this.dbAdministrador.preload({
         id,
@@ -138,7 +127,7 @@ export class AdministradorService {
         throw new NotFoundException('El administrador o usuario no existe');
       }
 
-      administrador.activo = false;
+      administrador.Activo = false;
       administrador.usuario.activo = false;
 
       await queryRunner.manager.save([administrador, administrador.usuario]);
@@ -174,7 +163,7 @@ export class AdministradorService {
         throw new NotFoundException('El administrador o usuario no existe');
       }
 
-      administrador.activo = true;
+      administrador.Activo = true;
       administrador.usuario.activo = true;
 
       await queryRunner.manager.save([administrador, administrador.usuario]);

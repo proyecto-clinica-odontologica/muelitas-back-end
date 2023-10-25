@@ -1,5 +1,5 @@
-import { SubCasoClinico } from 'src/subcasoclinico/entities/subcasoclinico.entity';
 import { BeforeInsert, BeforeUpdate, Column, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { SubCasoClinico } from '../../subcasoclinico/entities/subcasoclinico.entity';
 @Entity()
 export class CasoClinico {
   @PrimaryGeneratedColumn('increment')

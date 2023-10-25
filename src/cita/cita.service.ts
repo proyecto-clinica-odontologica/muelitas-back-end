@@ -1,12 +1,8 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Estudiante } from 'src/estudiantes/entities/estudiante.entity';
-import { Tratamiento } from 'src/tratamiento/entities/tratamiento.entity';
 import { Repository } from 'typeorm';
+import { Estudiante } from '../estudiantes/entities/estudiante.entity';
+import { Tratamiento } from '../tratamiento/entities/tratamiento.entity';
 import { CreateCitaDto } from './dto/create-cita.dto';
 import { UpdateCitaDto } from './dto/update-cita.dto';
 import { Cita } from './entities/cita.entity';

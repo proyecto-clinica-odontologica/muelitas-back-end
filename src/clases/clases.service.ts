@@ -1,13 +1,9 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Curso } from 'src/cursos/entities/curso.entity';
-import { Docente } from 'src/docentes/entities/docente.entity';
-import { Periodo } from 'src/periodos/entities/periodo.entity';
 import { DataSource, Repository } from 'typeorm';
+import { Curso } from '../cursos/entities/curso.entity';
+import { Docente } from '../docentes/entities/docente.entity';
+import { Periodo } from '../periodos/entities/periodo.entity';
 import { CreateClaseDto } from './dto/create-clase.dto';
 import { UpdateClaseDto } from './dto/update-clase.dto';
 import { Clase } from './entities/clase.entity';
@@ -56,9 +52,7 @@ export class ClasesService {
       return await this.dbClase.save(clase);
     } catch (error) {
       if (error.errno === 1062) {
-        throw new BadRequestException(
-          'El registro ya existe en la base de datos',
-        );
+        throw new BadRequestException('El registro ya existe en la base de datos');
       }
       throw error;
     }
@@ -200,9 +194,7 @@ export class ClasesService {
       });
 
       if (!clase || !clase.docente || !clase.curso || !clase.periodo) {
-        throw new NotFoundException(
-          'no existe clase o docente, o curso o periodo para esa clase',
-        );
+        throw new NotFoundException('no existe clase o docente, o curso o periodo para esa clase');
       }
 
       clase.activo = false;
@@ -210,12 +202,7 @@ export class ClasesService {
       clase.docente.activo = false;
       clase.periodo.activo = false;
 
-      await queryRunner.manager.save([
-        clase,
-        clase.curso,
-        clase.docente,
-        clase.periodo,
-      ]);
+      await queryRunner.manager.save([clase, clase.curso, clase.docente, clase.periodo]);
       await queryRunner.manager.softDelete(Clase, id);
       await queryRunner.manager.softDelete(Curso, clase.curso.id);
       await queryRunner.manager.softDelete(Docente, clase.docente.id);
@@ -243,9 +230,7 @@ export class ClasesService {
       });
 
       if (!clase || !clase.docente || !clase.curso || !clase.periodo) {
-        throw new NotFoundException(
-          'no existe clase o docente, o curso o periodo para esa clase',
-        );
+        throw new NotFoundException('no existe clase o docente, o curso o periodo para esa clase');
       }
 
       clase.activo = true;
@@ -258,12 +243,7 @@ export class ClasesService {
       clase.docente.deletedAt = null;
       clase.periodo.deletedAt = null;
 
-      await queryRunner.manager.save([
-        clase,
-        clase.curso,
-        clase.docente,
-        clase.periodo,
-      ]);
+      await queryRunner.manager.save([clase, clase.curso, clase.docente, clase.periodo]);
       await queryRunner.commitTransaction();
 
       return { mensaje: `La Clase con el id ${id} fue restaurada` };
@@ -309,9 +289,7 @@ export class ClasesService {
       });
 
       if (!clase.length) {
-        throw new NotFoundException(
-          'No existe clases para este periodo y docente',
-        );
+        throw new NotFoundException('No existe clases para este periodo y docente');
       }
 
       return clase;
@@ -320,11 +298,7 @@ export class ClasesService {
     }
   }
 
-  async obtenerClasesPorPeriodoDocenteCurso(
-    idDocente: number,
-    idPeriodo: number,
-    idCurso: number,
-  ) {
+  async obtenerClasesPorPeriodoDocenteCurso(idDocente: number, idPeriodo: number, idCurso: number) {
     try {
       const clase = await this.dbClase.findOne({
         where: {
@@ -342,9 +316,7 @@ export class ClasesService {
         relations: ['curso', 'periodo', 'docente'],
       });
       if (!clase) {
-        throw new NotFoundException(
-          'No existe clases para este periodo, docente y curso',
-        );
+        throw new NotFoundException('No existe clases para este periodo, docente y curso');
       }
       return clase;
     } catch (error) {

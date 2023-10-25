@@ -1,11 +1,7 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/auth/entities/user.entity';
 import { DataSource, Repository } from 'typeorm';
+import { User } from '../auth/entities/user.entity';
 import { CreateEstudianteDto } from './dto/create-estudiante.dto';
 import { UpdateEstudianteDto } from './dto/update-estudiante.dto';
 import { Estudiante } from './entities/estudiante.entity';
@@ -29,9 +25,7 @@ export class EstudiantesService {
       });
 
       if (!usuario) {
-        throw new NotFoundException(
-          'El usuario con ese rol no existe en la base de datos',
-        );
+        throw new NotFoundException('El usuario con ese rol no existe en la base de datos');
       }
 
       const { Nombre, Apellido } = usuario;
@@ -45,9 +39,7 @@ export class EstudiantesService {
       return await this.dbEstudiante.save(estudiante);
     } catch (error) {
       if (error.errno === 1062) {
-        throw new BadRequestException(
-          'Ya existe un docente con la misma colegiatura o firma digital',
-        );
+        throw new BadRequestException('Ya existe un docente con la misma colegiatura o firma digital');
       }
       throw error;
     }
@@ -77,11 +69,7 @@ export class EstudiantesService {
     try {
       const estudiante = await this.dbEstudiante
         .createQueryBuilder('estudiante')
-        .select([
-          'estudiante.id',
-          'estudiante.NombreCompleto',
-          'estudiante.Firma',
-        ])
+        .select(['estudiante.id', 'estudiante.NombreCompleto', 'estudiante.Firma'])
         .where('estudiante.id = :id', { id })
         .getOne();
 
@@ -99,11 +87,7 @@ export class EstudiantesService {
     try {
       const estudiante = await this.dbEstudiante
         .createQueryBuilder('estudiante')
-        .select([
-          'estudiante.id',
-          'estudiante.NombreCompleto',
-          'estudiante.Firma',
-        ])
+        .select(['estudiante.id', 'estudiante.NombreCompleto', 'estudiante.Firma'])
         .where('estudiante.NombreCompleto = :nombre', { nombre })
         .getOne();
 
@@ -117,10 +101,7 @@ export class EstudiantesService {
     }
   }
 
-  async actualizarUnEstudiante(
-    id: number,
-    updateEstudianteDto: UpdateEstudianteDto,
-  ) {
+  async actualizarUnEstudiante(id: number, updateEstudianteDto: UpdateEstudianteDto) {
     try {
       const estudiante = await this.dbEstudiante.preload({
         id,

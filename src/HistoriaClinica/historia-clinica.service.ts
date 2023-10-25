@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Paciente } from 'src/paciente/entities/paciente.entity';
 import { Repository } from 'typeorm';
+import { Paciente } from '../paciente/entities/paciente.entity';
 import { CreateHistoriaClinicaDto } from './dto/create-historia-clinica.dto';
 import { HistoriaClinica } from './dto/historia-clinica.entity';
 import { UpdateHistoriaClinicaDto } from './dto/update-historia-clinica.dto';

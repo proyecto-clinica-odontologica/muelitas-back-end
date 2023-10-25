@@ -1,12 +1,6 @@
-import { Clase } from 'src/clases/entities/clase.entity';
-import { Estudiante } from 'src/estudiantes/entities/estudiante.entity';
-import {
-  Column,
-  DeleteDateColumn,
-  Entity,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Clase } from '../../clases/entities/clase.entity';
+import { Estudiante } from '../../estudiantes/entities/estudiante.entity';
 
 @Entity()
 export class Integrante {

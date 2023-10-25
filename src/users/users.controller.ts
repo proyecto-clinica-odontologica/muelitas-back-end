@@ -1,5 +1,5 @@
 import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { PaginationDto } from '../common/dto/pagination.dto';
 import { UsersService } from './users.service';
 
 @Controller('usuario')
@@ -54,5 +54,10 @@ export class UsersController {
   @Get('search/docente/:idSede')
   buscarDocentePorSede(@Param('idSede') idSede: number) {
     return this.usersService.buscarDocentePorSede(idSede);
+  }
+
+  @Get('search/estudiante/:idSede')
+  buscarEstudiantePorSede(@Param('idSede') idSede: number) {
+    return this.usersService.buscarEstudiantePorSede(idSede);
   }
 }

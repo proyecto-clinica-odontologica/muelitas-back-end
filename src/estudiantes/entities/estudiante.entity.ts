@@ -1,6 +1,3 @@
-import { User } from 'src/auth/entities/user.entity';
-import { Cita } from 'src/cita/entities/cita.entity';
-import { Integrante } from 'src/integrantes/entities/integrante.entity';
 import {
   BeforeInsert,
   BeforeUpdate,
@@ -11,6 +8,9 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { User } from '../../auth/entities/user.entity';
+import { Cita } from '../../cita/entities/cita.entity';
+import { Integrante } from '../../integrantes/entities/integrante.entity';
 
 @Entity()
 export class Estudiante {

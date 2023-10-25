@@ -1,13 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  ParseIntPipe,
-  Patch,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
 import { CreateEmpresaDto } from './dto/create-empresa.dto';
 import { UpdateEmpresaDto } from './dto/update-empresa.dto';
 import { EmpresasService } from './empresas.service';
@@ -31,7 +22,7 @@ export class EmpresasController {
     return this.empresasService.obtenerEmpresasEliminadas();
   }
 
-  @Get('search/id/:id')
+  @Get(':id')
   buscarEmpresaPorId(@Param('id', ParseIntPipe) id: number) {
     return this.empresasService.buscarEmpresaPorId(id);
   }
@@ -47,10 +38,7 @@ export class EmpresasController {
   }
 
   @Patch(':id')
-  actualizarEmpresa(
-    @Param('id') id: string,
-    @Body() updateEmpresaDto: UpdateEmpresaDto,
-  ) {
+  actualizarEmpresa(@Param('id') id: string, @Body() updateEmpresaDto: UpdateEmpresaDto) {
     return this.empresasService.actualizarEmpresa(+id, updateEmpresaDto);
   }
 

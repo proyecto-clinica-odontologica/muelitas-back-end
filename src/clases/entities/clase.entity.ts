@@ -1,7 +1,3 @@
-import { Curso } from 'src/cursos/entities/curso.entity';
-import { Docente } from 'src/docentes/entities/docente.entity';
-import { Integrante } from 'src/integrantes/entities/integrante.entity';
-import { Periodo } from 'src/periodos/entities/periodo.entity';
 import {
   BeforeInsert,
   BeforeUpdate,
@@ -12,6 +8,10 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Curso } from '../../cursos/entities/curso.entity';
+import { Docente } from '../../docentes/entities/docente.entity';
+import { Integrante } from '../../integrantes/entities/integrante.entity';
+import { Periodo } from '../../periodos/entities/periodo.entity';
 
 @Entity()
 export class Clase {

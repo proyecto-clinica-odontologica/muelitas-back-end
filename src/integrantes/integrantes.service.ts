@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Clase } from 'src/clases/entities/clase.entity';
-import { Estudiante } from 'src/estudiantes/entities/estudiante.entity';
 import { DataSource, Repository } from 'typeorm';
+import { Clase } from '../clases/entities/clase.entity';
+import { Estudiante } from '../estudiantes/entities/estudiante.entity';
 import { CreateIntegranteDto } from './dto/create-integrante.dto';
 import { UpdateIntegranteDto } from './dto/update-integrante.dto';
 import { Integrante } from './entities/integrante.entity';
@@ -72,7 +72,7 @@ export class IntegrantesService {
       const integrante = await this.dbIntegrante.findOne({
         where: { id },
         relations: ['estudiante', 'clase'],
-      }); 
+      });
       if (!integrante) {
         throw new NotFoundException('Integrante no encontrado');
       }
@@ -82,10 +82,7 @@ export class IntegrantesService {
     }
   }
 
-  async actualizarIntegrante(
-    id: number,
-    updateIntegranteDto: UpdateIntegranteDto,
-  ) {
+  async actualizarIntegrante(id: number, updateIntegranteDto: UpdateIntegranteDto) {
     try {
       const integrante = await this.dbIntegrante.preload({
         id,
@@ -118,17 +115,10 @@ export class IntegrantesService {
       integrantes.clase.activo = false;
       integrantes.estudiante.activo = false;
 
-      await queryRunner.manager.save([
-        integrantes,
-        integrantes.clase,
-        integrantes.estudiante,
-      ]);
+      await queryRunner.manager.save([integrantes, integrantes.clase, integrantes.estudiante]);
 
       await queryRunner.manager.softDelete(Integrante, id);
-      await queryRunner.manager.softDelete(
-        Estudiante,
-        integrantes.estudiante.id,
-      );
+      await queryRunner.manager.softDelete(Estudiante, integrantes.estudiante.id);
       await queryRunner.manager.softDelete(Clase, integrantes.clase.id);
       await queryRunner.commitTransaction();
 
@@ -163,11 +153,7 @@ export class IntegrantesService {
       integrantes.clase.deletedAt = null;
       integrantes.estudiante.deletedAt = null;
 
-      await queryRunner.manager.save([
-        integrantes,
-        integrantes.clase,
-        integrantes.estudiante,
-      ]);
+      await queryRunner.manager.save([integrantes, integrantes.clase, integrantes.estudiante]);
 
       await queryRunner.commitTransaction();
 

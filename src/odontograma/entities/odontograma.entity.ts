@@ -1,5 +1,5 @@
-import { Mapeo } from 'src/mapeo/entities/mapeo.entity';
-import { Paciente } from 'src/paciente/entities/paciente.entity';
+import { Mapeo } from '../../mapeo/entities/mapeo.entity';
+import { Paciente } from '../../paciente/entities/paciente.entity';
 import { BeforeInsert, BeforeUpdate, Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()

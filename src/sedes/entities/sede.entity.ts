@@ -1,6 +1,6 @@
-import { User } from 'src/auth/entities/user.entity';
-import { Empresa } from 'src/empresas/entities/empresa.entity';
-import { Periodo } from 'src/periodos/entities/periodo.entity';
+import { User } from '../../auth/entities/user.entity';
+import { Empresa } from '../../empresas/entities/empresa.entity';
+import { Periodo } from '../../periodos/entities/periodo.entity';
 import {
   BeforeInsert,
   BeforeUpdate,

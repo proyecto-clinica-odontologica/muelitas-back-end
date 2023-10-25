@@ -1,5 +1,3 @@
-import { Clase } from 'src/clases/entities/clase.entity';
-import { Sede } from 'src/sedes/entities/sede.entity';
 import {
   BeforeInsert,
   BeforeUpdate,
@@ -10,6 +8,8 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Clase } from '../../clases/entities/clase.entity';
+import { Sede } from '../../sedes/entities/sede.entity';
 
 @Entity()
 export class Periodo {

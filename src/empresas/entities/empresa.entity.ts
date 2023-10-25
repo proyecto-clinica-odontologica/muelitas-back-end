@@ -1,4 +1,4 @@
-import { Sede } from 'src/sedes/entities/sede.entity';
+import { Sede } from '../../sedes/entities/sede.entity';
 import {
   BeforeInsert,
   BeforeUpdate,

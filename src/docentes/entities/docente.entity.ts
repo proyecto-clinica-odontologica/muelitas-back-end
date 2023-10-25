@@ -1,5 +1,3 @@
-import { User } from 'src/auth/entities/user.entity';
-import { Clase } from 'src/clases/entities/clase.entity';
 import {
   BeforeInsert,
   BeforeUpdate,
@@ -10,6 +8,8 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { User } from '../../auth/entities/user.entity';
+import { Clase } from '../../clases/entities/clase.entity';
 
 @Entity()
 export class Docente {

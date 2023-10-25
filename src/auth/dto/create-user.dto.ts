@@ -39,7 +39,7 @@ export class CreateUserDto {
   })
   Codigo?: string;
 
-  @IsIn(['god', 'admin', 'docente', 'estudiante'], {
+  @IsIn(['god', 'administrador', 'docente', 'estudiante'], {
     message: 'Los roles disponibles son [god, admin, docente o estudiante]',
   })
   @IsOptional()
@@ -58,7 +58,7 @@ export class CreateUserDto {
   Genero: string;
 
   @IsIn(['desactivado', 'activado'], {
-    message: 'Los estados disponibles son [desactivado o activado]',
+    message: 'Los estados de restablecer contra disponibles son [desactivado o activado]',
   })
   RestablecerContra?: string;
 
@@ -68,7 +68,7 @@ export class CreateUserDto {
   Pago?: string;
 
   @IsBoolean({ message: 'El estado debe ser true o false' })
-  activo?: boolean;
+  Activo?: boolean;
 
   @IsOptional()
   @IsNumber()

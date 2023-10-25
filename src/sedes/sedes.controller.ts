@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Put,
 } from '@nestjs/common';
 import { CreateSedeDto } from './dto/create-sede.dto';
 import { UpdateSedeDto } from './dto/update-sede.dto';
@@ -46,7 +47,7 @@ export class SedesController {
     return this.sedesService.buscarSedesPorEmpresa(idEmpresa);
   }
 
-  @Patch(':id')
+  @Put('update/:id')
   actualizarSede(@Param('id', ParseIntPipe) id: number, @Body() updateSedeDto: UpdateSedeDto) {
     return this.sedesService.actualizarSede(id, updateSedeDto);
   }

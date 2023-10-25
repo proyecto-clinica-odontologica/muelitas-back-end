@@ -24,5 +24,5 @@ export class CreatePeriodoDto {
 
   @IsNotEmpty()
   @IsInt()
-  idSede: number;
+  SedeId: number;
 }

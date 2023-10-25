@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { MapeoModule } from 'src/mapeo/mapeo.module';
+import { MapeoModule } from '../mapeo/mapeo.module';
 import { CarasdientesController } from './carasdientes.controller';
 import { CarasdientesService } from './carasdientes.service';
 import { Carasdiente } from './entities/carasdiente.entity';

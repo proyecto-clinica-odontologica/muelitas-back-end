@@ -28,5 +28,5 @@ export class CreateSedeDto {
 
   @IsNotEmpty()
   @IsInt()
-  idEmpresa: number;
+  EmpresaId: number;
 }

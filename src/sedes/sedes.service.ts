@@ -1,11 +1,7 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Empresa } from 'src/empresas/entities/empresa.entity';
 import { DataSource, Repository } from 'typeorm';
+import { Empresa } from '../empresas/entities/empresa.entity';
 import { CreateSedeDto } from './dto/create-sede.dto';
 import { UpdateSedeDto } from './dto/update-sede.dto';
 import { Sede } from './entities/sede.entity';
@@ -25,13 +21,11 @@ export class SedesService {
   async registrarSede(createSedeDto: CreateSedeDto) {
     try {
       const empresa = await this.dbEmpresa.findOne({
-        where: { id: createSedeDto.idEmpresa },
+        where: { id: createSedeDto.EmpresaId },
       });
 
       if (!empresa) {
-        throw new NotFoundException(
-          'no se encuentra la empresa registrada en la base de datos',
-        );
+        throw new NotFoundException('no se encuentra la empresa registrada en la base de datos');
       }
 
       const sede = this.dbSede.create({
@@ -43,9 +37,7 @@ export class SedesService {
       return sedeCreada.empresa;
     } catch (error) {
       if (error.errno === 1062) {
-        throw new BadRequestException(
-          'El celular o el correo ya existe en la base de datos',
-        );
+        throw new BadRequestException('El celular o el correo ya existe en la base de datos');
       }
       throw error;
     }
@@ -80,14 +72,16 @@ export class SedesService {
         throw new NotFoundException(`La sede con el id ${id} no existe`);
       }
 
+      const EmpresaId = sede.empresa.id;
+
       delete sede.activo;
       delete sede.deletedAt;
-      delete sede.empresa.deletedAt;
-      delete sede.empresa.activo;
-      delete sede.empresa.sede;
-      delete sede.empresa.id;
+      delete sede.empresa;
 
-      return sede;
+      return {
+        ...sede,
+        EmpresaId,
+      };
     } catch (error) {
       throw error;
     }
@@ -134,10 +128,12 @@ export class SedesService {
   }
 
   async actualizarSede(id: number, updateSedeDto: UpdateSedeDto) {
+    delete updateSedeDto.id;
     try {
       const sedes = await this.dbSede.preload({
         id,
         ...updateSedeDto,
+        empresa: { id: updateSedeDto.EmpresaId },
       });
       if (!sedes) {
         throw new BadRequestException(`La sede con el id ${id} no existe`);

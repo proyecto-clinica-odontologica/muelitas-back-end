@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { OdontogramaModule } from 'src/odontograma/odontograma.module';
+import { OdontogramaModule } from '../odontograma/odontograma.module';
 import { Mapeo } from './entities/mapeo.entity';
 import { MapeoController } from './mapeo.controller';
 import { MapeoService } from './mapeo.service';

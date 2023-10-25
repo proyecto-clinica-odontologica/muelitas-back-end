@@ -1,4 +1,4 @@
-import { Clase } from 'src/clases/entities/clase.entity';
+import { Clase } from '../../clases/entities/clase.entity';
 import {
   BeforeInsert,
   BeforeUpdate,

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthModule } from 'src/auth/auth.module';
+import { AuthModule } from '../auth/auth.module';
 import { AdministradorController } from './administrador.controller';
 import { AdministradorService } from './administrador.service';
 import { Administrador } from './entities/administrador.entity';

@@ -1,13 +1,5 @@
-import { User } from 'src/auth/entities/user.entity';
-import {
-  BeforeInsert,
-  BeforeUpdate,
-  Column,
-  DeleteDateColumn,
-  Entity,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { BeforeInsert, BeforeUpdate, Column, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from '../../auth/entities/user.entity';
 
 @Entity()
 export class Administrador {
@@ -20,11 +12,14 @@ export class Administrador {
   @Column({ type: 'varchar', unique: true })
   CodigoAcceso: string;
 
+  @Column({ type: 'boolean', default: true, nullable: true })
+  Activo?: boolean;
+
+  @Column({ type: 'varchar', nullable: true })
+  Pago?: string;
+
   @DeleteDateColumn({ type: 'timestamp', nullable: true, default: null })
   deletedAt?: Date;
-
-  @Column({ type: 'boolean', default: true, nullable: true })
-  activo?: boolean;
 
   @ManyToOne(() => User, (user) => user.administrador)
   usuario: User;
@@ -32,7 +27,7 @@ export class Administrador {
   @BeforeInsert()
   @BeforeUpdate()
   limpiarCampos() {
-    this.NombreCompleto = this.NombreCompleto?.toLowerCase();
-    this.CodigoAcceso = this.CodigoAcceso?.toLowerCase();
+    this.NombreCompleto = this.NombreCompleto?.trim().toLowerCase();
+    this.CodigoAcceso = this.CodigoAcceso?.trim().toLowerCase();
   }
 }

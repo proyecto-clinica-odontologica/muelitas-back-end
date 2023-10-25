@@ -1,14 +1,14 @@
-import { Cita } from "src/cita/entities/cita.entity";
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Cita } from '../../cita/entities/cita.entity';
 
 @Entity()
 export class Seguimiento {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column({type: 'varchar', length: 255})
-    Nombre: string;
+  @Column({ type: 'varchar', length: 255 })
+  Nombre: string;
 
-    @ManyToOne(()=> Cita, (cita)=> cita.seguimientos)
-    cita: Cita;
+  @ManyToOne(() => Cita, (cita) => cita.seguimientos)
+  cita: Cita;
 }

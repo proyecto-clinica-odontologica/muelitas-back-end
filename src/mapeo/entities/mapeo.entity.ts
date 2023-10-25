@@ -1,4 +1,4 @@
-import { Odontograma } from 'src/odontograma/entities/odontograma.entity';
+import { Odontograma } from '../../odontograma/entities/odontograma.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()

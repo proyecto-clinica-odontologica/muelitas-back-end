@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { PacienteModule } from '../paciente/paciente.module';
 import { Odontograma } from './entities/odontograma.entity';
 import { OdontogramaController } from './odontograma.controller';
 import { OdontogramaService } from './odontograma.service';
-import { PacienteModule } from 'src/paciente/paciente.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Odontograma]), PacienteModule],

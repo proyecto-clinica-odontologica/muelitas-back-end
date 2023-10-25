@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { SedesModule } from 'src/sedes/sedes.module';
+import { SedesModule } from '../sedes/sedes.module';
 import { Periodo } from './entities/periodo.entity';
 import { PeriodosController } from './periodos.controller';
 import { PeriodosService } from './periodos.service';

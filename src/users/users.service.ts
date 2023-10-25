@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/auth/entities/user.entity';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
-import { Sede } from 'src/sedes/entities/sede.entity';
 import { Repository } from 'typeorm';
+import { User } from '../auth/entities/user.entity';
+import { PaginationDto } from '../common/dto/pagination.dto';
+import { Sede } from '../sedes/entities/sede.entity';
 
 @Injectable()
 export class UsersService {
@@ -33,7 +33,7 @@ export class UsersService {
     return {
       ...usuario,
       SedeId: sedeId,
-      EmpresaId: empresaId,
+      // EmpresaId: empresaId,
     };
   }
 
@@ -119,7 +119,6 @@ export class UsersService {
   }
 
   async buscarDocentePorSede(idSede: number) {
-    console.log(idSede);
     try {
       const sede = await this.dbUser.find({
         where: {
@@ -135,6 +134,26 @@ export class UsersService {
       }
 
       return sede;
+    } catch (error) {
+      throw error;
+    }
+  }
+  async buscarEstudiantePorSede(idSede: number) {
+    try {
+      const estudiantes = await this.dbUser.find({
+        where: {
+          Rol: 'estudiante',
+          sede: {
+            id: idSede,
+          },
+        },
+      });
+
+      if (!estudiantes) {
+        throw new NotFoundException(`Los estudiantes con el id ${idSede} no existe en la base de datos`);
+      }
+
+      return estudiantes;
     } catch (error) {
       throw error;
     }

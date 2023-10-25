@@ -1,7 +1,3 @@
-import { Administrador } from 'src/administrador/entities/administrador.entity';
-import { Docente } from 'src/docentes/entities/docente.entity';
-import { Estudiante } from 'src/estudiantes/entities/estudiante.entity';
-import { Sede } from 'src/sedes/entities/sede.entity';
 import {
   BeforeInsert,
   BeforeUpdate,
@@ -12,6 +8,10 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Administrador } from '../../administrador/entities/administrador.entity';
+import { Docente } from '../../docentes/entities/docente.entity';
+import { Estudiante } from '../../estudiantes/entities/estudiante.entity';
+import { Sede } from '../../sedes/entities/sede.entity';
 
 @Entity('usuarios')
 export class User {
