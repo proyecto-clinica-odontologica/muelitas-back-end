@@ -26,6 +26,7 @@ import { SeguimientoModule } from './seguimiento/seguimiento.module';
 import { SubcasoclinicoModule } from './subcasoclinico/subcasoclinico.module';
 import { TratamientoModule } from './tratamiento/tratamiento.module';
 import { UsersModule } from './users/users.module';
+import { ExamenGeneralModule } from './examen-general/examen-general.module';
 
 @Module({
   imports: [
@@ -70,6 +71,7 @@ import { UsersModule } from './users/users.module';
     CarasdientesModule,
     SubcasoclinicoModule,
     CasosclinicosModule,
+    ExamenGeneralModule,
   ],
   controllers: [],
   providers: [],
