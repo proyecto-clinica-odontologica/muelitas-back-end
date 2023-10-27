@@ -27,6 +27,7 @@ import { SubcasoclinicoModule } from './subcasoclinico/subcasoclinico.module';
 import { TratamientoModule } from './tratamiento/tratamiento.module';
 import { UsersModule } from './users/users.module';
 import { ExamenGeneralModule } from './examen-general/examen-general.module';
+import { DiagnosticoPresuntivoModule } from './diagnostico-presuntivo/diagnostico-presuntivo.module';
 
 @Module({
   imports: [
@@ -72,6 +73,7 @@ import { ExamenGeneralModule } from './examen-general/examen-general.module';
     SubcasoclinicoModule,
     CasosclinicosModule,
     ExamenGeneralModule,
+    DiagnosticoPresuntivoModule,
   ],
   controllers: [],
   providers: [],
