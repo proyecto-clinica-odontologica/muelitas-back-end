@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { PaginationDto } from '../../common/dto/pagination.dto';
 import { User } from '../auth/entities/user.entity';
-import { PaginationDto } from '../common/dto/pagination.dto';
 import { Sede } from '../sedes/entities/sede.entity';
 
 @Injectable()

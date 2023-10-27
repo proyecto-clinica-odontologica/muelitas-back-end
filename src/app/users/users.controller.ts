@@ -1,5 +1,5 @@
 import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
-import { PaginationDto } from '../common/dto/pagination.dto';
+import { PaginationDto } from '../../common/dto/pagination.dto';
 import { UsersService } from './users.service';
 
 @Controller('usuario')

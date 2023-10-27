@@ -47,34 +47,34 @@ describe('AppController (e2e)', () => {
     expect(administradores).toHaveLength(administradores.length);
   });
 
-  // it('/administrador/create (POST)', async () => {
-  //   await request(app.getHttpServer())
-  //     .post('/administrador/create')
-  //     .send({
-  //       idUsuario:26,
-  //       CodigoAcceso: 'DEF455',
-  //     })
-  //     .expect(201);
-  // });
+  it('/administrador/create (POST)', async () => {
+    await request(app.getHttpServer())
+      .post('/administrador/create')
+      .send({
+        idUsuario:26,
+        CodigoAcceso: 'DEF455',
+      })
+      .expect(201);
+  });
 
-  // it('/usuario/create (POST)', async () => {
-  //   await request(app.getHttpServer())
-  //     .post('/usuario/create')
-  //     .send({
-  // 	      "Correo": "alfonso.doe@example.com",
-  // 	      "Contra": "Abc123",
-  // 	      "NumDoc": 98765999,
-  // 	      "Nombre": "Alfonso",
-  // 	      "Apellido": "Doe Doe",
-  // 	      "Celular": 113456799,
-  // 	      "Codigo": "GHI782",
-  // 	      "Rol": "administrador",
-  // 	      "TipoDocumento": "dni",
-  // 	      "Genero": "masculino",
-  // 	      "Pago": "pagado",
-  // 	      "Activo": true,
-  // 	      "RestablecerContra": "desactivado"
-  //     })
-  //     .expect(201);
-  // });
+  it('/usuario/create (POST)', async () => {
+    await request(app.getHttpServer())
+      .post('/usuario/create')
+      .send({
+  	      "Correo": "alfonso.doe@example.com",
+  	      "Contra": "Abc123",
+  	      "NumDoc": 98765999,
+  	      "Nombre": "Alfonso",
+  	      "Apellido": "Doe Doe",
+  	      "Celular": 113456799,
+  	      "Codigo": "GHI782",
+  	      "Rol": "administrador",
+  	      "TipoDocumento": "dni",
+  	      "Genero": "masculino",
+  	      "Pago": "pagado",
+  	      "Activo": true,
+  	      "RestablecerContra": "desactivado"
+      })
+      .expect(201);
+  });
 });
