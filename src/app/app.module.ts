@@ -29,6 +29,7 @@ import { UsersModule } from './users/users.module';
 import { ExamenGeneralModule } from './examen-general/examen-general.module';
 import { DiagnosticoPresuntivoModule } from './diagnostico-presuntivo/diagnostico-presuntivo.module';
 import { ExamenAuxiliarModule } from './examen-auxiliar/examen-auxiliar.module';
+import { AnamnesisModule } from './anamnesis/anamnesis.module';
 
 @Module({
   imports: [
@@ -76,6 +77,7 @@ import { ExamenAuxiliarModule } from './examen-auxiliar/examen-auxiliar.module';
     ExamenGeneralModule,
     DiagnosticoPresuntivoModule,
     ExamenAuxiliarModule,
+    AnamnesisModule,
   ],
   controllers: [],
   providers: [],
