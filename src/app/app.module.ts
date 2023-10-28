@@ -28,6 +28,7 @@ import { TratamientoModule } from './tratamiento/tratamiento.module';
 import { UsersModule } from './users/users.module';
 import { ExamenGeneralModule } from './examen-general/examen-general.module';
 import { DiagnosticoPresuntivoModule } from './diagnostico-presuntivo/diagnostico-presuntivo.module';
+import { ExamenAuxiliarModule } from './examen-auxiliar/examen-auxiliar.module';
 
 @Module({
   imports: [
@@ -74,6 +75,7 @@ import { DiagnosticoPresuntivoModule } from './diagnostico-presuntivo/diagnostic
     CasosclinicosModule,
     ExamenGeneralModule,
     DiagnosticoPresuntivoModule,
+    ExamenAuxiliarModule,
   ],
   controllers: [],
   providers: [],

@@ -75,7 +75,7 @@ export class ExamenGeneralService {
 
   async buscarExamenGeneralPorId(id: number) {
     try {
-      const examenGeneral = await this.tblExamenGeneral.findOneOrFail({
+      const examenGeneral = await this.tblExamenGeneral.findOne({
         where: { id, activo: true },
       });
 
