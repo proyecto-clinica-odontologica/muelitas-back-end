@@ -1,12 +1,11 @@
-import { BeforeInsert, BeforeRemove, BeforeUpdate, Column, DeleteDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BeforeInsert, BeforeRemove, BeforeUpdate, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity()
-export class Anamnesis {
+export class DiagnosticoDefinitivo {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
   @Column({ type: 'varchar', length: 255 })
-  Contenido: string;
+  Diagnostico: string;
 
   @Column({ type: 'date' })
   FechaRegistro: Date;
@@ -14,13 +13,13 @@ export class Anamnesis {
   @Column({ type: 'boolean', default: true })
   activo: boolean;
 
-  @DeleteDateColumn({ type: 'timestamp', nullable: true, default: null })
+  @Column({ type: 'timestamp', default: null, nullable: true })
   deletedAt: Date;
 
-  @BeforeInsert()
   @BeforeUpdate()
+  @BeforeInsert()
   limpiarCampos() {
-    this.Contenido = this.Contenido?.trim().toLowerCase();
+    this.Diagnostico = this.Diagnostico?.trim().toLowerCase();
   }
 
   @BeforeRemove()

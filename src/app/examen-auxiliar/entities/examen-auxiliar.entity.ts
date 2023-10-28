@@ -13,7 +13,7 @@ export class ExamenAuxiliar {
   @Column({ type: 'boolean', default: true })
   activo: boolean;
 
-  @DeleteDateColumn({ type: 'date', nullable: true, default: null })
+  @DeleteDateColumn({ type: 'timestamp', nullable: true, default: null })
   deletedAt: Date;
 
   @BeforeInsert()

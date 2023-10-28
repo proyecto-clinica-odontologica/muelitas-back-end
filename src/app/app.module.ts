@@ -30,6 +30,8 @@ import { ExamenGeneralModule } from './examen-general/examen-general.module';
 import { DiagnosticoPresuntivoModule } from './diagnostico-presuntivo/diagnostico-presuntivo.module';
 import { ExamenAuxiliarModule } from './examen-auxiliar/examen-auxiliar.module';
 import { AnamnesisModule } from './anamnesis/anamnesis.module';
+import { DiagnosticoDefinitivoModule } from './diagnostico-definitivo/diagnostico-definitivo.module';
+import { AnivelPiezaModule } from './anivel-pieza/anivel-pieza.module';
 
 @Module({
   imports: [
@@ -78,6 +80,8 @@ import { AnamnesisModule } from './anamnesis/anamnesis.module';
     DiagnosticoPresuntivoModule,
     ExamenAuxiliarModule,
     AnamnesisModule,
+    DiagnosticoDefinitivoModule,
+    AnivelPiezaModule,
   ],
   controllers: [],
   providers: [],

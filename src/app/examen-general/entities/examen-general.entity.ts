@@ -34,7 +34,7 @@ export class ExamenGeneral {
   @Column({ type: 'number' })
   Temperatura: number;
 
-  @DeleteDateColumn({ type: 'date', default: null, nullable: true })
+  @DeleteDateColumn({ type: 'timestamp', default: null, nullable: true })
   deletedAt: Date;
 
   @Column({ type: 'boolean', default: true })

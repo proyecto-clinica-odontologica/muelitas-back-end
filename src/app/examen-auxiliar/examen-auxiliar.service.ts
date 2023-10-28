@@ -97,7 +97,8 @@ export class ExamenAuxiliarService {
 
       examenAuxiliar.activo = true;
 
-      return await this.tblExamenAuxiliar.save(examenAuxiliar);
+      await this.tblExamenAuxiliar.save(examenAuxiliar);
+      return { message: 'Examen auxiliar restaurado correctamente' };
     } catch (error) {
       throw new NotFoundException('No se encontró el examen auxiliar');
     }

@@ -14,7 +14,7 @@ export class DiagnosticoPresuntivo {
   @Column({ type: 'boolean', default: true })
   activo: boolean;
 
-  @Column({ type: 'date', default: null, nullable: true })
+  @Column({ type: 'timestamp', default: null, nullable: true })
   deletedAt: Date;
 
   @BeforeUpdate()

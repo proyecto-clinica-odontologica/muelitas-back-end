@@ -1,6 +1,6 @@
 import { IsDate, IsNotEmpty, IsString, Length } from 'class-validator';
 
-export class CreateDiagnosticoPresuntivoDto {
+export class CreateDiagnosticoDefinitivoDto {
   @IsString({ message: 'El diagnostico debe ser un texto' })
   @IsNotEmpty({ message: 'El diagnostico es requerido' })
   @Length(3, 255, { message: 'El diagnostico debe tener entre $constraint1 y $constraint2 caracteres' })
