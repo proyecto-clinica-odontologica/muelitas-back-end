@@ -1,6 +1,6 @@
 import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CreateExamenIntrabucalDto } from './dto/create-examen-intrabucal.dto';
 import { UpdateExamenIntrabucalDto } from './dto/update-examen-intrabucal.dto';
 import { ExamenIntrabucal } from './entities/examen-intrabucal.entity';
