@@ -55,8 +55,8 @@ export class CreateExamengeneralDto{
 
     @IsNumber()
     @IsPositive({message: 'La temperatura no debe ser negativo.'})
-    @Max(100, { message: 'La temperatura no debe exceder de 100 ppm.' })
-    @Min(50, { message: 'La temperatura no debe ser inferior a 50 ppm.' })
+    @Max(100, { message: 'La temperatura no debe exceder de 100.' })
+    @Min(0, { message: 'La temperatura no debe ser inferior a 0.' })
     temperatura?: number;
 
     @IsNotEmpty()

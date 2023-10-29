@@ -56,18 +56,28 @@ export class DiagnosticopresuntivoService {
 
   async updateDiagPresun(id: number, DiagPresunDto: UpdateDiagnosticopresuntivoDto){
     try {
-      const DiagPresun = await this.diagpresunRepository.findOne({
-        where: { paciente: { id } },
-        relations: ['paciente'],
+      const diagpresun = await this.diagpresunRepository.findOne({
+        where: { id }
       });
     
-      if (!DiagPresun) {
+      if (!diagpresun) {
         throw new NotFoundException('Diagnostico presuntivo no encontrada en la base de datos');
       }
-    
-      Object.assign(DiagPresun, DiagPresunDto);
-    
-      return await this.diagpresunRepository.save(DiagPresun);
+
+      const paciente = await this.pacienteRepository.findOne({
+        where: { id: DiagPresunDto.IdPaciente },
+      });
+
+      if (!paciente) {
+        throw new NotFoundException('Paciente no encontrada en la base de datos');
+      }
+      diagpresun.Diagnostico = DiagPresunDto.Diagnostico;
+      if (DiagPresunDto.IdPaciente) {
+        diagpresun.paciente = paciente;
+      }
+      
+      await this.diagpresunRepository.save(diagpresun);
+      return diagpresun;
     } catch (error) {
       throw error;
     }

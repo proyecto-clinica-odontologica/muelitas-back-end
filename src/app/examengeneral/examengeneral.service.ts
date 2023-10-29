@@ -56,18 +56,37 @@ export class ExamengeneralService {
 
   async updateexamenesGen(id: number, examenesGenDto: UpdateExamengeneralDto){
     try {
-      const examenesGen = await this.examenesGenRepository.findOne({
-        where: { paciente: { id } },
-        relations: ['paciente'],
+      const examenesgen = await this.examenesGenRepository.findOne({
+        where: { id }
       });
     
-      if (!examenesGen) {
-        throw new NotFoundException('Examen general no encontrada en la base de datos');
+      if (!examenesgen) {
+        throw new NotFoundException('Diagnostico definitivo no encontrada en la base de datos');
       }
-    
-      Object.assign(examenesGen, examenesGenDto);
-    
-      return await this.examenesGenRepository.save(examenesGen);
+
+      const paciente = await this.pacienteRepository.findOne({
+        where: { id: examenesGenDto.IdPaciente },
+      });
+
+      if (!paciente) {
+        throw new NotFoundException('Paciente no encontrada en la base de datos');
+      }
+      examenesgen.peso = examenesGenDto.peso;
+      examenesgen.IndiceMasaCorporal = examenesGenDto.IndiceMasaCorporal;
+      examenesgen.piel = examenesGenDto.piel;
+      examenesgen.AnexosCabello = examenesGenDto.AnexosCabello;
+      examenesgen.AnexosUnias = examenesGenDto.AnexosUnias;
+      examenesgen.presionArterial = examenesGenDto.presionArterial;
+      examenesgen.frecuenciaRespiratoria = examenesGenDto.frecuenciaRespiratoria;
+      examenesgen.pulso = examenesGenDto.pulso;
+      examenesgen.temperatura = examenesGenDto.temperatura;
+      
+      if (examenesGenDto.IdPaciente) {
+        examenesgen.paciente = paciente;
+      }
+      
+      await this.examenesGenRepository.save(examenesgen);
+      return examenesgen;
     } catch (error) {
       throw error;
     }

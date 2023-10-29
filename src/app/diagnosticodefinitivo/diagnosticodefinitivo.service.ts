@@ -56,18 +56,28 @@ export class DiagnosticodefinitivoService {
 
   async updateDiagdef(id: number, diagdefDto: UpdateDiagnosticodefinitivoDto){
     try {
-      const Diagdef = await this.diagdefRepository.findOne({
-        where: { paciente: { id } },
-        relations: ['paciente'],
+      const diagdef = await this.diagdefRepository.findOne({
+        where: { id }
       });
     
-      if (!Diagdef) {
+      if (!diagdef) {
         throw new NotFoundException('Diagnostico definitivo no encontrada en la base de datos');
       }
-    
-      Object.assign(Diagdef, diagdefDto);
-    
-      return await this.diagdefRepository.save(Diagdef);
+
+      const paciente = await this.pacienteRepository.findOne({
+        where: { id: diagdefDto.IdPaciente },
+      });
+
+      if (!paciente) {
+        throw new NotFoundException('Paciente no encontrada en la base de datos');
+      }
+      diagdef.Diagnostico = diagdefDto.Diagnostico;
+      if (diagdefDto.IdPaciente) {
+        diagdef.paciente = paciente;
+      }
+      
+      await this.diagdefRepository.save(diagdef);
+      return diagdef;
     } catch (error) {
       throw error;
     }

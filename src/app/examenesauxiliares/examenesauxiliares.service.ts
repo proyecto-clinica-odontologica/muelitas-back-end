@@ -57,17 +57,27 @@ export class ExamenesauxiliaresService {
   async updateexamenesaux(id: number, examenesauxDto: UpdateExamenesauxiliareDto){
     try {
       const examenesaux = await this.examenesauxRepository.findOne({
-        where: { paciente: { id } },
-        relations: ['paciente'],
+        where: { id }
       });
     
       if (!examenesaux) {
-        throw new NotFoundException('Examen auxiliar no encontrada en la base de datos');
+        throw new NotFoundException('Diagnostico definitivo no encontrada en la base de datos');
       }
-    
-      Object.assign(examenesaux, examenesauxDto);
-    
-      return await this.examenesauxRepository.save(examenesaux);
+
+      const paciente = await this.pacienteRepository.findOne({
+        where: { id: examenesauxDto.IdPaciente },
+      });
+
+      if (!paciente) {
+        throw new NotFoundException('Paciente no encontrada en la base de datos');
+      }
+      examenesaux.Contenido = examenesauxDto.Contenido;
+      if (examenesauxDto.IdPaciente) {
+        examenesaux.paciente = paciente;
+      }
+      
+      await this.examenesauxRepository.save(examenesaux);
+      return examenesaux;
     } catch (error) {
       throw error;
     }

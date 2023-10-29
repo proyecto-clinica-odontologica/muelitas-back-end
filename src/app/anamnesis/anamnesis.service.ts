@@ -58,17 +58,27 @@ export class AnamnesisService {
     async updateAnamnesis(id: number, anamnesisDto: UpdateAnamnesisDto){
       try {
         const anamnesis = await this.anamnesisRepository.findOne({
-          where: { paciente: { id } },
-          relations: ['paciente'],
+          where: { id }
         });
       
         if (!anamnesis) {
           throw new NotFoundException('Anamnesis no encontrada en la base de datos');
         }
-      
-        Object.assign(anamnesis, anamnesisDto);
-      
-        return await this.anamnesisRepository.save(anamnesis);
+
+        const paciente = await this.pacienteRepository.findOne({
+          where: { id: anamnesisDto.IdPaciente },
+        });
+
+        if (!paciente) {
+          throw new NotFoundException('Paciente no encontrada en la base de datos');
+        }
+        anamnesis.Contenido = anamnesisDto.Contenido;
+        if (anamnesisDto.IdPaciente) {
+          anamnesis.paciente = paciente;
+        }
+        
+        await this.anamnesisRepository.save(anamnesis);
+        return anamnesis;
       } catch (error) {
         throw error;
       }
