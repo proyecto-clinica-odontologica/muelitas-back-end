@@ -1,4 +1,4 @@
-import { BeforeInsert, BeforeRemove, BeforeUpdate, Column, DeleteDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BeforeInsert, BeforeUpdate, Column, DeleteDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class TejidoDuro {
@@ -61,10 +61,5 @@ export class TejidoDuro {
     this.FacetaDeDesgaste = this.FacetaDeDesgaste?.trim().toLowerCase();
     this.LineaMedia = this.LineaMedia?.trim().toLowerCase();
     this.Otro = this.Otro?.trim().toLowerCase();
-  }
-
-  @BeforeRemove()
-  handleDelete() {
-    this.activo = false;
   }
 }

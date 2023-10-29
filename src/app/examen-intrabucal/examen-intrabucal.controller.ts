@@ -1,34 +1,47 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { ExamenIntrabucalService } from './examen-intrabucal.service';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
 import { CreateExamenIntrabucalDto } from './dto/create-examen-intrabucal.dto';
 import { UpdateExamenIntrabucalDto } from './dto/update-examen-intrabucal.dto';
+import { ExamenIntrabucalService } from './examen-intrabucal.service';
 
 @Controller('examen-intrabucal')
 export class ExamenIntrabucalController {
   constructor(private readonly examenIntrabucalService: ExamenIntrabucalService) {}
 
-  @Post()
-  create(@Body() createExamenIntrabucalDto: CreateExamenIntrabucalDto) {
-    return this.examenIntrabucalService.create(createExamenIntrabucalDto);
+  @Post('create')
+  crearExamenIntrabucal(@Body() createExamenIntrabucalDto: CreateExamenIntrabucalDto) {
+    return this.examenIntrabucalService.crearExamenIntrabucal(createExamenIntrabucalDto);
   }
 
   @Get()
-  findAll() {
-    return this.examenIntrabucalService.findAll();
+  obtenerExamenesIntrabucales() {
+    return this.examenIntrabucalService.obtenerExamenesIntrabucales();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.examenIntrabucalService.findOne(+id);
+  @Get('deleted')
+  obtenerExamenesIntrabucalesEliminados() {
+    return this.examenIntrabucalService.obtenerExamenesIntrabucalesEliminados();
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateExamenIntrabucalDto: UpdateExamenIntrabucalDto) {
-    return this.examenIntrabucalService.update(+id, updateExamenIntrabucalDto);
+  @Get('search/:id')
+  buscarExamenIntrabucalPorId(@Param('id', ParseIntPipe) id: number) {
+    return this.examenIntrabucalService.buscarExamenIntrabucalPorId(id);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.examenIntrabucalService.remove(+id);
+  @Patch('update/:id')
+  actualizarExamenIntrabucal(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateExamenIntrabucalDto: UpdateExamenIntrabucalDto,
+  ) {
+    return this.examenIntrabucalService.actualizarExamenIntrabucal(id, updateExamenIntrabucalDto);
+  }
+
+  @Delete('delete/:id')
+  eliminarExamenIntrabucal(@Param('id', ParseIntPipe) id: number) {
+    return this.examenIntrabucalService.eliminarExamenIntrabucal(id);
+  }
+
+  @Patch('restore/:id')
+  restaurarExamenIntrabucal(@Param('id', ParseIntPipe) id: number) {
+    return this.examenIntrabucalService.restaurarExamenIntrabucal(id);
   }
 }

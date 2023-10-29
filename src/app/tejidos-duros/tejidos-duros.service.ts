@@ -44,7 +44,7 @@ export class TejidosDurosService {
         ],
       });
     } catch (error) {
-      throw new error();
+      throw error;
     }
   }
 
@@ -70,19 +70,32 @@ export class TejidosDurosService {
         withDeleted: true,
       });
     } catch (error) {
-      throw new error();
+      throw error;
     }
   }
 
-  async buscarTejidoDuroPorId(id: number) {
+  async buscarTejidoDuroPorId(id: number, checkDeleted: boolean = false) {
     try {
-      const tejido = await this.tblTejidoDuro.findOneOrFail({
-        where: { id, activo: true },
+      const tejido = await this.tblTejidoDuro.findOne({
+        where: { id },
+        withDeleted: true,
       });
+
+      if (!tejido) {
+        throw new NotFoundException('No se encontró el tejido duro');
+      }
+
+      if (!checkDeleted && tejido.deletedAt) {
+        throw new NotFoundException('El tejido duro ya fue eliminado');
+      }
+
+      if (checkDeleted && !tejido.deletedAt) {
+        throw new NotFoundException('El tejido duro no está eliminado');
+      }
 
       return this.omitirCampos(tejido);
     } catch (error) {
-      throw new NotFoundException('No se encontró el tejido duro');
+      throw error;
     }
   }
 
@@ -108,7 +121,7 @@ export class TejidosDurosService {
   async eliminarTejidoDuro(id: number) {
     try {
       const tejido = await this.buscarTejidoDuroPorId(id);
-      await this.tblTejidoDuro.softRemove(tejido);
+      await this.tblTejidoDuro.update(tejido.id, { activo: false, deletedAt: new Date() });
 
       return {
         message: `Tejido duro eliminado correctamente`,
@@ -120,22 +133,14 @@ export class TejidosDurosService {
 
   async restaurarTejidoDuro(id: number) {
     try {
-      const tejido = await this.tblTejidoDuro.findOneOrFail({
-        where: { id, activo: false },
-        withDeleted: true,
-      });
-
-      await this.tblTejidoDuro.recover(tejido);
-
-      tejido.activo = true;
-
-      await this.tblTejidoDuro.save(tejido);
+      const tejido = await this.buscarTejidoDuroPorId(id, true);
+      await this.tblTejidoDuro.update(tejido.id, { activo: true, deletedAt: null });
 
       return {
         message: `Tejido duro restaurado correctamente`,
       };
     } catch (error) {
-      throw new NotFoundException('No se encontró el tejido duro');
+      throw error;
     }
   }
 
