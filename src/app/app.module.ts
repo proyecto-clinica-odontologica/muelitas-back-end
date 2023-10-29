@@ -17,6 +17,7 @@ import { CursosModule } from './cursos/cursos.module';
 import { DiagnosticoDefinitivoModule } from './diagnostico-definitivo/diagnostico-definitivo.module';
 import { DiagnosticoPresuntivoModule } from './diagnostico-presuntivo/diagnostico-presuntivo.module';
 import { DocentesModule } from './docentes/docentes.module';
+import { DolorModule } from './dolor/dolor.module';
 import { EmpresasModule } from './empresas/empresas.module';
 import { EstudiantesModule } from './estudiantes/estudiantes.module';
 import { ExamenAuxiliarModule } from './examen-auxiliar/examen-auxiliar.module';
@@ -34,7 +35,6 @@ import { SubcasoclinicoModule } from './subcasoclinico/subcasoclinico.module';
 import { TejidosDurosModule } from './tejidos-duros/tejidos-duros.module';
 import { TratamientoModule } from './tratamiento/tratamiento.module';
 import { UsersModule } from './users/users.module';
-import { DolorModule } from './dolor/dolor.module';
 
 @Module({
   imports: [
@@ -44,7 +44,7 @@ import { DolorModule } from './dolor/dolor.module';
       validationSchema: JoiValidationSchema,
     }),
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'public', 'proyecto-front'),
+      rootPath: join(__dirname, '../..', 'public', 'proyecto-front'),
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
