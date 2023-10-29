@@ -10,8 +10,6 @@ export class ExamenIntrabucalService {
   constructor(
     @InjectRepository(ExamenIntrabucal)
     private readonly tblExamenIntrabucal: Repository<ExamenIntrabucal>,
-
-    private dataSource: DataSource,
   ) {}
 
   async crearExamenIntrabucal(createExamenIntrabucalDto: CreateExamenIntrabucalDto) {

@@ -34,6 +34,7 @@ import { SubcasoclinicoModule } from './subcasoclinico/subcasoclinico.module';
 import { TejidosDurosModule } from './tejidos-duros/tejidos-duros.module';
 import { TratamientoModule } from './tratamiento/tratamiento.module';
 import { UsersModule } from './users/users.module';
+import { DolorModule } from './dolor/dolor.module';
 
 @Module({
   imports: [
@@ -86,6 +87,7 @@ import { UsersModule } from './users/users.module';
     AnivelPiezaModule,
     TejidosDurosModule,
     ExamenIntrabucalModule,
+    DolorModule,
   ],
   controllers: [],
   providers: [],
