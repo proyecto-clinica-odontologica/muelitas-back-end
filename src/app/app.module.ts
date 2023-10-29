@@ -32,6 +32,8 @@ import { ExamenAuxiliarModule } from './examen-auxiliar/examen-auxiliar.module';
 import { AnamnesisModule } from './anamnesis/anamnesis.module';
 import { DiagnosticoDefinitivoModule } from './diagnostico-definitivo/diagnostico-definitivo.module';
 import { AnivelPiezaModule } from './anivel-pieza/anivel-pieza.module';
+import { TejidosDurosModule } from './tejidos-duros/tejidos-duros.module';
+import { ExamenIntrabucalModule } from './examen-intrabucal/examen-intrabucal.module';
 
 @Module({
   imports: [
@@ -82,6 +84,8 @@ import { AnivelPiezaModule } from './anivel-pieza/anivel-pieza.module';
     AnamnesisModule,
     DiagnosticoDefinitivoModule,
     AnivelPiezaModule,
+    TejidosDurosModule,
+    ExamenIntrabucalModule,
   ],
   controllers: [],
   providers: [],
