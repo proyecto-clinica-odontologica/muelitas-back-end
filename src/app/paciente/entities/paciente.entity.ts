@@ -2,6 +2,11 @@ import { Odontograma } from '../../odontograma/entities/odontograma.entity';
 import { BeforeInsert, BeforeUpdate, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { HistoriaClinica } from '../../HistoriaClinica/dto/historia-clinica.entity';
 import { Cita } from '../../cita/entities/cita.entity';
+import { Anamnesis } from 'src/app/anamnesis/entities/anamnesis.entity';
+import { Diagnosticopresuntivo } from 'src/app/diagnosticopresuntivo/entities/diagnosticopresuntivo.entity';
+import { Diagnosticodefinitivo } from 'src/app/diagnosticodefinitivo/entities/diagnosticodefinitivo.entity';
+import { Examenesauxiliare } from 'src/app/examenesauxiliares/entities/examenesauxiliare.entity';
+import { ExamenGeneral } from 'src/app/examengeneral/entities/examengeneral.entity';
 
 @Entity()
 export class Paciente {
@@ -92,6 +97,17 @@ export class Paciente {
   odontrogramas: Odontograma[];
   @OneToMany(() => HistoriaClinica, (historiaClinicas) => historiaClinicas.paciente)
   historiasClinicas: HistoriaClinica[];
+
+  @OneToMany(() => Anamnesis, (anamnesis) => anamnesis.paciente)
+  anamnesis: Anamnesis[];
+  @OneToMany(() => Diagnosticopresuntivo, (diagnosticopresuntivo) => diagnosticopresuntivo.paciente)
+  diagnosticopresuntivo: Diagnosticopresuntivo[];
+  @OneToMany(() => Diagnosticodefinitivo, (diagnosticodefinitivo) => diagnosticodefinitivo.paciente)
+  diagnosticodefinitivo: Diagnosticodefinitivo[];
+  @OneToMany(() => Examenesauxiliare, (examenesauxiliare) => examenesauxiliare.paciente)
+  examenesauxiliare: Examenesauxiliare[];
+  @OneToMany(() => ExamenGeneral, (examenGeneral) => examenGeneral.paciente)
+  examenGeneral: ExamenGeneral[];
 
   @BeforeInsert()
   @BeforeUpdate()

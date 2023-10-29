@@ -26,6 +26,11 @@ import { SeguimientoModule } from './seguimiento/seguimiento.module';
 import { SubcasoclinicoModule } from './subcasoclinico/subcasoclinico.module';
 import { TratamientoModule } from './tratamiento/tratamiento.module';
 import { UsersModule } from './users/users.module';
+import { DiagnosticopresuntivoModule } from './diagnosticopresuntivo/diagnosticopresuntivo.module';
+import { AnamnesisModule } from './anamnesis/anamnesis.module';
+import { DiagnosticodefinitivoModule } from './diagnosticodefinitivo/diagnosticodefinitivo.module';
+import { ExamenesauxiliaresModule } from './examenesauxiliares/examenesauxiliares.module';
+import { ExamengeneralModule } from './examengeneral/examengeneral.module';
 
 @Module({
   imports: [
@@ -70,6 +75,11 @@ import { UsersModule } from './users/users.module';
     CarasdientesModule,
     SubcasoclinicoModule,
     CasosclinicosModule,
+    DiagnosticopresuntivoModule,
+    AnamnesisModule,
+    DiagnosticodefinitivoModule,
+    ExamenesauxiliaresModule,
+    ExamengeneralModule,
   ],
   controllers: [],
   providers: [],
