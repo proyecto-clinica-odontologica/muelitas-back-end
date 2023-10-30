@@ -18,6 +18,11 @@ import { SeedModule } from './seed/seed.module';
 import { UsersModule } from './users/users.module';
 import { PacienteModule } from './paciente/paciente.module';
 import { OdontogramaModule } from './odontograma/odontograma.module';
+import { ExamenEstomatologicoModule } from './examen-estomatologico/examen-estomatologico.module';
+import { InterpretacionModule } from './interpretacion/interpretacion.module';
+import { EpicrisisModule } from './epicrisis/epicrisis.module';
+import { NotasEvolutivasModule } from './notas-evolutivas/notas-evolutivas.module';
+import { PlanyCronogramaTratamientoModule } from './plany-cronograma-tratamiento/plany-cronograma-tratamiento.module';
 
 @Module({
   imports: [
@@ -53,6 +58,11 @@ import { OdontogramaModule } from './odontograma/odontograma.module';
     CursosModule,
     IntegrantesModule,
     OdontogramaModule,
+    ExamenEstomatologicoModule,
+    InterpretacionModule,
+    EpicrisisModule,
+    NotasEvolutivasModule,
+    PlanyCronogramaTratamientoModule,
   ],
   controllers: [],
   providers: [],
