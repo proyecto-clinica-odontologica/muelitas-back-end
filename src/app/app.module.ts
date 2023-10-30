@@ -26,6 +26,10 @@ import { SeguimientoModule } from './seguimiento/seguimiento.module';
 import { SubcasoclinicoModule } from './subcasoclinico/subcasoclinico.module';
 import { TratamientoModule } from './tratamiento/tratamiento.module';
 import { UsersModule } from './users/users.module';
+import { DolorModule } from './dolor/dolor.module';
+import { ExamenestomatologicoModule } from './examenestomatologico/examenestomatologico.module';
+import { OclusionModule } from './oclusion/oclusion.module';
+import { PacientedatosextraModule } from './pacientedatosextra/pacientedatosextra.module';
 
 @Module({
   imports: [
@@ -70,6 +74,10 @@ import { UsersModule } from './users/users.module';
     CarasdientesModule,
     SubcasoclinicoModule,
     CasosclinicosModule,
+    DolorModule,
+    ExamenestomatologicoModule,
+    OclusionModule,
+    PacientedatosextraModule,
   ],
   controllers: [],
   providers: [],
