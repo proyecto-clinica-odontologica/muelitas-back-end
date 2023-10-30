@@ -32,8 +32,8 @@ export class AnamnesisController {
     updateAnamnesis(@Param('id', ParseIntPipe) id: number, @Body() anamnesis: UpdateAnamnesisDto){
         return this.anamnesisService.updateAnamnesis(id, anamnesis)
     }
-    @Get(':id')
-    getHistoriaClinicaByPaciente(@Param('id', ParseIntPipe) id: number) {
+    @Get('paciente/:id')
+    getAnamnesisByPaciente(@Param('id', ParseIntPipe) id: number) {
       return this.anamnesisService.getAnamnesisByPaciente(id);
     }
 }

@@ -32,8 +32,8 @@ export class ExamengeneralController {
     updateExamenGen(@Param('id', ParseIntPipe) id: number, @Body() ExamenGen: UpdateExamengeneralDto){
         return this.examenesGenService.updateexamenesGen(id, ExamenGen)
     }
-    @Get(':id')
-    getHistoriaClinicaByPaciente(@Param('id', ParseIntPipe) id: number) {
+    @Get('paciente/:id')
+    getExamenGenByPaciente(@Param('id', ParseIntPipe) id: number) {
       return this.examenesGenService.getexamenesGenByPaciente(id);
     }
 }

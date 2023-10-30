@@ -32,8 +32,8 @@ export class ExamenesauxiliaresController {
     updateExamenaux(@Param('id', ParseIntPipe) id: number, @Body() Examenaux: UpdateExamenesauxiliareDto){
         return this.examenesauxService.updateexamenesaux(id, Examenaux)
     }
-    @Get(':id')
-    getHistoriaClinicaByPaciente(@Param('id', ParseIntPipe) id: number) {
+    @Get('paciente/:id')
+    getExamenauxByPaciente(@Param('id', ParseIntPipe) id: number) {
       return this.examenesauxService.getexamenesauxByPaciente(id);
     }
 }

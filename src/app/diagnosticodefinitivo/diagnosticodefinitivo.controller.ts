@@ -32,8 +32,8 @@ export class DiagnosticodefinitivoController {
     updateDiagdef(@Param('id', ParseIntPipe) id: number, @Body() diagdefdto: UpdateDiagnosticodefinitivoDto){
         return this.diagnosticodefinitivoService.updateDiagdef(id, diagdefdto)
     }
-    @Get(':id')
-    getHistoriaClinicaByPaciente(@Param('id', ParseIntPipe) id: number) {
+    @Get('paciente/:id')
+    getDiagdefByPaciente(@Param('id', ParseIntPipe) id: number) {
       return this.diagnosticodefinitivoService.getDiagdefByPaciente(id);
     }
 }

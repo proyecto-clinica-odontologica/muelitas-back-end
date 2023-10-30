@@ -32,8 +32,8 @@ export class DiagnosticopresuntivoController {
     updateDiagPresun(@Param('id', ParseIntPipe) id: number, @Body() DiagPresun: UpdateDiagnosticopresuntivoDto){
         return this.diagnosticopresuntivoService.updateDiagPresun(id, DiagPresun)
     }
-    @Get(':id')
-    getHistoriaClinicaByPaciente(@Param('id', ParseIntPipe) id: number) {
+    @Get('paciente/:id')
+    getDiagPresunByPaciente(@Param('id', ParseIntPipe) id: number) {
       return this.diagnosticopresuntivoService.getDiagPresunByPaciente(id);
     }
 }
