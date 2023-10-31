@@ -9,73 +9,125 @@ import { Paciente } from './entities/paciente.entity';
 export class PacienteService {
   constructor(
     @InjectRepository(Paciente)
-    private dbPaciente: Repository<Paciente>,
+    private tblPaciente: Repository<Paciente>,
   ) {}
-  async create(createPacienteDto: CreatePacienteDto) {
+
+  async registrarPaciente(createPacienteDto: CreatePacienteDto) {
     try {
-      const Paciente = this.dbPaciente.create(createPacienteDto);
-      await this.dbPaciente.save(Paciente);
-      return Paciente;
+      const paciente = this.tblPaciente.create(createPacienteDto);
+      await this.tblPaciente.save(paciente);
+      return this.omitirCampos(paciente);
     } catch (error) {
       throw error;
     }
   }
 
-  async findAll() {
+  async obtenerPacientes() {
     try {
-      return await this.dbPaciente.find();
+      const pacientes = await this.tblPaciente.find({
+        where: { activo: true },
+      });
+
+      return this.camposVisibles(pacientes);
     } catch (error) {
       throw error;
     }
   }
 
-  async findOne(id: string) {
-    let Paciente: Paciente;
+  async obtenerPacientesEliminados() {
     try {
-      if (isNaN(+id)) {
-        Paciente = await this.dbPaciente.findOneBy({ Nombre: id });
-      } else if (isNaN(+id)) {
-        Paciente = await this.dbPaciente.findOneBy({ ApellidoPaterno: id });
-      } else if (isNaN(+id)) {
-        Paciente = await this.dbPaciente.findOneBy({ ApellidoMaterno: id });
-      } else if (isNaN(+id)) {
-        Paciente = await this.dbPaciente.findOneBy({ NumeroDocumento: id });
-      } else {
-        Paciente = await this.dbPaciente.findOneBy({ id: +id });
-      }
+      const pacientes = await this.tblPaciente.find({
+        where: { activo: false },
+        withDeleted: true,
+      });
 
-      if (!Paciente) {
+      return this.camposVisibles(pacientes);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async buscarPacientePorId(id: number, checkDeleted: boolean = false) {
+    try {
+      const paciente = await this.tblPaciente.findOne({
+        where: { id },
+        withDeleted: true,
+      });
+
+      if (!paciente) {
         throw new NotFoundException(`no existe un paciente con el id ${id} en la base de datos`);
       }
 
-      return Paciente;
+      if (!checkDeleted && paciente.deletedAt) {
+        throw new NotFoundException(`el paciente con el id ${id} esta eliminado`);
+      }
+
+      if (checkDeleted && !paciente.deletedAt) {
+        throw new NotFoundException(`el paciente no esta eliminado`);
+      }
+
+      return this.omitirCampos(paciente);
     } catch (error) {
       throw error;
     }
   }
 
-  async update(id: number, updatePacienteDto: UpdatePacienteDto) {
+  async actualizarPaciente(id: number, updatePacienteDto: UpdatePacienteDto) {
     try {
-      const Paciente = await this.dbPaciente.preload({
-        id: id,
+      const paciente = await this.tblPaciente.preload({
+        id,
         ...updatePacienteDto,
       });
-      await this.dbPaciente.save(Paciente);
-      return Paciente;
+
+      if (!paciente) {
+        throw new NotFoundException(`no existe el paciente`);
+      }
+
+      await this.tblPaciente.save(paciente);
+      return this.omitirCampos(paciente);
     } catch (error) {
       throw error;
     }
   }
 
-  async remove(id: string) {
+  async eliminarPaciente(id: number) {
     try {
-      const Paciente = await this.findOne(id);
-      await this.dbPaciente.remove(Paciente);
+      const paciente = await this.buscarPacientePorId(id);
+      await this.tblPaciente.update(paciente.id, {
+        activo: false,
+        deletedAt: new Date(),
+      });
+
       return {
         message: `Paciente con el id ${id} fue eliminado`,
       };
     } catch (error) {
       throw error;
     }
+  }
+
+  async restaurarPaciente(id: number) {
+    try {
+      const paciente = await this.buscarPacientePorId(id, true);
+      await this.tblPaciente.update(paciente.id, {
+        activo: true,
+        deletedAt: null,
+      });
+
+      return {
+        message: `Paciente con el id ${id} fue restaurado`,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  private omitirCampos(paciente: Paciente) {
+    const { activo, deletedAt, ...resto } = paciente;
+    return resto;
+  }
+
+  private camposVisibles(pacientes: Paciente[]) {
+    return pacientes.map((paciente) => this.omitirCampos(paciente));
   }
 }

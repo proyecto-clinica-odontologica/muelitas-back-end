@@ -64,7 +64,7 @@ export class InterpretacionService {
       }
 
       if (checkDeleted && !interpretacion.deletedAt) {
-        throw new NotFoundException(`La interpretacion está eliminada`);
+        throw new NotFoundException(`La interpretacion no está eliminada`);
       }
 
       return this.omitirCampos(interpretacion);

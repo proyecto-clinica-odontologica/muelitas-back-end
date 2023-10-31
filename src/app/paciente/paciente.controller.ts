@@ -1,34 +1,44 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { PacienteService } from './paciente.service';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
 import { CreatePacienteDto } from './dto/create-paciente.dto';
 import { UpdatePacienteDto } from './dto/update-paciente.dto';
+import { PacienteService } from './paciente.service';
 
 @Controller('paciente')
 export class PacienteController {
   constructor(private readonly pacienteService: PacienteService) {}
 
-  @Post()
-  create(@Body() createPacienteDto: CreatePacienteDto) {
-    return this.pacienteService.create(createPacienteDto);
+  @Post('create')
+  registrarPaciente(@Body() createPacienteDto: CreatePacienteDto) {
+    return this.pacienteService.registrarPaciente(createPacienteDto);
   }
 
   @Get()
-  findAll() {
-    return this.pacienteService.findAll();
+  obtenerPacientes() {
+    return this.pacienteService.obtenerPacientes();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.pacienteService.findOne(id);
+  @Get('deleted')
+  obtenerPacientesEliminados() {
+    return this.pacienteService.obtenerPacientesEliminados();
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePacienteDto: UpdatePacienteDto) {
-    return this.pacienteService.update(+id, updatePacienteDto);
+  @Get('search/id/:id')
+  buscarPacientePorId(@Param('id', ParseIntPipe) id: number) {
+    return this.pacienteService.buscarPacientePorId(id);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.pacienteService.remove(id);
+  @Patch('update/:id')
+  actualizarPaciente(@Param('id', ParseIntPipe) id: number, @Body() updatePacienteDto: UpdatePacienteDto) {
+    return this.pacienteService.actualizarPaciente(+id, updatePacienteDto);
+  }
+
+  @Delete('delete/:id')
+  eliminarPaciente(@Param('id', ParseIntPipe) id: number) {
+    return this.pacienteService.eliminarPaciente(id);
+  }
+
+  @Patch('restore/:id')
+  restaurarPaciente(@Param('id', ParseIntPipe) id: number) {
+    return this.pacienteService.restaurarPaciente(id);
   }
 }

@@ -1,4 +1,4 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { BeforeInsert, BeforeUpdate, Column, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { HistoriaClinica } from '../../HistoriaClinica/dto/historia-clinica.entity';
 import { Anamnesis } from '../../anamnesis/entities/anamnesis.entity';
 import { Cita } from '../../cita/entities/cita.entity';
@@ -149,6 +149,12 @@ export class Paciente {
 
   @Column({ type: 'int', nullable: false })
   NumeroHistoriaclinica: number;
+
+  @Column({ type: 'boolean', default: true })
+  activo: boolean;
+
+  @DeleteDateColumn({ type: 'timestamp', default: null, nullable: true })
+  deletedAt?: Date;
 
   //! Relaciones
   @OneToMany(() => Cita, (citas) => citas.paciente)
