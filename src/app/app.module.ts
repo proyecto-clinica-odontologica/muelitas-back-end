@@ -35,6 +35,7 @@ import { TratamientoModule } from './tratamiento/tratamiento.module';
 import { UsersModule } from './users/users.module';
 import { NotaEvolutivaModule } from './nota-evolutiva/nota-evolutiva.module';
 import { EpicrisisModule } from './epicrisis/epicrisis.module';
+import { InterpretacionModule } from './interpretacion/interpretacion.module';
 
 @Module({
   imports: [
@@ -88,6 +89,7 @@ import { EpicrisisModule } from './epicrisis/epicrisis.module';
     ExamenEstomatologicoModule,
     NotaEvolutivaModule,
     EpicrisisModule,
+    InterpretacionModule,
   ],
   controllers: [],
   providers: [],
