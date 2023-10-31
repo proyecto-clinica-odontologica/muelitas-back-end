@@ -7,7 +7,7 @@ import { ExamenEstomatologicoService } from './examen-estomatologico.service';
 export class ExamenEstomatologicoController {
   constructor(private readonly examenEstomatologicoService: ExamenEstomatologicoService) {}
 
-  @Post()
+  @Post('create')
   registrarExamenEstomatologico(@Body() createExamenEstomatologicoDto: CreateExamenEstomatologicoDto) {
     return this.examenEstomatologicoService.registrarExamenEstomatologico(createExamenEstomatologicoDto);
   }

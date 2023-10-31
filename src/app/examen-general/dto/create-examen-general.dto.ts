@@ -11,7 +11,7 @@ export class CreateExamenGeneralDto {
   @IsNotEmpty({ message: 'El índice de masa corporal no debe estar vacío' })
   IndiceMasaCorporal: number;
 
-  @IsNumber({}, { message: 'La propiedad piel debe ser un número' })
+  @IsString({ message: 'La propiedad piel debe ser un número' })
   @IsNotEmpty({ message: 'La propiedad piel no debe estar vacía' })
   Piel: string;
 

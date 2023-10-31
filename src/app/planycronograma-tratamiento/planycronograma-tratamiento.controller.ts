@@ -7,7 +7,7 @@ import { PlanycronogramaTratamientoService } from './planycronograma-tratamiento
 export class PlanycronogramaTratamientoController {
   constructor(private readonly planycronogramaTratamientoService: PlanycronogramaTratamientoService) {}
 
-  @Post()
+  @Post('create')
   registrarPlanCronograma(@Body() createPlanycronogramaTratamientoDto: CreatePlanycronogramaTratamientoDto) {
     return this.planycronogramaTratamientoService.registrarPlanCronograma(createPlanycronogramaTratamientoDto);
   }

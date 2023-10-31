@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Paciente } from '../paciente/entities/paciente.entity';
 import { CreateExamenEstomatologicoDto } from './dto/create-examen-estomatologico.dto';
 import { UpdateExamenEstomatologicoDto } from './dto/update-examen-estomatologico.dto';
 import { ExamenEstomatologico } from './entities/examen-estomatologico.entity';
@@ -10,11 +11,26 @@ export class ExamenEstomatologicoService {
   constructor(
     @InjectRepository(ExamenEstomatologico)
     private readonly tblExEstomatologico: Repository<ExamenEstomatologico>,
+
+    @InjectRepository(Paciente)
+    private readonly tblPaciente: Repository<Paciente>,
   ) {}
 
   async registrarExamenEstomatologico(createExamenEstomatologicoDto: CreateExamenEstomatologicoDto) {
     try {
-      const examen = this.tblExEstomatologico.create(createExamenEstomatologicoDto);
+      const paciente = await this.tblPaciente.findOne({
+        where: { id: createExamenEstomatologicoDto.PacienteId },
+      });
+
+      if (!paciente) {
+        throw new NotFoundException(`No existe el paciente con id: ${createExamenEstomatologicoDto.PacienteId}`);
+      }
+
+      const examen = this.tblExEstomatologico.create({
+        ...createExamenEstomatologicoDto,
+        paciente: paciente,
+      });
+
       await this.tblExEstomatologico.save(examen);
       return this.omitirCampos(examen);
     } catch (error) {

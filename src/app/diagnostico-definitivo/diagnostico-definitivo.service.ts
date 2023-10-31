@@ -1,6 +1,7 @@
 import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Paciente } from '../paciente/entities/paciente.entity';
 import { CreateDiagnosticoDefinitivoDto } from './dto/create-diagnostico-definitivo.dto';
 import { UpdateDiagnosticoDefinitivoDto } from './dto/update-diagnostico-definitivo.dto';
 import { DiagnosticoDefinitivo } from './entities/diagnostico-definitivo.entity';
@@ -10,11 +11,25 @@ export class DiagnosticoDefinitivoService {
   constructor(
     @InjectRepository(DiagnosticoDefinitivo)
     private readonly tblDiagnosticoDefinitivo: Repository<DiagnosticoDefinitivo>,
+
+    @InjectRepository(Paciente)
+    private readonly tblPaciente: Repository<Paciente>,
   ) {}
 
   async crearDiagnosticoDefinitivo(createDiagnosticoDefinitivoDto: CreateDiagnosticoDefinitivoDto) {
     try {
-      const diagnostico = this.tblDiagnosticoDefinitivo.create(createDiagnosticoDefinitivoDto);
+      const paciente = await this.tblPaciente.findOne({
+        where: { id: createDiagnosticoDefinitivoDto.PacienteId },
+      });
+
+      if (!paciente) {
+        throw new NotFoundException(`No existe el paciente con id: ${createDiagnosticoDefinitivoDto.PacienteId}`);
+      }
+
+      const diagnostico = this.tblDiagnosticoDefinitivo.create({
+        ...createDiagnosticoDefinitivoDto,
+        paciente: paciente,
+      });
 
       await this.tblDiagnosticoDefinitivo.save(diagnostico);
 

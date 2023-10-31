@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Paciente } from '../paciente/entities/paciente.entity';
 import { CreateDiagnosticoPresuntivoDto } from './dto/create-diagnostico-presuntivo.dto';
 import { UpdateDiagnosticoPresuntivoDto } from './dto/update-diagnostico-presuntivo.dto';
 import { DiagnosticoPresuntivo } from './entities/diagnostico-presuntivo.entity';
@@ -10,11 +11,26 @@ export class DiagnosticoPresuntivoService {
   constructor(
     @InjectRepository(DiagnosticoPresuntivo)
     private readonly tblDiagnostico: Repository<DiagnosticoPresuntivo>,
+
+    @InjectRepository(Paciente)
+    private readonly tblPaciente: Repository<Paciente>,
   ) {}
 
   async crearDiagnosticoPresuntivo(createDiagnosticoPresuntivoDto: CreateDiagnosticoPresuntivoDto) {
     try {
-      const diagnostico = this.tblDiagnostico.create(createDiagnosticoPresuntivoDto);
+      const paciente = await this.tblPaciente.findOne({
+        where: { id: createDiagnosticoPresuntivoDto.PacienteId },
+      });
+
+      if (!paciente) {
+        throw new NotFoundException(`No existe el paciente con id: ${createDiagnosticoPresuntivoDto.PacienteId}`);
+      }
+
+      const diagnostico = this.tblDiagnostico.create({
+        ...createDiagnosticoPresuntivoDto,
+        paciente: paciente,
+      });
+
       await this.tblDiagnostico.save(diagnostico);
 
       return this.omitirCampos(diagnostico);
@@ -124,7 +140,7 @@ export class DiagnosticoPresuntivoService {
   }
 
   private omitirCampos(diagnostico: DiagnosticoPresuntivo) {
-    const { deletedAt, activo } = diagnostico;
-    return diagnostico;
+    const { deletedAt, activo, ...rest } = diagnostico;
+    return rest;
   }
 }

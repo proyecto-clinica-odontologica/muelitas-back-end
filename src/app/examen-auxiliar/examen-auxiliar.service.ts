@@ -1,6 +1,7 @@
 import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Paciente } from '../paciente/entities/paciente.entity';
 import { CreateExamenAuxiliarDto } from './dto/create-examen-auxiliar.dto';
 import { UpdateExamenAuxiliarDto } from './dto/update-examen-auxiliar.dto';
 import { ExamenAuxiliar } from './entities/examen-auxiliar.entity';
@@ -10,11 +11,26 @@ export class ExamenAuxiliarService {
   constructor(
     @InjectRepository(ExamenAuxiliar)
     private readonly tblExamenAuxiliar: Repository<ExamenAuxiliar>,
+
+    @InjectRepository(Paciente)
+    private readonly tblPaciente: Repository<Paciente>,
   ) {}
 
   async crearExamenAuxiliar(createExamenAuxiliarDto: CreateExamenAuxiliarDto) {
     try {
-      const examenAuxiliar = this.tblExamenAuxiliar.create(createExamenAuxiliarDto);
+      const paciente = await this.tblPaciente.findOne({
+        where: { id: createExamenAuxiliarDto.PacienteId },
+      });
+
+      if (!paciente) {
+        throw new NotFoundException(`No existe el paciente con id: ${createExamenAuxiliarDto.PacienteId}`);
+      }
+
+      const examenAuxiliar = this.tblExamenAuxiliar.create({
+        ...createExamenAuxiliarDto,
+        paciente: paciente,
+      });
+
       await this.tblExamenAuxiliar.save(examenAuxiliar);
 
       return this.omitirCampos(examenAuxiliar);

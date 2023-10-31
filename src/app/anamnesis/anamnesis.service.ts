@@ -1,6 +1,7 @@
 import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Paciente } from '../paciente/entities/paciente.entity';
 import { CreateAnamnesisDto } from './dto/create-anamnesis.dto';
 import { UpdateAnamnesisDto } from './dto/update-anamnesis.dto';
 import { Anamnesis } from './entities/anamnesis.entity';
@@ -10,11 +11,24 @@ export class AnamnesisService {
   constructor(
     @InjectRepository(Anamnesis)
     private readonly tblAnamnesis: Repository<Anamnesis>,
+
+    @InjectRepository(Paciente)
+    private readonly tblPaciente: Repository<Paciente>,
   ) {}
 
   async crearAnamnesis(createAnamnesisDto: CreateAnamnesisDto) {
     try {
-      const anamnesis = this.tblAnamnesis.create(createAnamnesisDto);
+      const paciente = await this.tblPaciente.findOne({
+        where: { id: createAnamnesisDto.PacienteId },
+      });
+
+      if (!paciente) throw new NotFoundException('No se encontró el paciente');
+
+      const anamnesis = this.tblAnamnesis.create({
+        ...createAnamnesisDto,
+        paciente,
+      });
+
       await this.tblAnamnesis.save(anamnesis);
 
       return this.omitirCampos(anamnesis);

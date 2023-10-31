@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Paciente } from '../paciente/entities/paciente.entity';
 import { CreatePlanycronogramaTratamientoDto } from './dto/create-planycronograma-tratamiento.dto';
 import { UpdatePlanycronogramaTratamientoDto } from './dto/update-planycronograma-tratamiento.dto';
 import { PlanyCronogramaTratamiento } from './entities/planycronograma-tratamiento.entity';
@@ -10,11 +11,24 @@ export class PlanycronogramaTratamientoService {
   constructor(
     @InjectRepository(PlanyCronogramaTratamiento)
     private readonly tblPlan: Repository<PlanyCronogramaTratamiento>,
+
+    @InjectRepository(Paciente)
+    private readonly tblPaciente: Repository<Paciente>,
   ) {}
 
   async registrarPlanCronograma(createPlanycronogramaTratamientoDto: CreatePlanycronogramaTratamientoDto) {
     try {
-      const plan = this.tblPlan.create(createPlanycronogramaTratamientoDto);
+      const paciente = await this.tblPaciente.findOne({
+        where: { id: createPlanycronogramaTratamientoDto.PacienteId },
+      });
+
+      if (!paciente) throw new NotFoundException(`No existe el paciente`);
+
+      const plan = this.tblPlan.create({
+        ...createPlanycronogramaTratamientoDto,
+        paciente,
+      });
+
       await this.tblPlan.save(plan);
       return this.omitirCampos(plan);
     } catch (error) {
