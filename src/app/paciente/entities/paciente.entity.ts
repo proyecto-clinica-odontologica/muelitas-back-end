@@ -1,5 +1,9 @@
 import { HistoriaClinica } from 'src/app/HistoriaClinica/dto/historia-clinica.entity';
+import { Anamnesis } from 'src/app/anamnesis/entities/anamnesis.entity';
 import { Cita } from 'src/app/cita/entities/cita.entity';
+import { DiagnosticoDefinitivo } from 'src/app/diagnostico-definitivo/entities/diagnostico-definitivo.entity';
+import { ExamenEstomatologico } from 'src/app/examen-estomatologico/entities/examen-estomatologico.entity';
+import { ExamenGeneral } from 'src/app/examen-general/entities/examen-general.entity';
 import { Odontograma } from 'src/app/odontograma/entities/odontograma.entity';
 import { BeforeInsert, BeforeUpdate, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -140,7 +144,7 @@ export class Paciente {
   @Column({ type: 'int', nullable: false })
   NumeroHistoriaclinica: number;
 
-  //! Relaciones 
+  //! Relaciones
   @OneToMany(() => Cita, (citas) => citas.paciente)
   citas: Cita[];
 
@@ -153,20 +157,20 @@ export class Paciente {
   // @OneToMany(() => DiagnosticoPresuntivo, (diagnosticoPresuntivo) => diagnosticoPresuntivo.paciente)
   // diagnosticoPresuntivo: DiagnosticoPresuntivo[];
 
-  // @OneToMany(() => ExamenGeneral, (examenGeneral) => examenGeneral.paciente)
-  // examenGeneral: ExamenGeneral[];
-
-  // @OneToMany(() => Anamnesis, (anamnesis) => anamnesis.paciente)
-  // anamnesis: Anamnesis[];
-
   // @OneToMany(() => ExamenesAuxiliares, (examenesAuxiliares) => examenesAuxiliares.paciente)
   // examenesAuxiliares: ExamenesAuxiliares[];
 
-  // @OneToMany(() => DiagnosticoDefinitivo, (diagnosticoDefinitivo) => diagnosticoDefinitivo.paciente)
-  // diagnosticoDefinitivo: DiagnosticoDefinitivo[];
+  @OneToMany(() => ExamenGeneral, (examenesGenerales) => examenesGenerales.paciente)
+  examenesGenerales: ExamenGeneral[];
 
-  // @OneToMany(() => ExamenEstomatologico, (examenEstomatologico) => examenEstomatologico.paciente)
-  // examenEstomatologico: ExamenEstomatologico[];
+  @OneToMany(() => Anamnesis, (anamnesis) => anamnesis.paciente)
+  anamnesis: Anamnesis[];
+
+  @OneToMany(() => DiagnosticoDefinitivo, (diagnosticoDefinitivos) => diagnosticoDefinitivos.paciente)
+  diagnosticosDefinitivos: DiagnosticoDefinitivo[];
+
+  @OneToMany(() => ExamenEstomatologico, (examenEstomatologico) => examenEstomatologico.paciente)
+  examenEstomatologico: ExamenEstomatologico[];
 
   // @OneToMany(() => PacienteDatosExtra, (pacienteDatosExtra) => pacienteDatosExtra.paciente)
   // pacienteDatosExtra: PacienteDatosExtra[];

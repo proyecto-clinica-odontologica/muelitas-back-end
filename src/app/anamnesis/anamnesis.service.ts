@@ -46,14 +46,24 @@ export class AnamnesisService {
     }
   }
 
-  async buscarAnamnesisPorId(id: number) {
+  async buscarAnamnesisPorId(id: number, checkDeleted: boolean = false) {
     try {
-      const anamnesis = await this.tblAnamnesis.findOneOrFail({
+      const anamnesis = await this.tblAnamnesis.findOne({
         where: { id, activo: true },
-        select: ['id', 'Contenido', 'FechaRegistro'],
+        withDeleted: true,
       });
 
-      return anamnesis;
+      if (!anamnesis) throw new NotFoundException('No se encontró la anamnesis');
+
+      if (checkDeleted && !anamnesis.deletedAt) {
+        throw new NotFoundException('La anamnesis no fue eliminado');
+      }
+
+      if (!checkDeleted && anamnesis.deletedAt) {
+        throw new NotFoundException('ya fue eliminado la anamnesis');
+      }
+
+      return this.omitirCampos(anamnesis);
     } catch (error) {
       throw new NotFoundException('No se encontró la anamnesis');
     }
@@ -79,7 +89,10 @@ export class AnamnesisService {
   async eliminarAnamnesis(id: number) {
     try {
       const anamnesis = await this.buscarAnamnesisPorId(id);
-      await this.tblAnamnesis.softRemove(anamnesis);
+      await this.tblAnamnesis.update(anamnesis.id, {
+        activo: false,
+        deletedAt: new Date(),
+      });
       return { message: 'La anamnesis fue eliminado correctamente' };
     } catch (error) {
       throw error;
@@ -88,16 +101,15 @@ export class AnamnesisService {
 
   async restaurarAnamnesis(id: number) {
     try {
-      const examenAuxiliar = await this.tblAnamnesis.findOneOrFail({
-        where: { id, activo: false },
-        withDeleted: true,
+      const examenAuxiliar = await this.buscarAnamnesisPorId(id, true);
+      await this.tblAnamnesis.update(examenAuxiliar.id, {
+        activo: true,
+        deletedAt: null,
       });
 
-      await this.tblAnamnesis.recover(examenAuxiliar);
-
-      examenAuxiliar.activo = true;
-
-      return await this.tblAnamnesis.save(examenAuxiliar);
+      return {
+        message: 'La anamnesis fue restaurado correctamente',
+      };
     } catch (error) {
       throw error;
     }

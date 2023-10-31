@@ -47,16 +47,28 @@ export class DiagnosticoDefinitivoService {
     }
   }
 
-  async buscarDiagnosticoDefinitivoPorId(id: number) {
+  async buscarDiagnosticoDefinitivoPorId(id: number, checkDeleted: boolean = false) {
     try {
-      const diagnostico = await this.tblDiagnosticoDefinitivo.findOneOrFail({
+      const diagnostico = await this.tblDiagnosticoDefinitivo.findOne({
         where: { id, activo: true },
-        select: ['id', 'Diagnostico', 'FechaRegistro'],
+        withDeleted: true,
       });
 
-      return diagnostico;
+      if (!diagnostico) {
+        throw new NotFoundException('No se encontró el diagnostico definitivo');
+      }
+
+      if (checkDeleted && !diagnostico.deletedAt) {
+        throw new NotFoundException('No se encontró el diagnostico definitivo');
+      }
+
+      if (!checkDeleted && diagnostico.deletedAt) {
+        throw new NotFoundException('No se encontró el diagnostico definitivo');
+      }
+
+      return this.omitirCampos(diagnostico);
     } catch (error) {
-      throw new NotFoundException('No se encontró el diagnostico definitivo');
+      throw error;
     }
   }
 
@@ -82,7 +94,10 @@ export class DiagnosticoDefinitivoService {
   async eliminarDiagnosticoDefinitivo(id: number) {
     try {
       const diagnostico = await this.buscarDiagnosticoDefinitivoPorId(id);
-      await this.tblDiagnosticoDefinitivo.softRemove(diagnostico);
+      await this.tblDiagnosticoDefinitivo.update(diagnostico.id, {
+        activo: false,
+        deletedAt: new Date(),
+      });
 
       return {
         message: 'Diagnostico definitivo eliminado correctamente',
@@ -94,26 +109,21 @@ export class DiagnosticoDefinitivoService {
 
   async restaurarDiagnosticoDefinitivo(id: number) {
     try {
-      const diagnostico = await this.tblDiagnosticoDefinitivo.findOneOrFail({
-        where: { id, activo: false },
-        withDeleted: true,
+      const diagnostico = await this.buscarDiagnosticoDefinitivoPorId(id, true);
+      await this.tblDiagnosticoDefinitivo.update(diagnostico.id, {
+        activo: true,
+        deletedAt: null,
       });
-
-      await this.tblDiagnosticoDefinitivo.recover(diagnostico);
-
-      diagnostico.activo = true;
-
-      await this.tblDiagnosticoDefinitivo.save(diagnostico);
 
       return {
         message: 'Diagnostico definitivo restaurado correctamente',
       };
     } catch (error) {
-      throw new NotFoundException('No se encontró el examen auxiliar');
+      throw error;
     }
   }
 
-  private omitirCampos(entidad: Partial<DiagnosticoDefinitivo>): Partial<DiagnosticoDefinitivo> {
+  private omitirCampos(entidad: DiagnosticoDefinitivo) {
     const { deletedAt, activo, ...resto } = entidad;
     return resto;
   }

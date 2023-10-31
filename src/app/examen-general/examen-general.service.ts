@@ -17,10 +17,7 @@ export class ExamenGeneralService {
       const examenGeneral = this.tblExamenGeneral.create(createExamenGeneralDto);
       await this.tblExamenGeneral.save(examenGeneral);
 
-      delete examenGeneral.deletedAt;
-      delete examenGeneral.activo;
-
-      return examenGeneral;
+      return this.omitirCampos(examenGeneral);
     } catch (error) {
       throw error;
     }
@@ -28,22 +25,10 @@ export class ExamenGeneralService {
 
   async obtenerExamenesGenerales() {
     try {
-      return await this.tblExamenGeneral.find({
+      const examenes = await this.tblExamenGeneral.find({
         where: { activo: true },
-        select: [
-          'id',
-          'Peso',
-          'Talla',
-          'IndiceMasaCorporal',
-          'Piel',
-          'AnexosCabello',
-          'AnexosUnias',
-          'PresionArterial',
-          'FrecuenciaRespiratoria',
-          'Pulso',
-          'Temperatura',
-        ],
       });
+      return this.camposVisibles(examenes);
     } catch (error) {
       throw error;
     }
@@ -51,40 +36,34 @@ export class ExamenGeneralService {
 
   async obtenerExamenesGeneralesEliminados() {
     try {
-      return await this.tblExamenGeneral.find({
+      const examenes = await this.tblExamenGeneral.find({
         where: { activo: false },
         withDeleted: true,
-        select: [
-          'id',
-          'Peso',
-          'Talla',
-          'IndiceMasaCorporal',
-          'Piel',
-          'AnexosCabello',
-          'AnexosUnias',
-          'PresionArterial',
-          'FrecuenciaRespiratoria',
-          'Pulso',
-          'Temperatura',
-        ],
       });
+      return this.camposVisibles(examenes);
     } catch (error) {
       throw error;
     }
   }
 
-  async buscarExamenGeneralPorId(id: number) {
+  async buscarExamenGeneralPorId(id: number, checkDeleted: boolean = false) {
     try {
       const examenGeneral = await this.tblExamenGeneral.findOne({
         where: { id, activo: true },
+        withDeleted: true,
       });
 
       if (!examenGeneral) throw new NotFoundException('No se encontró el examen general');
 
-      delete examenGeneral.deletedAt;
-      delete examenGeneral.activo;
+      if (checkDeleted && !examenGeneral.deletedAt) {
+        throw new NotFoundException('El examen general no fue eliminado');
+      }
 
-      return examenGeneral;
+      if (!checkDeleted && examenGeneral.deletedAt) {
+        throw new NotFoundException('Ya fue eliminado el examen general');
+      }
+
+      return this.omitirCampos(examenGeneral);
     } catch (error) {
       throw error;
     }
@@ -101,10 +80,7 @@ export class ExamenGeneralService {
 
       await this.tblExamenGeneral.save(examenGeneral);
 
-      delete examenGeneral.deletedAt;
-      delete examenGeneral.activo;
-
-      return examenGeneral;
+      return this.omitirCampos(examenGeneral);
     } catch (error) {
       throw error;
     }
@@ -113,7 +89,10 @@ export class ExamenGeneralService {
   async eliminarExamenGeneral(id: number) {
     try {
       const examenGeneral = await this.buscarExamenGeneralPorId(id);
-      await this.tblExamenGeneral.softRemove(examenGeneral);
+      await this.tblExamenGeneral.update(examenGeneral.id, {
+        activo: false,
+        deletedAt: new Date(),
+      });
 
       return {
         message: 'Examen general eliminado correctamente',
@@ -125,14 +104,11 @@ export class ExamenGeneralService {
 
   async restaurarExamenGeneral(id: number) {
     try {
-      const examenGeneral = await this.tblExamenGeneral.findOne({
-        where: { id, activo: false },
-        withDeleted: true,
+      const examenGeneral = await this.buscarExamenGeneralPorId(id, true);
+      await this.tblExamenGeneral.update(examenGeneral.id, {
+        activo: true,
+        deletedAt: null,
       });
-
-      if (!examenGeneral) throw new NotFoundException('No se encontró el examen general');
-
-      await this.tblExamenGeneral.recover(examenGeneral);
 
       return {
         message: 'Examen general restaurado correctamente',
@@ -140,5 +116,14 @@ export class ExamenGeneralService {
     } catch (error) {
       throw error;
     }
+  }
+
+  private omitirCampos(examenGeneral: ExamenGeneral) {
+    const { deletedAt, activo, ...resto } = examenGeneral;
+    return resto;
+  }
+
+  private camposVisibles(examenesGenerales: ExamenGeneral[]) {
+    return examenesGenerales.map((examenGeneral) => this.omitirCampos(examenGeneral));
   }
 }

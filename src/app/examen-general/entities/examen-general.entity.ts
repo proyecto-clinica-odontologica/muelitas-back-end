@@ -1,16 +1,18 @@
-import { BeforeInsert, BeforeUpdate, Column, DeleteDateColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { Paciente } from 'src/app/paciente/entities/paciente.entity';
+import { BeforeInsert, BeforeUpdate, Column, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
+@Entity()
 export class ExamenGeneral {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column({ type: 'number' })
+  @Column({ type: 'numeric' })
   Peso: number;
 
-  @Column({ type: 'number' })
+  @Column({ type: 'numeric' })
   Talla: number;
 
-  @Column({ type: 'number' })
+  @Column({ type: 'numeric' })
   IndiceMasaCorporal: number;
 
   @Column({ type: 'varchar' })
@@ -25,13 +27,13 @@ export class ExamenGeneral {
   @Column({ type: 'varchar' })
   PresionArterial: string;
 
-  @Column({ type: 'number' })
+  @Column({ type: 'numeric' })
   FrecuenciaRespiratoria: number;
 
-  @Column({ type: 'number' })
+  @Column({ type: 'numeric' })
   Pulso: number;
 
-  @Column({ type: 'number' })
+  @Column({ type: 'numeric' })
   Temperatura: number;
 
   @DeleteDateColumn({ type: 'timestamp', default: null, nullable: true })
@@ -39,6 +41,9 @@ export class ExamenGeneral {
 
   @Column({ type: 'boolean', default: true })
   activo: boolean;
+
+  @ManyToOne(() => Paciente, (paciente) => paciente.examenesGenerales)
+  paciente: Paciente;
 
   @BeforeInsert()
   @BeforeUpdate()

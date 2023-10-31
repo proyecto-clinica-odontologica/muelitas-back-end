@@ -41,4 +41,8 @@ export class CreateExamenGeneralDto {
   @IsNumber({}, { message: 'La temperatura debe ser un número' })
   @IsNotEmpty({ message: 'La temperatura no debe estar vacía' })
   Temperatura: number;
+
+  @IsNumber({}, { message: 'El id del paciente debe ser un número' })
+  @IsNotEmpty({ message: 'El id del paciente no debe estar vacío' })
+  PacienteId: number;
 }
