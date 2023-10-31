@@ -4,9 +4,12 @@ import { Anamnesis } from '../../anamnesis/entities/anamnesis.entity';
 import { Cita } from '../../cita/entities/cita.entity';
 import { DiagnosticoDefinitivo } from '../../diagnostico-definitivo/entities/diagnostico-definitivo.entity';
 import { DiagnosticoPresuntivo } from '../../diagnostico-presuntivo/entities/diagnostico-presuntivo.entity';
+import { Epicrisis } from '../../epicrisis/entities/epicrisis.entity';
 import { ExamenAuxiliar } from '../../examen-auxiliar/entities/examen-auxiliar.entity';
 import { ExamenEstomatologico } from '../../examen-estomatologico/entities/examen-estomatologico.entity';
 import { ExamenGeneral } from '../../examen-general/entities/examen-general.entity';
+import { Interpretacion } from '../../interpretacion/entities/interpretacion.entity';
+import { NotaEvolutiva } from '../../nota-evolutiva/entities/nota-evolutiva.entity';
 import { Odontograma } from '../../odontograma/entities/odontograma.entity';
 import { PlanyCronogramaTratamiento } from '../../planycronograma-tratamiento/entities/planycronograma-tratamiento.entity';
 
@@ -175,17 +178,17 @@ export class Paciente {
   @OneToMany(() => ExamenEstomatologico, (examenEstomatologico) => examenEstomatologico.paciente)
   examenEstomatologico: ExamenEstomatologico[];
 
-  // @OneToMany(() => Interpretacion, (interpretacion) => interpretacion.paciente)
-  // interpretacion: Interpretacion[];
-
-  // @OneToMany(() => Epicrisis, (epicrisis) => epicrisis.paciente)
-  // epicrisis: Epicrisis[];
-
-  // @OneToMany(() => NotasEvolutivas, (notasEvolutivas) => notasEvolutivas.paciente)
-  // notasEvolutivas: NotasEvolutivas[];
+  @OneToMany(() => NotaEvolutiva, (notasEvolutivas) => notasEvolutivas.paciente)
+  notasEvolutivas: NotaEvolutiva[];
 
   @OneToMany(() => PlanyCronogramaTratamiento, (planyCronogramasTratamientos) => planyCronogramasTratamientos.paciente)
   planyCronogramasTratamientos: PlanyCronogramaTratamiento[];
+
+  @OneToMany(() => Epicrisis, (epicrisis) => epicrisis.paciente)
+  epicrisis: Epicrisis[];
+
+  @OneToMany(() => Interpretacion, (interpretaciones) => interpretaciones.paciente)
+  interpretaciones: Interpretacion[];
 
   @BeforeInsert()
   @BeforeUpdate()

@@ -1,4 +1,5 @@
-import { BeforeInsert, BeforeUpdate, Column, DeleteDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BeforeInsert, BeforeUpdate, Column, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Paciente } from '../../paciente/entities/paciente.entity';
 
 @Entity()
 export class Interpretacion {
@@ -25,6 +26,9 @@ export class Interpretacion {
 
   @DeleteDateColumn({ type: 'timestamp', default: null, nullable: true })
   deletedAt?: Date;
+
+  @ManyToOne(() => Paciente, (paciente) => paciente.interpretaciones)
+  paciente: Paciente;
 
   @BeforeInsert()
   @BeforeUpdate()

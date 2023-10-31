@@ -11,6 +11,7 @@ export class EpicrisisService {
     @InjectRepository(Epicrisis)
     private readonly tblEpicrisis: Repository<Epicrisis>,
   ) {}
+
   async registrarEpicrisis(createEpicrisisDto: CreateEpicrisisDto) {
     try {
       const epicrisis = this.tblEpicrisis.create(createEpicrisisDto);
