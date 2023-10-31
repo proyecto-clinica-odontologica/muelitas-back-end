@@ -7,7 +7,6 @@ import { JoiValidationSchema } from '../config/joi.config';
 import { HistoriaClinicaModule } from './HistoriaClinica/historia-clinica.module';
 import { AdministradorModule } from './administrador/administrador.module';
 import { AnamnesisModule } from './anamnesis/anamnesis.module';
-import { AnivelPiezaModule } from './anivel-pieza/anivel-pieza.module';
 import { AuthModule } from './auth/auth.module';
 import { CarasdientesModule } from './carasdientes/carasdientes.module';
 import { CasosclinicosModule } from './casosclinicos/casosclinicos.module';
@@ -17,25 +16,23 @@ import { CursosModule } from './cursos/cursos.module';
 import { DiagnosticoDefinitivoModule } from './diagnostico-definitivo/diagnostico-definitivo.module';
 import { DiagnosticoPresuntivoModule } from './diagnostico-presuntivo/diagnostico-presuntivo.module';
 import { DocentesModule } from './docentes/docentes.module';
-import { DolorModule } from './dolor/dolor.module';
 import { EmpresasModule } from './empresas/empresas.module';
 import { EstudiantesModule } from './estudiantes/estudiantes.module';
 import { ExamenAuxiliarModule } from './examen-auxiliar/examen-auxiliar.module';
+import { ExamenEstomatologicoModule } from './examen-estomatologico/examen-estomatologico.module';
 import { ExamenGeneralModule } from './examen-general/examen-general.module';
-import { ExamenIntrabucalModule } from './examen-intrabucal/examen-intrabucal.module';
 import { IntegrantesModule } from './integrantes/integrantes.module';
 import { MapeoModule } from './mapeo/mapeo.module';
 import { OdontogramaModule } from './odontograma/odontograma.module';
 import { PacienteModule } from './paciente/paciente.module';
 import { PeriodosModule } from './periodos/periodos.module';
+import { PlanycronogramaTratamientoModule } from './planycronograma-tratamiento/planycronograma-tratamiento.module';
 import { SedesModule } from './sedes/sedes.module';
 import { SeedModule } from './seed/seed.module';
 import { SeguimientoModule } from './seguimiento/seguimiento.module';
 import { SubcasoclinicoModule } from './subcasoclinico/subcasoclinico.module';
-import { TejidosDurosModule } from './tejidos-duros/tejidos-duros.module';
 import { TratamientoModule } from './tratamiento/tratamiento.module';
 import { UsersModule } from './users/users.module';
-import { OclusionModule } from './oclusion/oclusion.module';
 
 @Module({
   imports: [
@@ -85,11 +82,8 @@ import { OclusionModule } from './oclusion/oclusion.module';
     ExamenAuxiliarModule,
     AnamnesisModule,
     DiagnosticoDefinitivoModule,
-    AnivelPiezaModule,
-    TejidosDurosModule,
-    ExamenIntrabucalModule,
-    DolorModule,
-    OclusionModule,
+    PlanycronogramaTratamientoModule,
+    ExamenEstomatologicoModule,
   ],
   controllers: [],
   providers: [],
