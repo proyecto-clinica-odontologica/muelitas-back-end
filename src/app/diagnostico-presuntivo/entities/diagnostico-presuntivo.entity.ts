@@ -1,4 +1,5 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Paciente } from 'src/app/paciente/entities/paciente.entity';
+import { BeforeInsert, BeforeUpdate, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class DiagnosticoPresuntivo {
@@ -16,6 +17,9 @@ export class DiagnosticoPresuntivo {
 
   @Column({ type: 'timestamp', default: null, nullable: true })
   deletedAt: Date;
+
+  @ManyToOne(() => Paciente, (paciente) => paciente.diagnosticosPresuntivos)
+  paciente: Paciente;
 
   @BeforeUpdate()
   @BeforeInsert()

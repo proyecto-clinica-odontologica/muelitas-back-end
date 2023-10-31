@@ -1,12 +1,14 @@
-import { HistoriaClinica } from 'src/app/HistoriaClinica/dto/historia-clinica.entity';
-import { Anamnesis } from 'src/app/anamnesis/entities/anamnesis.entity';
-import { Cita } from 'src/app/cita/entities/cita.entity';
-import { DiagnosticoDefinitivo } from 'src/app/diagnostico-definitivo/entities/diagnostico-definitivo.entity';
-import { ExamenAuxiliar } from 'src/app/examen-auxiliar/entities/examen-auxiliar.entity';
-import { ExamenEstomatologico } from 'src/app/examen-estomatologico/entities/examen-estomatologico.entity';
-import { ExamenGeneral } from 'src/app/examen-general/entities/examen-general.entity';
-import { Odontograma } from 'src/app/odontograma/entities/odontograma.entity';
 import { BeforeInsert, BeforeUpdate, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { HistoriaClinica } from '../../HistoriaClinica/dto/historia-clinica.entity';
+import { Anamnesis } from '../../anamnesis/entities/anamnesis.entity';
+import { Cita } from '../../cita/entities/cita.entity';
+import { DiagnosticoDefinitivo } from '../../diagnostico-definitivo/entities/diagnostico-definitivo.entity';
+import { DiagnosticoPresuntivo } from '../../diagnostico-presuntivo/entities/diagnostico-presuntivo.entity';
+import { ExamenAuxiliar } from '../../examen-auxiliar/entities/examen-auxiliar.entity';
+import { ExamenEstomatologico } from '../../examen-estomatologico/entities/examen-estomatologico.entity';
+import { ExamenGeneral } from '../../examen-general/entities/examen-general.entity';
+import { Odontograma } from '../../odontograma/entities/odontograma.entity';
+import { PlanyCronogramaTratamiento } from '../../planycronograma-tratamiento/entities/planycronograma-tratamiento.entity';
 
 @Entity()
 export class Paciente {
@@ -155,8 +157,8 @@ export class Paciente {
   @OneToMany(() => HistoriaClinica, (historiaClinicas) => historiaClinicas.paciente)
   historiasClinicas: HistoriaClinica[];
 
-  // @OneToMany(() => DiagnosticoPresuntivo, (diagnosticoPresuntivo) => diagnosticoPresuntivo.paciente)
-  // diagnosticoPresuntivo: DiagnosticoPresuntivo[];
+  @OneToMany(() => DiagnosticoPresuntivo, (diagnosticosPresuntivos) => diagnosticosPresuntivos.paciente)
+  diagnosticosPresuntivos: DiagnosticoPresuntivo[];
 
   @OneToMany(() => ExamenAuxiliar, (examenesAuxiliares) => examenesAuxiliares.paciente)
   examenesAuxiliares: ExamenAuxiliar[];
@@ -173,9 +175,6 @@ export class Paciente {
   @OneToMany(() => ExamenEstomatologico, (examenEstomatologico) => examenEstomatologico.paciente)
   examenEstomatologico: ExamenEstomatologico[];
 
-  // @OneToMany(() => PacienteDatosExtra, (pacienteDatosExtra) => pacienteDatosExtra.paciente)
-  // pacienteDatosExtra: PacienteDatosExtra[];
-
   // @OneToMany(() => Interpretacion, (interpretacion) => interpretacion.paciente)
   // interpretacion: Interpretacion[];
 
@@ -185,8 +184,8 @@ export class Paciente {
   // @OneToMany(() => NotasEvolutivas, (notasEvolutivas) => notasEvolutivas.paciente)
   // notasEvolutivas: NotasEvolutivas[];
 
-  // @OneToMany(() => PlanyCronogramaTratamiento, (planyCronogramaTratamiento) => planyCronogramaTratamiento.paciente)
-  // planyCronogramaTratamiento: PlanyCronogramaTratamiento[];
+  @OneToMany(() => PlanyCronogramaTratamiento, (planyCronogramasTratamientos) => planyCronogramasTratamientos.paciente)
+  planyCronogramasTratamientos: PlanyCronogramaTratamiento[];
 
   @BeforeInsert()
   @BeforeUpdate()

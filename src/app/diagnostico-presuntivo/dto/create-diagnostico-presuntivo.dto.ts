@@ -1,4 +1,4 @@
-import { IsDate, IsNotEmpty, IsString, Length } from 'class-validator';
+import { IsDate, IsInt, IsNotEmpty, IsString, Length } from 'class-validator';
 
 export class CreateDiagnosticoPresuntivoDto {
   @IsString({ message: 'El diagnostico debe ser un texto' })
@@ -9,4 +9,8 @@ export class CreateDiagnosticoPresuntivoDto {
   @IsDate({ message: 'La fecha de registro debe ser una fecha valida' })
   @IsNotEmpty({ message: 'La fecha de registro es requerida' })
   FechaRegistro: Date;
+
+  @IsNotEmpty({ message: 'El id paciente es requerido' })
+  @IsInt({ message: 'El id paciente debe ser un numero entero' })
+  PacienteId: number;
 }

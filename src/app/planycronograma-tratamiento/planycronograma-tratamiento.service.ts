@@ -3,13 +3,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreatePlanycronogramaTratamientoDto } from './dto/create-planycronograma-tratamiento.dto';
 import { UpdatePlanycronogramaTratamientoDto } from './dto/update-planycronograma-tratamiento.dto';
-import { PlanycronogramaTratamiento } from './entities/planycronograma-tratamiento.entity';
+import { PlanyCronogramaTratamiento } from './entities/planycronograma-tratamiento.entity';
 
 @Injectable()
 export class PlanycronogramaTratamientoService {
   constructor(
-    @InjectRepository(PlanycronogramaTratamiento)
-    private readonly tblPlan: Repository<PlanycronogramaTratamiento>,
+    @InjectRepository(PlanyCronogramaTratamiento)
+    private readonly tblPlan: Repository<PlanyCronogramaTratamiento>,
   ) {}
 
   async registrarPlanCronograma(createPlanycronogramaTratamientoDto: CreatePlanycronogramaTratamientoDto) {
@@ -110,12 +110,12 @@ export class PlanycronogramaTratamientoService {
     }
   }
 
-  private omitirCampos(planCronograma: PlanycronogramaTratamiento) {
+  private omitirCampos(planCronograma: PlanyCronogramaTratamiento) {
     const { activo, deletedAt, ...resto } = planCronograma;
     return resto;
   }
 
-  private camposVisibles(planCronogramas: PlanycronogramaTratamiento[]) {
+  private camposVisibles(planCronogramas: PlanyCronogramaTratamiento[]) {
     return planCronogramas.map((plan) => this.omitirCampos(plan));
   }
 }

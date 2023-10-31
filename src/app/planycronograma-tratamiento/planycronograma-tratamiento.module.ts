@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { PlanycronogramaTratamiento } from './entities/planycronograma-tratamiento.entity';
+import { PlanyCronogramaTratamiento } from './entities/planycronograma-tratamiento.entity';
 import { PlanycronogramaTratamientoController } from './planycronograma-tratamiento.controller';
 import { PlanycronogramaTratamientoService } from './planycronograma-tratamiento.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([PlanycronogramaTratamiento])],
+  imports: [TypeOrmModule.forFeature([PlanyCronogramaTratamiento])],
   controllers: [PlanycronogramaTratamientoController],
   providers: [PlanycronogramaTratamientoService],
   exports: [TypeOrmModule, PlanycronogramaTratamientoService],

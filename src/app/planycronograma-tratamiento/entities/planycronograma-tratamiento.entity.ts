@@ -1,7 +1,8 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BeforeInsert, BeforeUpdate, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Paciente } from '../../paciente/entities/paciente.entity';
 
 @Entity()
-export class PlanycronogramaTratamiento {
+export class PlanyCronogramaTratamiento {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
@@ -19,6 +20,9 @@ export class PlanycronogramaTratamiento {
 
   @Column({ type: 'timestamp', default: null, nullable: true })
   deletedAt?: Date;
+
+  @ManyToOne(() => Paciente, (paciente) => paciente.planyCronogramasTratamientos)
+  paciente: Paciente;
 
   @BeforeInsert()
   @BeforeUpdate()

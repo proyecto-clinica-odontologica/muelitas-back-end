@@ -11,15 +11,13 @@ export class DiagnosticoPresuntivoService {
     @InjectRepository(DiagnosticoPresuntivo)
     private readonly tblDiagnostico: Repository<DiagnosticoPresuntivo>,
   ) {}
+
   async crearDiagnosticoPresuntivo(createDiagnosticoPresuntivoDto: CreateDiagnosticoPresuntivoDto) {
     try {
       const diagnostico = this.tblDiagnostico.create(createDiagnosticoPresuntivoDto);
       await this.tblDiagnostico.save(diagnostico);
 
-      delete diagnostico.activo;
-      delete diagnostico.deletedAt;
-
-      return diagnostico;
+      return this.omitirCampos(diagnostico);
     } catch (error) {
       throw error;
     }
@@ -48,21 +46,27 @@ export class DiagnosticoPresuntivoService {
     }
   }
 
-  async buscarDiagnosticoPresuntivoPorId(id: number) {
+  async buscarDiagnosticoPresuntivoPorId(id: number, checkDeleted: boolean = false) {
     try {
       const diagnostico = await this.tblDiagnostico.findOne({
         where: { activo: true },
         select: ['id', 'Diagnostico', 'FechaRegistro'],
+        withDeleted: true,
       });
 
       if (!diagnostico) {
         throw new NotFoundException(`No existe el diagnóstico presuntivo con id: ${id}`);
       }
 
-      delete diagnostico.activo;
-      delete diagnostico.deletedAt;
+      if (checkDeleted && !diagnostico.activo) {
+        throw new NotFoundException(`El diagnóstico presuntivo no fue eliminado`);
+      }
 
-      return diagnostico;
+      if (!checkDeleted && diagnostico.activo) {
+        throw new NotFoundException(`El diagnóstico presuntivo ya fue eliminado`);
+      }
+
+      return this.omitirCampos(diagnostico);
     } catch (error) {
       throw error;
     }
@@ -81,10 +85,7 @@ export class DiagnosticoPresuntivoService {
 
       await this.tblDiagnostico.save(diagnostico);
 
-      delete diagnostico.activo;
-      delete diagnostico.deletedAt;
-
-      return diagnostico;
+      return this.omitirCampos(diagnostico);
     } catch (error) {
       throw error;
     }
@@ -93,7 +94,10 @@ export class DiagnosticoPresuntivoService {
   async eliminarDiagnosticoPresuntivo(id: number) {
     try {
       const diagnostico = await this.buscarDiagnosticoPresuntivoPorId(id);
-      await this.tblDiagnostico.softRemove(diagnostico);
+      await this.tblDiagnostico.update(diagnostico.id, {
+        activo: false,
+        deletedAt: new Date(),
+      });
 
       return {
         message: 'Diagnóstico presuntivo eliminado correctamente',
@@ -105,16 +109,11 @@ export class DiagnosticoPresuntivoService {
 
   async restaurarDiagnosticoPresuntivo(id: number) {
     try {
-      const diagnostico = await this.tblDiagnostico.findOne({
-        where: { id, activo: false },
-        withDeleted: true,
+      const diagnostico = await this.buscarDiagnosticoPresuntivoPorId(id, true);
+      await this.tblDiagnostico.update(diagnostico.id, {
+        activo: true,
+        deletedAt: null,
       });
-
-      if (!diagnostico) {
-        throw new NotFoundException(`No existe el diagnóstico presuntivo con id: ${id}`);
-      }
-
-      await this.tblDiagnostico.recover(diagnostico);
 
       return {
         message: 'Diagnóstico presuntivo restaurado correctamente',
@@ -122,5 +121,10 @@ export class DiagnosticoPresuntivoService {
     } catch (error) {
       throw error;
     }
+  }
+
+  private omitirCampos(diagnostico: DiagnosticoPresuntivo) {
+    const { deletedAt, activo } = diagnostico;
+    return diagnostico;
   }
 }
