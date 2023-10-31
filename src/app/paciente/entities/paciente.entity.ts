@@ -2,6 +2,7 @@ import { HistoriaClinica } from 'src/app/HistoriaClinica/dto/historia-clinica.en
 import { Anamnesis } from 'src/app/anamnesis/entities/anamnesis.entity';
 import { Cita } from 'src/app/cita/entities/cita.entity';
 import { DiagnosticoDefinitivo } from 'src/app/diagnostico-definitivo/entities/diagnostico-definitivo.entity';
+import { ExamenAuxiliar } from 'src/app/examen-auxiliar/entities/examen-auxiliar.entity';
 import { ExamenEstomatologico } from 'src/app/examen-estomatologico/entities/examen-estomatologico.entity';
 import { ExamenGeneral } from 'src/app/examen-general/entities/examen-general.entity';
 import { Odontograma } from 'src/app/odontograma/entities/odontograma.entity';
@@ -157,8 +158,8 @@ export class Paciente {
   // @OneToMany(() => DiagnosticoPresuntivo, (diagnosticoPresuntivo) => diagnosticoPresuntivo.paciente)
   // diagnosticoPresuntivo: DiagnosticoPresuntivo[];
 
-  // @OneToMany(() => ExamenesAuxiliares, (examenesAuxiliares) => examenesAuxiliares.paciente)
-  // examenesAuxiliares: ExamenesAuxiliares[];
+  @OneToMany(() => ExamenAuxiliar, (examenesAuxiliares) => examenesAuxiliares.paciente)
+  examenesAuxiliares: ExamenAuxiliar[];
 
   @OneToMany(() => ExamenGeneral, (examenesGenerales) => examenesGenerales.paciente)
   examenesGenerales: ExamenGeneral[];

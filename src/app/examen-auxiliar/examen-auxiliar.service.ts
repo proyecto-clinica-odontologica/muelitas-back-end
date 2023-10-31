@@ -46,16 +46,29 @@ export class ExamenAuxiliarService {
     }
   }
 
-  async buscarExamenAuxiliarPorId(id: number) {
+  async buscarExamenAuxiliarPorId(id: number, checkDeleted: boolean = false) {
     try {
-      const examenAuxiliar = await this.tblExamenAuxiliar.findOneOrFail({
-        where: { id, activo: true },
+      const examenAuxiliar = await this.tblExamenAuxiliar.findOne({
+        where: { id },
         select: ['id', 'Contenido', 'FechaRegistro'],
+        withDeleted: true,
       });
 
-      return examenAuxiliar;
+      if (!examenAuxiliar) {
+        throw new NotFoundException('No se encontró el examen auxiliar');
+      }
+
+      if (checkDeleted && !examenAuxiliar.deletedAt) {
+        throw new NotFoundException('El examen auxiliar no fue eliminado');
+      }
+
+      if (!checkDeleted && examenAuxiliar.deletedAt) {
+        throw new NotFoundException('Ya fue eliminado el examen auxiliar');
+      }
+
+      return this.omitirCampos(examenAuxiliar);
     } catch (error) {
-      throw new NotFoundException('No se encontró el examen general');
+      throw error;
     }
   }
 
@@ -79,7 +92,10 @@ export class ExamenAuxiliarService {
   async eliminarExamenAuxiliar(id: number) {
     try {
       const examenAuxiliar = await this.buscarExamenAuxiliarPorId(id);
-      await this.tblExamenAuxiliar.softRemove(examenAuxiliar);
+      await this.tblExamenAuxiliar.update(examenAuxiliar.id, {
+        activo: false,
+        deletedAt: new Date(),
+      });
       return { message: 'Examen auxiliar fue eliminado correctamente' };
     } catch (error) {
       throw error;
@@ -88,16 +104,12 @@ export class ExamenAuxiliarService {
 
   async restaurarExamenAuxiliar(id: number) {
     try {
-      const examenAuxiliar = await this.tblExamenAuxiliar.findOneOrFail({
-        where: { id, activo: false },
-        withDeleted: true,
+      const examenAuxiliar = await this.buscarExamenAuxiliarPorId(id, true);
+      await this.tblExamenAuxiliar.update(examenAuxiliar.id, {
+        activo: true,
+        deletedAt: null,
       });
 
-      await this.tblExamenAuxiliar.recover(examenAuxiliar);
-
-      examenAuxiliar.activo = true;
-
-      await this.tblExamenAuxiliar.save(examenAuxiliar);
       return { message: 'Examen auxiliar restaurado correctamente' };
     } catch (error) {
       throw new NotFoundException('No se encontró el examen auxiliar');

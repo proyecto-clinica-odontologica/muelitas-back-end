@@ -1,5 +1,7 @@
-import { BeforeInsert, BeforeRemove, BeforeUpdate, Column, DeleteDateColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { BeforeInsert, BeforeUpdate, Column, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Paciente } from '../../paciente/entities/paciente.entity';
 
+@Entity()
 export class ExamenAuxiliar {
   @PrimaryGeneratedColumn('increment')
   id: number;
@@ -16,14 +18,12 @@ export class ExamenAuxiliar {
   @DeleteDateColumn({ type: 'timestamp', nullable: true, default: null })
   deletedAt: Date;
 
+  @ManyToOne(() => Paciente, (paciente) => paciente.examenesAuxiliares)
+  paciente: Paciente;
+
   @BeforeInsert()
   @BeforeUpdate()
   limpiarCampos() {
     this.Contenido = this.Contenido?.trim().toLowerCase();
-  }
-
-  @BeforeRemove()
-  handleBeforeRemove() {
-    this.activo = false;
   }
 }
