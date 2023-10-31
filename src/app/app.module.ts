@@ -33,6 +33,8 @@ import { SeguimientoModule } from './seguimiento/seguimiento.module';
 import { SubcasoclinicoModule } from './subcasoclinico/subcasoclinico.module';
 import { TratamientoModule } from './tratamiento/tratamiento.module';
 import { UsersModule } from './users/users.module';
+import { NotaEvolutivaModule } from './nota-evolutiva/nota-evolutiva.module';
+import { EpicrisisModule } from './epicrisis/epicrisis.module';
 
 @Module({
   imports: [
@@ -84,6 +86,8 @@ import { UsersModule } from './users/users.module';
     DiagnosticoDefinitivoModule,
     PlanycronogramaTratamientoModule,
     ExamenEstomatologicoModule,
+    NotaEvolutivaModule,
+    EpicrisisModule,
   ],
   controllers: [],
   providers: [],

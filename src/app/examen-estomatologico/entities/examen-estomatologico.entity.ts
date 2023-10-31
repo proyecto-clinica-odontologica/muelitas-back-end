@@ -1,5 +1,6 @@
-import { BeforeInsert, BeforeUpdate, Column, DeleteDateColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { BeforeInsert, BeforeUpdate, Column, DeleteDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
+@Entity()
 export class ExamenEstomatologico {
   @PrimaryGeneratedColumn('increment')
   id: number;
