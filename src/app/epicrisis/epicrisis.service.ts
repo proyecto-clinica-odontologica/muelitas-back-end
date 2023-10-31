@@ -1,26 +1,126 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateEpicrisisDto } from './dto/create-epicrisis.dto';
 import { UpdateEpicrisisDto } from './dto/update-epicrisis.dto';
+import { Epicrisis } from './entities/epicrisis.entity';
 
 @Injectable()
 export class EpicrisisService {
-  create(createEpicrisisDto: CreateEpicrisisDto) {
-    return 'This action adds a new epicrisis';
+  constructor(
+    @InjectRepository(Epicrisis)
+    private readonly tblEpicrisis: Repository<Epicrisis>,
+  ) {}
+  async registrarEpicrisis(createEpicrisisDto: CreateEpicrisisDto) {
+    try {
+      const epicrisis = this.tblEpicrisis.create(createEpicrisisDto);
+      await this.tblEpicrisis.save(epicrisis);
+      return this.omitirCampos(epicrisis);
+    } catch (error) {
+      throw error;
+    }
   }
 
-  findAll() {
-    return `This action returns all epicrisis`;
+  async obtenerEpicrisis() {
+    try {
+      const epicrisis = await this.tblEpicrisis.find({
+        where: { activo: true },
+      });
+      return this.camposVisibles(epicrisis);
+    } catch (error) {
+      throw error;
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} epicrisis`;
+  async obtenerEpicrisisEliminadas() {
+    try {
+      const epicrisis = await this.tblEpicrisis.find({
+        where: { activo: false },
+        withDeleted: true,
+      });
+      return this.camposVisibles(epicrisis);
+    } catch (error) {
+      throw error;
+    }
   }
 
-  update(id: number, updateEpicrisisDto: UpdateEpicrisisDto) {
-    return `This action updates a #${id} epicrisis`;
+  async buscarEpicrisisPorId(id: number, checkDeleted: boolean = false) {
+    try {
+      const epicrisis = await this.tblEpicrisis.findOne({
+        where: { id },
+        withDeleted: true,
+      });
+
+      if (!epicrisis) {
+        throw new NotFoundException(`No existe la epicrisis`);
+      }
+
+      if (!checkDeleted && epicrisis.deletedAt) {
+        throw new NotFoundException(`La epicrisis está eliminada`);
+      }
+
+      if (checkDeleted && !epicrisis.deletedAt) {
+        throw new NotFoundException(`La epicrisis está eliminada`);
+      }
+
+      return this.omitirCampos(epicrisis);
+    } catch (error) {
+      throw error;
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} epicrisis`;
+  async actualizarEpicrisis(id: number, updateEpicrisisDto: UpdateEpicrisisDto) {
+    try {
+      const epicrisis = await this.tblEpicrisis.preload({
+        id,
+        ...updateEpicrisisDto,
+      });
+
+      if (!epicrisis) {
+        throw new NotFoundException(`No existe la epicrisis`);
+      }
+
+      await this.tblEpicrisis.save(epicrisis);
+      return this.omitirCampos(epicrisis);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async eliminarEpicrisis(id: number) {
+    try {
+      const epicrisis = await this.buscarEpicrisisPorId(id);
+      await this.tblEpicrisis.update(epicrisis.id, {
+        activo: false,
+        deletedAt: new Date(),
+      });
+
+      return { message: `Epicrisis eliminada correctamente` };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async restaurarEpicrisis(id: number) {
+    try {
+      const epicrisis = await this.buscarEpicrisisPorId(id, true);
+      await this.tblEpicrisis.update(epicrisis.id, {
+        activo: true,
+        deletedAt: null,
+      });
+
+      return { message: `Epicrisis restaurada correctamente` };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  private omitirCampos(epicris: Epicrisis) {
+    const { activo, deletedAt, ...resto } = epicris;
+    return resto;
+  }
+
+  private camposVisibles(epicrisis: Epicrisis[]) {
+    return epicrisis.map((epicris) => this.omitirCampos(epicris));
   }
 }
