@@ -8,4 +8,7 @@ export const JoiValidationSchema = Joi.object({
   DB_PASSWORD: Joi.required(),
   DB_DATABASE: Joi.required(),
   DB_ROOT_PASSWORD: Joi.required(),
+  CLOUDINARY_CLOUD_NAME: Joi.string().required(),
+  CLOUDINARY_API_KEY: Joi.string().required(),
+  CLOUDINARY_API_SECRET: Joi.string().required(),
 });

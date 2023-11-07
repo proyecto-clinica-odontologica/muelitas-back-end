@@ -36,6 +36,7 @@ import { UsersModule } from './users/users.module';
 import { NotaEvolutivaModule } from './nota-evolutiva/nota-evolutiva.module';
 import { EpicrisisModule } from './epicrisis/epicrisis.module';
 import { InterpretacionModule } from './interpretacion/interpretacion.module';
+import { FilesModule } from './files/files.module';
 
 @Module({
   imports: [
@@ -90,6 +91,7 @@ import { InterpretacionModule } from './interpretacion/interpretacion.module';
     NotaEvolutivaModule,
     EpicrisisModule,
     InterpretacionModule,
+    FilesModule,
   ],
   controllers: [],
   providers: [],
