@@ -49,7 +49,7 @@ export class EmpresasService {
     try {
       const empresa = await this.dbEmpresa.findOne({
         where: { id },
-        select: ['id', 'Representante', 'RazonSocial'],
+        select: ['id', 'Representante', 'RazonSocial', 'Ruc'],
       });
       if (!empresa) {
         throw new NotFoundException('Empresa no encontrada');

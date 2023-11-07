@@ -1,14 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  ParseIntPipe,
-  Patch,
-  Post,
-  Put,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Put } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -26,11 +16,8 @@ export class AuthController {
   }
 
   @Put('update/:id')
-  update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() updateUserDto: UpdateUserDto,
-  ) {
-    console.log(id)
+  update(@Param('id', ParseIntPipe) id: number, @Body() updateUserDto: UpdateUserDto) {
+    console.log(id);
     return this.authService.actualizarUsuario(id, updateUserDto);
   }
 
@@ -45,28 +32,18 @@ export class AuthController {
   }
 
   @Get('logincelu/:celular/:contra')
-  loginCelular(
-    @Param('celular') celular: string,
-    @Param('contra') contra: string,
-  ) {
+  loginCelular(@Param('celular') celular: string, @Param('contra') contra: string) {
     return this.authService.loginCelular(celular, contra);
   }
 
   @Patch('cambiar-password/:id')
-  cambiarPassword(
-    @Param('id') id: number,
-    @Body() changePasswordDto: ChangePasswordDto,
-  ) {
+  cambiarPassword(@Param('id') id: number, @Body() changePasswordDto: ChangePasswordDto) {
     return this.authService.cambiarPassword(id, changePasswordDto);
   }
 
   @Patch('solicitar-restablecer-password')
-  solicitarRestablecerPassword(
-    @Body() requestResetPasswordDto: RequestResetPasswordDto,
-  ) {
-    return this.authService.solicitarRestablecerPassword(
-      requestResetPasswordDto,
-    );
+  solicitarRestablecerPassword(@Body() requestResetPasswordDto: RequestResetPasswordDto) {
+    return this.authService.solicitarRestablecerPassword(requestResetPasswordDto);
   }
 
   @Patch('restablecer-password')

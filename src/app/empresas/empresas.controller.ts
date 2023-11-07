@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Put } from '@nestjs/common';
 import { CreateEmpresaDto } from './dto/create-empresa.dto';
 import { UpdateEmpresaDto } from './dto/update-empresa.dto';
 import { EmpresasService } from './empresas.service';
@@ -37,7 +37,7 @@ export class EmpresasController {
     return this.empresasService.buscarEmpresaPorRuc(rucEmpresa);
   }
 
-  @Patch(':id')
+  @Put(':id')
   actualizarEmpresa(@Param('id') id: string, @Body() updateEmpresaDto: UpdateEmpresaDto) {
     return this.empresasService.actualizarEmpresa(+id, updateEmpresaDto);
   }

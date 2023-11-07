@@ -67,7 +67,7 @@ export class CreateUserDto {
   })
   Pago?: string;
 
-  @IsBoolean({ message: 'El estado debe ser true o false' })
+  @IsBoolean({ message: 'El estado ("Activo") debe ser true o false' })
   Activo?: boolean;
 
   @IsOptional()

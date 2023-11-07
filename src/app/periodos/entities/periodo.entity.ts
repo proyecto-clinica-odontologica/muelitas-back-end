@@ -20,10 +20,10 @@ export class Periodo {
   Nombre: string;
 
   @Column({ type: 'date' })
-  FechaInicio: string;
+  Empieza: Date;
 
   @Column({ type: 'date' })
-  FechaFin: string;
+  Termina: Date;
 
   @DeleteDateColumn({ type: 'timestamp', default: null, nullable: true })
   deletedAt: Date;
@@ -41,7 +41,5 @@ export class Periodo {
   @BeforeUpdate()
   limpiarCampos() {
     this.Nombre = this.Nombre?.trim().toLowerCase();
-    this.FechaInicio = this.FechaInicio?.trim().toLowerCase();
-    this.FechaFin = this.FechaFin?.trim().toLowerCase();
   }
 }

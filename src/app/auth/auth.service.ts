@@ -221,6 +221,22 @@ export class AuthService {
 
       await this.dbUser.save(usuario);
       // TODO: enviar correo electronico con el codigo de restablecimiento de contraseña
+
+      // const info = await this.mailerService.sendMail({
+      //   to: usuario.email,
+      //   from: 'APV - Administrador de pacientes de veterinaria', //
+      //   subject: 'Reestablece tu password ✔',
+      //   text: 'Reestablece tu password',
+      //   html: `
+      //   <p>Hola ${usuario.nombre} has solicitado reestablecer tu password</p>
+      //   <p>Sigue el siguiente enlace para generar un nuevo password</p>
+      //   <a href="${process.env.FRONT_URL}/auth/olvide-password/${usuario.token}">Reestablecer Password</a>
+      //   <p>Si tu no solicitaste reestablecer la cuenta, puedes ignorar este mensaje</p>
+      //   `,
+      // });
+
+      // console.log('Correo enviado %s', info.messageId);
+
     } catch (error) {
       throw error;
     }

@@ -41,9 +41,9 @@ export class PeriodosController {
     return this.periodosService.buscarPeriodoPorNombre(nombrePeriodo);
   }
 
-  @Get('search/sede/:sede')
-  buscarPeriodosPorSede(@Param('sede') sede: string) {
-    return this.periodosService.buscarPeriodosPorSede(sede);
+  @Get('search/sede/:idSede')
+  buscarPeriodosPorSede(@Param('idSede') idSede: string) {
+    return this.periodosService.buscarPeriodosPorSede(idSede);
   }
 
   @Patch(':id')

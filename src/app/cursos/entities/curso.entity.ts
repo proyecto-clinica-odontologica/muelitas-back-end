@@ -1,13 +1,5 @@
+import { BeforeInsert, BeforeUpdate, Column, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Clase } from '../../clases/entities/clase.entity';
-import {
-  BeforeInsert,
-  BeforeUpdate,
-  Column,
-  DeleteDateColumn,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
 
 @Entity()
 export class Curso {
@@ -17,11 +9,11 @@ export class Curso {
   @Column({ type: 'varchar' })
   Nombre: string;
 
-  @Column({ type: 'float' })
-  Semestre: number;
+  @Column({ type: 'varchar' })
+  Semestre: string;
 
-  @Column({ type: 'float' })
-  Malla: number;
+  @Column({ type: 'varchar' })
+  Malla: string;
 
   @DeleteDateColumn({ type: 'timestamp', default: null, nullable: true })
   deletedAt?: Date;

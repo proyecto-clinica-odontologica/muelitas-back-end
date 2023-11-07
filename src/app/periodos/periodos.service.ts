@@ -78,7 +78,7 @@ export class PeriodosService {
     try {
       const periodo = await this.dbPeriodo.findOne({
         where: { Nombre: nombrePeriodo },
-        select: ['id', 'Nombre', 'FechaInicio', 'FechaFin'],
+        select: ['id', 'Nombre', 'Empieza', 'Termina'],
       });
 
       if (!periodo) {
@@ -95,10 +95,10 @@ export class PeriodosService {
     }
   }
 
-  async buscarPeriodosPorSede(nombreSede: string) {
+  async buscarPeriodosPorSede(idSede: string) {
     try {
       const sedes = await this.dbSede.findOne({
-        where: { Nombre: nombreSede },
+        where: { id: +idSede },
         relations: ['periodo'],
       });
 
@@ -106,7 +106,14 @@ export class PeriodosService {
         throw new NotFoundException('No existe la sede');
       }
 
-      return sedes;
+      if (sedes.periodo.length === 0) {
+        return [];
+      }
+
+      delete sedes.periodo[0].deletedAt;
+      delete sedes.periodo[0].activo;
+
+      return sedes.periodo;
     } catch (error) {
       throw error;
     }
