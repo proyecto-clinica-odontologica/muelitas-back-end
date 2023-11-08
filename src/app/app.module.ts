@@ -38,6 +38,7 @@ import { EpicrisisModule } from './epicrisis/epicrisis.module';
 import { InterpretacionModule } from './interpretacion/interpretacion.module';
 import { FilesModule } from './files/files.module';
 import { EndodonciaModule } from './endodoncia/endodoncia.module';
+import { OpturacionConductosModule } from './opturacion-conductos/opturacion-conductos.module';
 
 @Module({
   imports: [
@@ -94,6 +95,7 @@ import { EndodonciaModule } from './endodoncia/endodoncia.module';
     InterpretacionModule,
     FilesModule,
     EndodonciaModule,
+    OpturacionConductosModule,
   ],
   controllers: [],
   providers: [],

@@ -1,5 +1,15 @@
+import { OpturacionConducto } from 'src/app/opturacion-conductos/entities/opturacion-conducto.entity';
 import { Paciente } from 'src/app/paciente/entities/paciente.entity';
-import { BeforeInsert, BeforeUpdate, Column, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BeforeInsert,
+  BeforeUpdate,
+  Column,
+  DeleteDateColumn,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Endodoncia {
@@ -68,6 +78,9 @@ export class Endodoncia {
 
   @ManyToOne(() => Paciente, (paciente) => paciente.endodoncias)
   paciente: Paciente;
+
+  @OneToMany(() => OpturacionConducto, (obturacionesConductos) => obturacionesConductos.endodoncia)
+  obturacionesConductos: OpturacionConducto[];
 
   @BeforeInsert()
   @BeforeUpdate()
