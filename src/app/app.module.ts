@@ -41,6 +41,7 @@ import { EndodonciaModule } from './endodoncia/endodoncia.module';
 import { OpturacionConductosModule } from './opturacion-conductos/opturacion-conductos.module';
 import { RadiografiaEndodonciaModule } from './radiografia-endodoncia/radiografia-endodoncia.module';
 import { PreparacionQuimicaModule } from './preparacion-quimica/preparacion-quimica.module';
+import { ConductometriaModule } from './conductometria/conductometria.module';
 
 @Module({
   imports: [
@@ -100,6 +101,7 @@ import { PreparacionQuimicaModule } from './preparacion-quimica/preparacion-quim
     OpturacionConductosModule,
     RadiografiaEndodonciaModule,
     PreparacionQuimicaModule,
+    ConductometriaModule,
   ],
   controllers: [],
   providers: [],
