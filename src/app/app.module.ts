@@ -45,6 +45,7 @@ import { ConductometriaModule } from './conductometria/conductometria.module';
 import { ManifestacionDolorModule } from './manifestacion-dolor/manifestacion-dolor.module';
 import { ManifestacionEndodonciaModule } from './manifestacion-endodoncia/manifestacion-endodoncia.module';
 import { CirugiaModule } from './cirugia/cirugia.module';
+import { EstadoPostquirurgicoModule } from './estado-postquirurgico/estado-postquirurgico.module';
 
 @Module({
   imports: [
@@ -108,6 +109,7 @@ import { CirugiaModule } from './cirugia/cirugia.module';
     ManifestacionDolorModule,
     ManifestacionEndodonciaModule,
     CirugiaModule,
+    EstadoPostquirurgicoModule,
   ],
   controllers: [],
   providers: [],
