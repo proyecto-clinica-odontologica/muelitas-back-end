@@ -42,6 +42,7 @@ import { OpturacionConductosModule } from './opturacion-conductos/opturacion-con
 import { RadiografiaEndodonciaModule } from './radiografia-endodoncia/radiografia-endodoncia.module';
 import { PreparacionQuimicaModule } from './preparacion-quimica/preparacion-quimica.module';
 import { ConductometriaModule } from './conductometria/conductometria.module';
+import { ManifestacionDolorModule } from './manifestacion-dolor/manifestacion-dolor.module';
 
 @Module({
   imports: [
@@ -102,6 +103,7 @@ import { ConductometriaModule } from './conductometria/conductometria.module';
     RadiografiaEndodonciaModule,
     PreparacionQuimicaModule,
     ConductometriaModule,
+    ManifestacionDolorModule,
   ],
   controllers: [],
   providers: [],
