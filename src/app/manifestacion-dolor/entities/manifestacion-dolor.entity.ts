@@ -1,4 +1,5 @@
-import { BeforeInsert, BeforeUpdate, Column, DeleteDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { ManifestacionEndodoncia } from 'src/app/manifestacion-endodoncia/entities/manifestacion-endodoncia.entity';
+import { BeforeInsert, BeforeUpdate, Column, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class ManifestacionDolor {
@@ -13,6 +14,9 @@ export class ManifestacionDolor {
 
   @DeleteDateColumn({ type: 'timestamp', default: null, nullable: true })
   deletedAt?: Date;
+
+  @OneToMany(() => ManifestacionEndodoncia, (manifestacionesEndodoncias) => manifestacionesEndodoncias.manifestacionDolor)
+  manifestacionesEndodoncias: ManifestacionEndodoncia[];
 
   @BeforeInsert()
   @BeforeUpdate()

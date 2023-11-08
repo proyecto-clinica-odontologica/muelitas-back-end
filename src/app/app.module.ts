@@ -43,6 +43,7 @@ import { RadiografiaEndodonciaModule } from './radiografia-endodoncia/radiografi
 import { PreparacionQuimicaModule } from './preparacion-quimica/preparacion-quimica.module';
 import { ConductometriaModule } from './conductometria/conductometria.module';
 import { ManifestacionDolorModule } from './manifestacion-dolor/manifestacion-dolor.module';
+import { ManifestacionEndodonciaModule } from './manifestacion-endodoncia/manifestacion-endodoncia.module';
 
 @Module({
   imports: [
@@ -104,6 +105,7 @@ import { ManifestacionDolorModule } from './manifestacion-dolor/manifestacion-do
     PreparacionQuimicaModule,
     ConductometriaModule,
     ManifestacionDolorModule,
+    ManifestacionEndodonciaModule,
   ],
   controllers: [],
   providers: [],

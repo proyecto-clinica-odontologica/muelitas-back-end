@@ -1,4 +1,5 @@
 import { Conductometria } from 'src/app/conductometria/entities/conductometria.entity';
+import { ManifestacionEndodoncia } from 'src/app/manifestacion-endodoncia/entities/manifestacion-endodoncia.entity';
 import { OpturacionConducto } from 'src/app/opturacion-conductos/entities/opturacion-conducto.entity';
 import { Paciente } from 'src/app/paciente/entities/paciente.entity';
 import { PreparacionQuimica } from 'src/app/preparacion-quimica/entities/preparacion-quimica.entity';
@@ -93,6 +94,9 @@ export class Endodoncia {
 
   @OneToMany(() => Conductometria, (conductometrias) => conductometrias.endodoncia)
   conductometria: Conductometria[];
+
+  @OneToMany(() => ManifestacionEndodoncia, (manifestacionesEndodoncias)=> manifestacionesEndodoncias.endodoncia)
+  manifestacionesEndodoncias: ManifestacionEndodoncia[];
 
   @BeforeInsert()
   @BeforeUpdate()
