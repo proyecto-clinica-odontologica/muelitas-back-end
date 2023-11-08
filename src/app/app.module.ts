@@ -37,6 +37,7 @@ import { NotaEvolutivaModule } from './nota-evolutiva/nota-evolutiva.module';
 import { EpicrisisModule } from './epicrisis/epicrisis.module';
 import { InterpretacionModule } from './interpretacion/interpretacion.module';
 import { FilesModule } from './files/files.module';
+import { EndodonciaModule } from './endodoncia/endodoncia.module';
 
 @Module({
   imports: [
@@ -92,6 +93,7 @@ import { FilesModule } from './files/files.module';
     EpicrisisModule,
     InterpretacionModule,
     FilesModule,
+    EndodonciaModule,
   ],
   controllers: [],
   providers: [],
