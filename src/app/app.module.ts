@@ -39,6 +39,7 @@ import { InterpretacionModule } from './interpretacion/interpretacion.module';
 import { FilesModule } from './files/files.module';
 import { EndodonciaModule } from './endodoncia/endodoncia.module';
 import { OpturacionConductosModule } from './opturacion-conductos/opturacion-conductos.module';
+import { RadiografiaEndodonciaModule } from './radiografia-endodoncia/radiografia-endodoncia.module';
 
 @Module({
   imports: [
@@ -96,6 +97,7 @@ import { OpturacionConductosModule } from './opturacion-conductos/opturacion-con
     FilesModule,
     EndodonciaModule,
     OpturacionConductosModule,
+    RadiografiaEndodonciaModule,
   ],
   controllers: [],
   providers: [],

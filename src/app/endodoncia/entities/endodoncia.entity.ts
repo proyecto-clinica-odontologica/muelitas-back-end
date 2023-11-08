@@ -1,5 +1,6 @@
 import { OpturacionConducto } from 'src/app/opturacion-conductos/entities/opturacion-conducto.entity';
 import { Paciente } from 'src/app/paciente/entities/paciente.entity';
+import { RadiografiaEndodoncia } from 'src/app/radiografia-endodoncia/entities/radiografia-endodoncia.entity';
 import {
   BeforeInsert,
   BeforeUpdate,
@@ -81,6 +82,9 @@ export class Endodoncia {
 
   @OneToMany(() => OpturacionConducto, (obturacionesConductos) => obturacionesConductos.endodoncia)
   obturacionesConductos: OpturacionConducto[];
+
+  @OneToMany(() => RadiografiaEndodoncia, (radiografiasEndodoncias) => radiografiasEndodoncias.endodoncia)
+  radiografiasEndodoncias: RadiografiaEndodoncia[];
 
   @BeforeInsert()
   @BeforeUpdate()
