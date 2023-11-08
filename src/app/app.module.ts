@@ -44,6 +44,7 @@ import { PreparacionQuimicaModule } from './preparacion-quimica/preparacion-quim
 import { ConductometriaModule } from './conductometria/conductometria.module';
 import { ManifestacionDolorModule } from './manifestacion-dolor/manifestacion-dolor.module';
 import { ManifestacionEndodonciaModule } from './manifestacion-endodoncia/manifestacion-endodoncia.module';
+import { CirugiaModule } from './cirugia/cirugia.module';
 
 @Module({
   imports: [
@@ -106,6 +107,7 @@ import { ManifestacionEndodonciaModule } from './manifestacion-endodoncia/manife
     ConductometriaModule,
     ManifestacionDolorModule,
     ManifestacionEndodonciaModule,
+    CirugiaModule,
   ],
   controllers: [],
   providers: [],

@@ -1,3 +1,5 @@
+import { Cirugia } from 'src/app/cirugia/entities/cirugia.entity';
+import { Endodoncia } from 'src/app/endodoncia/entities/endodoncia.entity';
 import { BeforeInsert, BeforeUpdate, Column, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { HistoriaClinica } from '../../HistoriaClinica/dto/historia-clinica.entity';
 import { Anamnesis } from '../../anamnesis/entities/anamnesis.entity';
@@ -12,7 +14,6 @@ import { Interpretacion } from '../../interpretacion/entities/interpretacion.ent
 import { NotaEvolutiva } from '../../nota-evolutiva/entities/nota-evolutiva.entity';
 import { Odontograma } from '../../odontograma/entities/odontograma.entity';
 import { PlanyCronogramaTratamiento } from '../../planycronograma-tratamiento/entities/planycronograma-tratamiento.entity';
-import { Endodoncia } from 'src/app/endodoncia/entities/endodoncia.entity';
 
 @Entity()
 export class Paciente {
@@ -199,6 +200,9 @@ export class Paciente {
 
   @OneToMany(() => Endodoncia, (endodoncias) => endodoncias.paciente)
   endodoncias: Endodoncia[];
+
+  @OneToMany(() => Cirugia, (cirugias) => cirugias.paciente)
+  cirugias: Cirugia[];
 
   @BeforeInsert()
   @BeforeUpdate()
