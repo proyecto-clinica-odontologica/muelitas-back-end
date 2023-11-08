@@ -1,5 +1,6 @@
 import { OpturacionConducto } from 'src/app/opturacion-conductos/entities/opturacion-conducto.entity';
 import { Paciente } from 'src/app/paciente/entities/paciente.entity';
+import { PreparacionQuimica } from 'src/app/preparacion-quimica/entities/preparacion-quimica.entity';
 import { RadiografiaEndodoncia } from 'src/app/radiografia-endodoncia/entities/radiografia-endodoncia.entity';
 import {
   BeforeInsert,
@@ -85,6 +86,9 @@ export class Endodoncia {
 
   @OneToMany(() => RadiografiaEndodoncia, (radiografiasEndodoncias) => radiografiasEndodoncias.endodoncia)
   radiografiasEndodoncias: RadiografiaEndodoncia[];
+
+  @OneToMany(() => PreparacionQuimica, (preparacionesQuimicas) => preparacionesQuimicas.endodoncia)
+  preparacionesQuimicas: PreparacionQuimica[];
 
   @BeforeInsert()
   @BeforeUpdate()

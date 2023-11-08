@@ -40,6 +40,7 @@ import { FilesModule } from './files/files.module';
 import { EndodonciaModule } from './endodoncia/endodoncia.module';
 import { OpturacionConductosModule } from './opturacion-conductos/opturacion-conductos.module';
 import { RadiografiaEndodonciaModule } from './radiografia-endodoncia/radiografia-endodoncia.module';
+import { PreparacionQuimicaModule } from './preparacion-quimica/preparacion-quimica.module';
 
 @Module({
   imports: [
@@ -98,6 +99,7 @@ import { RadiografiaEndodonciaModule } from './radiografia-endodoncia/radiografi
     EndodonciaModule,
     OpturacionConductosModule,
     RadiografiaEndodonciaModule,
+    PreparacionQuimicaModule,
   ],
   controllers: [],
   providers: [],
