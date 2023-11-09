@@ -1,6 +1,16 @@
 import { EstadoPostquirurgico } from 'src/app/estado-postquirurgico/entities/estado-postquirurgico.entity';
 import { Paciente } from 'src/app/paciente/entities/paciente.entity';
-import { BeforeInsert, BeforeUpdate, Column, DeleteDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { PlanTratamiento } from 'src/app/plan-tratamiento/entities/plan-tratamiento.entity';
+import {
+  BeforeInsert,
+  BeforeUpdate,
+  Column,
+  DeleteDateColumn,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Cirugia {
@@ -60,6 +70,9 @@ export class Cirugia {
 
   @OneToMany(() => EstadoPostquirurgico, (estadosPostsQuirurgicos) => estadosPostsQuirurgicos.cirugia)
   estadosPostsQuirurgicos: EstadoPostquirurgico[];
+
+  @OneToMany(() => PlanTratamiento, (planesTratamientos) => planesTratamientos.cirugia)
+  planesTratamientos: PlanTratamiento[];
 
   @BeforeInsert()
   @BeforeUpdate()

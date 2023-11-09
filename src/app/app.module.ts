@@ -46,6 +46,7 @@ import { ManifestacionDolorModule } from './manifestacion-dolor/manifestacion-do
 import { ManifestacionEndodonciaModule } from './manifestacion-endodoncia/manifestacion-endodoncia.module';
 import { CirugiaModule } from './cirugia/cirugia.module';
 import { EstadoPostquirurgicoModule } from './estado-postquirurgico/estado-postquirurgico.module';
+import { PlanTratamientoModule } from './plan-tratamiento/plan-tratamiento.module';
 
 @Module({
   imports: [
@@ -110,6 +111,7 @@ import { EstadoPostquirurgicoModule } from './estado-postquirurgico/estado-postq
     ManifestacionEndodonciaModule,
     CirugiaModule,
     EstadoPostquirurgicoModule,
+    PlanTratamientoModule,
   ],
   controllers: [],
   providers: [],
