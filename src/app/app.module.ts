@@ -53,6 +53,7 @@ import { SeguimientoModule } from './seguimiento/seguimiento.module';
 import { SubcasoclinicoModule } from './subcasoclinico/subcasoclinico.module';
 import { TratamientoModule } from './tratamiento/tratamiento.module';
 import { UsersModule } from './users/users.module';
+import { TecnicaRadiograficaModule } from './tecnica-radiografica/tecnica-radiografica.module';
 
 @Module({
   imports: [
@@ -123,6 +124,7 @@ import { UsersModule } from './users/users.module';
     OperatoriaModule,
     PruebaOperatoriaModule,
     PruebaModule,
+    TecnicaRadiograficaModule,
   ],
   controllers: [],
   providers: [],

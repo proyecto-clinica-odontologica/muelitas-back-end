@@ -1,3 +1,4 @@
+import { TecnicaRadiografica } from 'src/app/tecnica-radiografica/entities/tecnica-radiografica.entity';
 import {
   BeforeInsert,
   BeforeUpdate,
@@ -33,6 +34,9 @@ export class Operatoria {
 
   @OneToMany(() => PruebaOperatoria, (pruebasOperatorias) => pruebasOperatorias.operatoria)
   pruebasOperatorias: PruebaOperatoria[];
+
+  @OneToMany(() => TecnicaRadiografica, (tecnicasRadiograficas) => tecnicasRadiograficas.operatoria)
+  tecnicasRadiograficas: TecnicaRadiografica[];
 
   @BeforeInsert()
   @BeforeUpdate()
