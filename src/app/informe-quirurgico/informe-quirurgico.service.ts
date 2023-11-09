@@ -92,7 +92,7 @@ export class InformeQuirurgicoService {
       });
 
       if (!cirugia) {
-        throw new NotFoundException('No se encontró el paciente');
+        throw new NotFoundException('No se encontró la cirugia');
       }
 
       const informeQuirurgico = await this.tblInformeQuirurgico.preload({
@@ -102,7 +102,7 @@ export class InformeQuirurgicoService {
       });
 
       if (!informeQuirurgico) {
-        throw new NotFoundException('No se encontró el plan de tratamiento');
+        throw new NotFoundException('No se encontró el informe quirurgico');
       }
 
       await this.tblInformeQuirurgico.save(informeQuirurgico);
