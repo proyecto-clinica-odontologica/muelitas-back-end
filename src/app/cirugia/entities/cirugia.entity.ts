@@ -1,7 +1,9 @@
 import { EstadoPostquirurgico } from 'src/app/estado-postquirurgico/entities/estado-postquirurgico.entity';
 import { InformeQuirurgico } from 'src/app/informe-quirurgico/entities/informe-quirurgico.entity';
+import { InterpretacionRadiografica } from 'src/app/interpretacion-radiografica/entities/interpretacion-radiografica.entity';
 import { Paciente } from 'src/app/paciente/entities/paciente.entity';
 import { PlanTratamiento } from 'src/app/plan-tratamiento/entities/plan-tratamiento.entity';
+import { RadiografiaCirugia } from 'src/app/radiografia-cirugia/entities/radiografia-cirugia.entity';
 import {
   BeforeInsert,
   BeforeUpdate,
@@ -77,6 +79,12 @@ export class Cirugia {
 
   @OneToMany(() => InformeQuirurgico, (infomesQuirurgicos) => infomesQuirurgicos.cirugia)
   infomesQuirurgicos: InformeQuirurgico[];
+
+  @OneToMany(() => InterpretacionRadiografica, (interpretacionesRadiograficas) => interpretacionesRadiograficas.cirugia)
+  interpretacionesRadiograficas: InterpretacionRadiografica[];
+
+  @OneToMany(() => RadiografiaCirugia, (radiografiasCirugias) => radiografiasCirugias.cirugia)
+  radiografiasCirugias: RadiografiaCirugia[];
 
   @BeforeInsert()
   @BeforeUpdate()

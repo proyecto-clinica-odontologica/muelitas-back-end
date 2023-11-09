@@ -49,6 +49,7 @@ import { EstadoPostquirurgicoModule } from './estado-postquirurgico/estado-postq
 import { PlanTratamientoModule } from './plan-tratamiento/plan-tratamiento.module';
 import { InformeQuirurgicoModule } from './informe-quirurgico/informe-quirurgico.module';
 import { InterpretacionRadiograficaModule } from './interpretacion-radiografica/interpretacion-radiografica.module';
+import { RadiografiaCirugiaModule } from './radiografia-cirugia/radiografia-cirugia.module';
 
 @Module({
   imports: [
@@ -116,6 +117,7 @@ import { InterpretacionRadiograficaModule } from './interpretacion-radiografica/
     PlanTratamientoModule,
     InformeQuirurgicoModule,
     InterpretacionRadiograficaModule,
+    RadiografiaCirugiaModule,
   ],
   controllers: [],
   providers: [],

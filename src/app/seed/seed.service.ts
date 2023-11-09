@@ -28,7 +28,7 @@ export class SeedService {
         Apellido: 'rodriguez mallqui',
         Celular: '998238111',
         Codigo: 'DEF456',
-        Rol: 'admin',
+        Rol: 'administrador',
       },
       {
         Correo: 'anibaljhamil@gmail.com',
@@ -38,7 +38,7 @@ export class SeedService {
         Apellido: 'huaman verastein',
         Celular: '111444777',
         Codigo: 'DEF456',
-        Rol: 'admin',
+        Rol: 'administrador',
       },
       {
         Correo: '75018052@continental.edu.pe',
@@ -48,7 +48,7 @@ export class SeedService {
         Apellido: 'coronado martinez',
         Celular: '111222333',
         Codigo: 'DEF456',
-        Rol: 'docente',
+        Rol: 'god',
       },
       {
         Correo: '72010644@continental.edu.pe',
