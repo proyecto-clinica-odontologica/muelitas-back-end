@@ -1,6 +1,15 @@
-import { BeforeInsert, BeforeUpdate, Column, DeleteDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BeforeInsert,
+  BeforeUpdate,
+  Column,
+  DeleteDateColumn,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Paciente } from '../../paciente/entities/paciente.entity';
-import { PruebaOperatoria } from 'src/app/prueba-operatoria/entities/prueba-operatoria.entity';
+import { PruebaOperatoria } from '../../prueba-operatoria/entities/prueba-operatoria.entity';
 
 @Entity()
 export class Operatoria {

@@ -1,4 +1,5 @@
 import { Operatoria } from 'src/app/operatoria/entities/operatoria.entity';
+import { Prueba } from 'src/app/prueba/entities/prueba.entity';
 import { BeforeInsert, BeforeUpdate, Column, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
@@ -17,6 +18,9 @@ export class PruebaOperatoria {
 
   @ManyToOne(() => Operatoria, (operatoria) => operatoria.pruebasOperatorias)
   operatoria: Operatoria;
+
+  // @ManyToOne(() => Prueba, (prueba) => prueba.pruebaOperatorias)
+  // prueba: Prueba;
 
   @BeforeInsert()
   @BeforeUpdate()
