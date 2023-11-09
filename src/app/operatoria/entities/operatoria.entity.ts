@@ -11,6 +11,7 @@ import {
 } from 'typeorm';
 import { Paciente } from '../../paciente/entities/paciente.entity';
 import { PruebaOperatoria } from '../../prueba-operatoria/entities/prueba-operatoria.entity';
+import { PlanTrabajo } from 'src/app/plan-trabajo/entities/plan-trabajo.entity';
 
 @Entity()
 export class Operatoria {
@@ -37,6 +38,9 @@ export class Operatoria {
 
   @OneToMany(() => TecnicaRadiografica, (tecnicasRadiograficas) => tecnicasRadiograficas.operatoria)
   tecnicasRadiograficas: TecnicaRadiografica[];
+
+  @OneToMany(() => PlanTrabajo, (planesDeTrabajo) => planesDeTrabajo.operatoria)
+  planesDeTrabajo: PlanTrabajo[];
 
   @BeforeInsert()
   @BeforeUpdate()
