@@ -1,4 +1,5 @@
 import { EstadoPostquirurgico } from 'src/app/estado-postquirurgico/entities/estado-postquirurgico.entity';
+import { InformeQuirurgico } from 'src/app/informe-quirurgico/entities/informe-quirurgico.entity';
 import { Paciente } from 'src/app/paciente/entities/paciente.entity';
 import { PlanTratamiento } from 'src/app/plan-tratamiento/entities/plan-tratamiento.entity';
 import {
@@ -73,6 +74,9 @@ export class Cirugia {
 
   @OneToMany(() => PlanTratamiento, (planesTratamientos) => planesTratamientos.cirugia)
   planesTratamientos: PlanTratamiento[];
+
+  @OneToMany(() => InformeQuirurgico, (infomesQuirurgicos) => infomesQuirurgicos.cirugia)
+  infomesQuirurgicos: InformeQuirurgico[];
 
   @BeforeInsert()
   @BeforeUpdate()

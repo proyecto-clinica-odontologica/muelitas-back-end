@@ -2,7 +2,7 @@ import { BeforeInsert, BeforeUpdate, Column, DeleteDateColumn, Entity, ManyToOne
 import { Cirugia } from '../../cirugia/entities/cirugia.entity';
 
 @Entity()
-export class PlanTratamiento {
+export class InformeQuirurgico {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
