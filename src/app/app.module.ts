@@ -51,6 +51,7 @@ import { InformeQuirurgicoModule } from './informe-quirurgico/informe-quirurgico
 import { InterpretacionRadiograficaModule } from './interpretacion-radiografica/interpretacion-radiografica.module';
 import { RadiografiaCirugiaModule } from './radiografia-cirugia/radiografia-cirugia.module';
 import { OperatoriaModule } from './operatoria/operatoria.module';
+import { PruebaOperatoriaModule } from './prueba-operatoria/prueba-operatoria.module';
 
 @Module({
   imports: [
@@ -120,6 +121,7 @@ import { OperatoriaModule } from './operatoria/operatoria.module';
     InterpretacionRadiograficaModule,
     RadiografiaCirugiaModule,
     OperatoriaModule,
+    PruebaOperatoriaModule,
   ],
   controllers: [],
   providers: [],

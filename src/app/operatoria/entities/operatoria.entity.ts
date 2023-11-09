@@ -1,5 +1,6 @@
-import { BeforeInsert, BeforeUpdate, Column, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { BeforeInsert, BeforeUpdate, Column, DeleteDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Paciente } from '../../paciente/entities/paciente.entity';
+import { PruebaOperatoria } from 'src/app/prueba-operatoria/entities/prueba-operatoria.entity';
 
 @Entity()
 export class Operatoria {
@@ -20,6 +21,9 @@ export class Operatoria {
 
   @ManyToOne(() => Paciente, (paciente) => paciente.operatorias)
   paciente: Paciente;
+
+  @OneToMany(() => PruebaOperatoria, (pruebasOperatorias) => pruebasOperatorias.operatoria)
+  pruebasOperatorias: PruebaOperatoria[];
 
   @BeforeInsert()
   @BeforeUpdate()

@@ -72,7 +72,7 @@ export class RadiografiaCirugiaService {
       }
 
       if (!radiografiaCirugia.activo && checkDeleted) {
-        throw new NotFoundException('no se puede restaurar la radiografia porque ya ah sido eliminada');
+        throw new NotFoundException('no se puede restaurar la radiografia porque no ah sido eliminada');
       }
 
       if (radiografiaCirugia.deletedAt && !checkDeleted) {
@@ -152,7 +152,7 @@ export class RadiografiaCirugiaService {
     return radiografiaCirugia;
   }
 
-  private camposVisibles(RadiografiasCirugias: RadiografiaCirugia[]) {
-    return RadiografiasCirugias.map((radiografiaCirugia) => this.omitirCampos(radiografiaCirugia));
+  private camposVisibles(radiografiasCirugias: RadiografiaCirugia[]) {
+    return radiografiasCirugias.map((radiografiaCirugia) => this.omitirCampos(radiografiaCirugia));
   }
 }
