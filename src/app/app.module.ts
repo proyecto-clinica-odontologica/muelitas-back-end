@@ -55,6 +55,7 @@ import { TratamientoModule } from './tratamiento/tratamiento.module';
 import { UsersModule } from './users/users.module';
 import { TecnicaRadiograficaModule } from './tecnica-radiografica/tecnica-radiografica.module';
 import { PlanTrabajoModule } from './plan-trabajo/plan-trabajo.module';
+import { DiagnosticosModule } from './diagnosticos/diagnosticos.module';
 
 @Module({
   imports: [
@@ -127,6 +128,7 @@ import { PlanTrabajoModule } from './plan-trabajo/plan-trabajo.module';
     PruebaModule,
     TecnicaRadiograficaModule,
     PlanTrabajoModule,
+    DiagnosticosModule,
   ],
   controllers: [],
   providers: [],
