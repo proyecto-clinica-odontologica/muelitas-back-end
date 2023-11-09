@@ -1,5 +1,6 @@
 import { Cirugia } from 'src/app/cirugia/entities/cirugia.entity';
 import { Endodoncia } from 'src/app/endodoncia/entities/endodoncia.entity';
+import { Operatoria } from 'src/app/operatoria/entities/operatoria.entity';
 import { BeforeInsert, BeforeUpdate, Column, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { HistoriaClinica } from '../../HistoriaClinica/dto/historia-clinica.entity';
 import { Anamnesis } from '../../anamnesis/entities/anamnesis.entity';
@@ -203,6 +204,9 @@ export class Paciente {
 
   @OneToMany(() => Cirugia, (cirugias) => cirugias.paciente)
   cirugias: Cirugia[];
+
+  @OneToMany(() => Operatoria, (operatorias) => operatorias.paciente)
+  operatorias: Operatoria[];
 
   @BeforeInsert()
   @BeforeUpdate()

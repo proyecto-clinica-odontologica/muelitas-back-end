@@ -1,0 +1,30 @@
+import { BeforeInsert, BeforeUpdate, Column, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Paciente } from '../../paciente/entities/paciente.entity';
+
+@Entity()
+export class Operatoria {
+  @PrimaryGeneratedColumn('increment')
+  id: number;
+
+  @Column({ type: 'varchar', length: 255 })
+  MotivoConsulta: string;
+
+  @Column({ type: 'varchar', length: 255 })
+  DiagnosticoDefinitivo: string;
+
+  @Column({ type: 'boolean', default: true })
+  activo: boolean;
+
+  @DeleteDateColumn({ type: 'timestamp', default: null, nullable: true })
+  deletedAt?: Date;
+
+  @ManyToOne(() => Paciente, (paciente) => paciente.operatorias)
+  paciente: Paciente;
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  limpiarCampos() {
+    this.MotivoConsulta = this.MotivoConsulta?.trim().toLowerCase();
+    this.DiagnosticoDefinitivo = this.DiagnosticoDefinitivo?.trim().toLowerCase();
+  }
+}

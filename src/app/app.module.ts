@@ -50,6 +50,7 @@ import { PlanTratamientoModule } from './plan-tratamiento/plan-tratamiento.modul
 import { InformeQuirurgicoModule } from './informe-quirurgico/informe-quirurgico.module';
 import { InterpretacionRadiograficaModule } from './interpretacion-radiografica/interpretacion-radiografica.module';
 import { RadiografiaCirugiaModule } from './radiografia-cirugia/radiografia-cirugia.module';
+import { OperatoriaModule } from './operatoria/operatoria.module';
 
 @Module({
   imports: [
@@ -118,6 +119,7 @@ import { RadiografiaCirugiaModule } from './radiografia-cirugia/radiografia-ciru
     InformeQuirurgicoModule,
     InterpretacionRadiograficaModule,
     RadiografiaCirugiaModule,
+    OperatoriaModule,
   ],
   controllers: [],
   providers: [],
