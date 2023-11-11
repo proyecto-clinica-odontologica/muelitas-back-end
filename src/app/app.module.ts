@@ -26,6 +26,10 @@ import { SeguimientoModule } from './seguimiento/seguimiento.module';
 import { SubcasoclinicoModule } from './subcasoclinico/subcasoclinico.module';
 import { TratamientoModule } from './tratamiento/tratamiento.module';
 import { UsersModule } from './users/users.module';
+import { DiagnosticoModule } from './diagnostico/diagnostico.module';
+import { InterpretacionradiograficaController } from './interpretacionradiografica/interpretacionradiografica.controller';
+import { InterpretacionradiograficaModule } from './interpretacionradiografica/interpretacionradiografica.module';
+import { InformequirurgicoModule } from './informequirurgico/informequirurgico.module';
 
 @Module({
   imports: [
@@ -70,8 +74,11 @@ import { UsersModule } from './users/users.module';
     CarasdientesModule,
     SubcasoclinicoModule,
     CasosclinicosModule,
+    DiagnosticoModule,
+    InterpretacionradiograficaModule,
+    InformequirurgicoModule,
   ],
-  controllers: [],
+  controllers: [InterpretacionradiograficaController],
   providers: [],
 })
 export class AppModule {}
