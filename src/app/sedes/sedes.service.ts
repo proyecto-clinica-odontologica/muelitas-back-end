@@ -16,7 +16,7 @@ export class SedesService {
     private readonly dbEmpresa: Repository<Empresa>,
 
     private readonly dataSource: DataSource,
-  ) {}
+  ) {}  
 
   async registrarSede(createSedeDto: CreateSedeDto) {
     try {
